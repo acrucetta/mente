@@ -40,10 +40,14 @@ impl Lexicon {
 }
 
 fn fpportal(f: &mut File, lex: &mut Lexicon, s: &str, head: bool) -> Result<(), std::io::Error> {
-    let filename = s.replace(" ", "_").to_lowercase();
+    let filename = s.replace(" ", "_").to_lowercase().to_string();
     let filepath = format!("src/inc/{}.htm", filename);
     let filepath = Path::new(&filepath);
-    let target = lex.find_file(&filename);
+    let target = match filename {
+        "meta.nav" => lex.find_file("nav.htm"),
+        _ => lex.find_file(&filename),
+    }
+    let target = lex.find_file(&filename); 
 
     match target {
         None => Err(std::io::Error::new(
@@ -83,7 +87,7 @@ fn create_index_page(lex: &Lexicon) -> Result<(), std::io::Error> {
         ));
     }
     index.push_str("</body></html>");
-    fs::write("inc/index.htm", index)
+    fs::write("src/inc/index.htm", index)
 }
 
 fn generate(lex: &mut Lexicon) -> Result<(), std::io::Error> {
