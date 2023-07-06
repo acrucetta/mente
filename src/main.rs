@@ -39,15 +39,74 @@ impl Lexicon {
     }
 }
 
-fn fpportal(f: &mut File, lex: &mut Lexicon, s: &str, head: bool) -> Result<(), std::io::Error> {
-    let filename = s.replace(" ", "_").to_lowercase().to_string();
+fn fptemplate(f: &mut File, lex: &mut Lexicon, s: &str) -> Result<(), std::io::Error> {
+    let target = lex.find_file(s);
+    match target {
+        Some(index) => {
+            let link = format!(
+                "<a href='{}.html' class='local'>{}</a>",
+                s.replace(" ", "_").to_lowercase(),
+                s
+            );
+            lex.files.entry(s.to_string()).and_modify(|e| *e += 1);
+            write!(f, "{}", link)?;
+        }
+        None => {
+            return Err(std::io::Error::new(
+                std::io::ErrorKind::Other,
+                format!("Missing link: {}", s),
+            ))
+        }
+    }
+    Ok(())
+}
+
+fn fpinject(f: &mut File, lex: &mut Lexicon, filepath: &str) -> Result<(), std::io::Error> {
+    let content = fs::read_to_string(filepath)?;
+    let mut output = String::new();
+    let mut temp = String::new();
+    let mut in_template = false;
+
+    for c in content.chars() {
+        if c == '{' {
+            in_template = true;
+            continue;
+        }
+        if c == '}' {
+            in_template = false;
+            match fptemplate(f, lex, &temp) {
+                Ok(_) => {}
+                Err(e) => return Err(e),
+            }
+            temp.clear();
+            continue;
+        }
+        if in_template {
+            temp.push(c);
+        } else {
+            output.push(c);
+        }
+    }
+    write!(f, "{}", output)?;
+    Ok(())
+}
+
+fn fpportal(
+    html: &mut String,
+    lex: &mut Lexicon,
+    s: &str,
+    head: bool,
+) -> Result<String, std::io::Error> {
+    let mut filename = s.replace(" ", "_").to_lowercase().to_string();
     let filepath = format!("src/inc/{}.htm", filename);
     let filepath = Path::new(&filepath);
-    let target = match filename {
-        "meta.nav" => lex.find_file("nav.htm"),
-        _ => lex.find_file(&filename),
+
+    // If the file is meta.nav, we need to add a ".htm" suffix
+    if filename == "meta.nav" {
+        filename.push_str(".htm");
     }
-    let target = lex.find_file(&filename); 
+
+    let target = lex.find_file(&filename);
 
     match target {
         None => Err(std::io::Error::new(
@@ -140,8 +199,8 @@ fn build_page(
         html.push_str("<main>\n\n");
         html.push_str("<!-- Generated file, do not edit -->\n\n");
         html.push_str(&format!("<h1>{filename}</h1>\n"));
-        // TODO: Implement the fpinject equivalent function here and replace the placeholder below.
-        // If the fpinject function fails, we might print an error message and continue.
+        fpinject(&mut f, lex, filepath);
+
         html.push_str("\n\n</main>\n");
 
         // Footer
