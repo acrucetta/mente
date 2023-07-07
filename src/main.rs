@@ -9,6 +9,7 @@ use chrono::{DateTime, Local};
 
 const NAME: &str = "Mente";
 const DOMAIN: &str = "https://men.te";
+const SOURCE: &str = "https://github.com/acrucetta/wiki-links/edit/main";
 
 #[derive(Debug)]
 struct Lexicon {
@@ -152,7 +153,7 @@ fn generate(lex: &mut Lexicon) -> Result<(), std::io::Error> {
         let dest_path = format!("site/{}.html", trimmed_filename);
         build_page(lex, &file, &dest_path)?;
     }
-    print!(format!("Generated {} files\n"));
+    print!("Generated {} files", filenames.len());
     Ok(())
 }
 
@@ -204,8 +205,8 @@ fn build_page(
 
         // Footer
         write!(f, "<footer><hr />\n");
-        fpedited(f, dest_path);
-        write!(f, "{}", &format!("<b>Mente</b> © 2023 — \n"));
+        fpedited(&mut f);
+        write!(f, "<b>Mente</b> © 2023 — \n")?;
         write!(f, "</footer>\n");
         write!(f, "</body></html>\n");
 
@@ -214,10 +215,11 @@ fn build_page(
     }
 }
 
-fn fpedited(mut f: File, dest_path: &str) -> _ {
-    write!(f, "<span style='float:right'>");
-    write!(f, "Edited on {}", Local::now());
-    write!(f, "</span>");
+fn fpedited(f: &mut File) -> Result<(), std::io::Error> {
+    write!(f, "<span style='float:right'>")?;
+    write!(f, "Edited on {}", Local::now())?;
+    write!(f, "</span>")?;
+    Ok(())
 }
 
 fn main() {
