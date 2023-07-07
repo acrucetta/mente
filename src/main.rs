@@ -2,9 +2,10 @@ use std::{
     collections::HashMap,
     fs::{self, File},
     io::Write,
-    ops::IndexMut,
     path::Path,
 };
+
+use chrono::{DateTime, Local};
 
 const NAME: &str = "Mente";
 const DOMAIN: &str = "https://men.te";
@@ -91,12 +92,7 @@ fn fpinject(f: &mut File, lex: &mut Lexicon, filepath: &str) -> Result<(), std::
     Ok(())
 }
 
-fn fpportal(
-    html: &mut String,
-    lex: &mut Lexicon,
-    s: &str,
-    head: bool,
-) -> Result<String, std::io::Error> {
+fn fpportal(f: &mut File, lex: &mut Lexicon, s: &str, head: bool) -> Result<(), std::io::Error> {
     let mut filename = s.replace(" ", "_").to_lowercase().to_string();
     let filepath = format!("src/inc/{}.htm", filename);
     let filepath = Path::new(&filepath);
@@ -156,6 +152,7 @@ fn generate(lex: &mut Lexicon) -> Result<(), std::io::Error> {
         let dest_path = format!("site/{}.html", trimmed_filename);
         build_page(lex, &file, &dest_path)?;
     }
+    print!(format!("Generated {} files\n"));
     Ok(())
 }
 
@@ -172,46 +169,55 @@ fn build_page(
         ));
     } else {
         let mut f = File::create(dest_path)?;
-        let mut html = String::new();
 
         // Begin
-        html.push_str("<!DOCTYPE html><html lang='en'>\n");
-        html.push_str("<head>\n");
-        html.push_str(&format!(
-            "<meta charset='utf-8'>\n
+        write!(f, "<!DOCTYPE html><html lang='en'>\n")?;
+        write!(f, "<head>\n");
+        write!(
+            f,
+            "{}",
+            &format!(
+                "<meta charset='utf-8'>\n
             <meta name='viewport' content='width=device-width,initial-scale=1'>\n
             <link rel='stylesheet' type='text/css' href='../links/main.css'>\n
-            <title>{NAME} &mdash; {filename}</title>\n",
-        ));
-        html.push_str("</head>\n<body>\n");
+            <title>{NAME} &mdash; {filename}</title>\n"
+            )
+        );
+        write!(f, "</head>\n<body>\n");
 
         // Header
-        html.push_str("<header>\n");
-        html.push_str(&format!("<a href='home.html'><img src='../media/interface/logo.svg' alt='{NAME}' height='50'></a>"));
-        html.push_str("</header>\n");
+        write!(f, "<header>\n");
+        write!(f,"{}",&format!("<a href='home.html'><img src='../media/interface/logo.svg' alt='{NAME}' height='50'></a>"));
+        write!(f, "</header>\n");
 
         // Navigation
-        html.push_str("<nav>\n");
+        write!(f, "<nav>\n");
         fpportal(&mut f, lex, "meta.nav", true)?;
-        html.push_str("</nav>\n");
+        write!(f, "</nav>\n");
 
         // Main
-        html.push_str("<main>\n\n");
-        html.push_str("<!-- Generated file, do not edit -->\n\n");
-        html.push_str(&format!("<h1>{filename}</h1>\n"));
-        fpinject(&mut f, lex, filepath);
-
-        html.push_str("\n\n</main>\n");
+        write!(f, "<main>\n\n");
+        write!(f, "<!-- Generated file, do not edit -->\n\n");
+        write!(f, "{}", &format!("<h1>{filename}</h1>\n"));
+        fpinject(&mut f, lex, dest_path);
+        write!(f, "\n\n</main>\n");
 
         // Footer
-        html.push_str("<footer><hr />\n");
-        // TODO: Implement the fpedited equivalent function here and replace the placeholder below.
-        html.push_str(&format!("<b>Mente</b> © 2023 — \n"));
-        html.push_str("</footer>\n");
-        html.push_str("</body></html>\n");
-        fs::write(dest_path, html).expect("Unable to write file");
+        write!(f, "<footer><hr />\n");
+        fpedited(f, dest_path);
+        write!(f, "{}", &format!("<b>Mente</b> © 2023 — \n"));
+        write!(f, "</footer>\n");
+        write!(f, "</body></html>\n");
+
+        f.flush();
         Ok(())
     }
+}
+
+fn fpedited(mut f: File, dest_path: &str) -> _ {
+    write!(f, "<span style='float:right'>");
+    write!(f, "Edited on {}", Local::now());
+    write!(f, "</span>");
 }
 
 fn main() {
@@ -233,6 +239,4 @@ fn main() {
         Ok(_) => println!("Generation Complete"),
         Err(e) => println!("Error Generating: {}", e),
     }
-
-    // Check for orphan pages (pages that are not linked)
 }
