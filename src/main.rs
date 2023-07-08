@@ -63,8 +63,8 @@ fn fptemplate(f: &mut File, lex: &mut Lexicon, s: &str) -> Result<(), std::io::E
     Ok(())
 }
 
-fn fpinject(f: &mut File, lex: &mut Lexicon, filepath: &str) -> Result<(), std::io::Error> {
-    let content = fs::read_to_string(filepath)?;
+fn fpinject(f: &mut File, lex: &mut Lexicon, source_path: &str) -> Result<(), std::io::Error> {
+    let content = fs::read_to_string(source_path)?;
     let mut output = String::new();
     let mut temp = String::new();
     let mut in_template = false;
@@ -116,7 +116,7 @@ fn fpportal(f: &mut File, lex: &mut Lexicon, s: &str, head: bool) -> Result<(), 
                 write!(
                     f,
                     "<h2 id='{}'><a href='{}.html'>{}</a></h2>\n",
-                    filename, filename, s
+                    filename, s, s
                 )?;
             }
             write!(f, "{}", page_content)?;
@@ -169,8 +169,8 @@ fn build_page(
             format!("Missing file {filename}"),
         ));
     } else {
+        let source_path = format!("src/inc/{}", filename).to_string();
         let mut f = File::create(dest_path)?;
-
         // Begin
         write!(f, "<!DOCTYPE html><html lang='en'>\n")?;
         write!(f, "<head>\n");
@@ -200,7 +200,7 @@ fn build_page(
         write!(f, "<main>\n\n");
         write!(f, "<!-- Generated file, do not edit -->\n\n");
         write!(f, "{}", &format!("<h1>{filename}</h1>\n"));
-        fpinject(&mut f, lex, dest_path);
+        fpinject(&mut f, lex, &source_path);
         write!(f, "\n\n</main>\n");
 
         // Footer
@@ -238,7 +238,7 @@ fn main() {
 
     // Generate the HTML pages
     match generate(&mut lexicon) {
-        Ok(_) => println!("Generation Complete"),
+        Ok(_) => println!("\nGeneration Complete"),
         Err(e) => println!("Error Generating: {}", e),
     }
 }
