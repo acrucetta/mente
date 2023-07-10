@@ -67,7 +67,6 @@ fn fptemplate(file: &mut File, lex: &mut Lexicon, filename: &str) -> io::Result<
 
 fn fpinject(file: &mut File, lex: &mut Lexicon, source_path: &str) -> io::Result<()> {
     let content = fs::read_to_string(source_path)?;
-    let mut output = String::new();
     let mut temp = String::new();
     let mut in_template = false;
 
@@ -85,11 +84,11 @@ fn fpinject(file: &mut File, lex: &mut Lexicon, source_path: &str) -> io::Result
                 temp.push(c);
             }
             _ => {
-                output.push(c);
+                write!(file, "{}", c)?;
             }
         }
     }
-    write!(file, "{}", output)
+    Ok(())
 }
 
 fn fpportal(file: &mut File, lex: &mut Lexicon, s: &str, head: bool) -> io::Result<()> {
@@ -232,5 +231,40 @@ fn main() {
     match generate(&mut lexicon) {
         Ok(_) => println!("\nGeneration Complete"),
         Err(e) => println!("Error Generating: {}", e),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::io::BufReader;
+
+    #[test]
+    fn test_fpinject() {
+        let mut lexicon = Lexicon::new();
+        lexicon.files.insert("test".to_string(), 0);
+
+        let source_path = "src/inc/test.htm";
+
+        // Create test file
+        let _ = fs::write(source_path, "This is a {test} file");
+
+        let mut output = File::create("src/inc/output.htm").unwrap();
+
+        fpinject(&mut output, &mut lexicon, source_path).unwrap();
+
+        // Check the result
+        let result = fs::read_to_string("src/inc/output.htm").unwrap();
+        assert_eq!(
+            result,
+            "This is a <a href='test.html' class='local'>test</a> file"
+        );
+
+        // Check the references in the lexicon
+        assert_eq!(lexicon.files.get("test").unwrap(), &1);
+
+        // Clean up
+        fs::remove_file(source_path).unwrap();
+        fs::remove_file("src/inc/output.htm").unwrap();
     }
 }
