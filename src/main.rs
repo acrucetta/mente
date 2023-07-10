@@ -1,7 +1,7 @@
 use std::{
     collections::HashMap,
     fs::{self, File},
-    io::Write,
+    io::{self, Write},
     path::Path,
 };
 
@@ -36,95 +36,86 @@ impl Lexicon {
         Ok(())
     }
 
-    fn find_file(&self, filename: &str) -> Option<usize> {
-        self.files.iter().position(|f| f.0 == filename)
+    fn find_file(&self, filename: &str) -> Option<&usize> {
+        self.files.get(filename)
+    }
+
+    fn increment_ref(&mut self, filename: &str) {
+        if let Some(value) = self.files.get_mut(filename) {
+            *value += 1;
+        }
     }
 }
 
-fn fptemplate(f: &mut File, lex: &mut Lexicon, s: &str) -> Result<(), std::io::Error> {
-    let target = lex.find_file(s);
-    match target {
-        Some(index) => {
+fn fptemplate(file: &mut File, lex: &mut Lexicon, filename: &str) -> io::Result<()> {
+    match lex.find_file(filename) {
+        Some(_) => {
             let link = format!(
                 "<a href='{}.html' class='local'>{}</a>",
-                s.replace(" ", "_").to_lowercase(),
-                s
+                filename.replace(" ", "_").to_lowercase(),
+                filename.replace("_", " ")
             );
-            lex.files.entry(s.to_string()).and_modify(|e| *e += 1);
-            write!(f, "{}", link)?;
+            lex.increment_ref(filename);
+            write!(file, "{}", link)
         }
-        None => {
-            return Err(std::io::Error::new(
-                std::io::ErrorKind::Other,
-                format!("Missing link: {}", s),
-            ))
-        }
+        None => Err(io::Error::new(
+            io::ErrorKind::NotFound,
+            format!("Missing link: {}", filename),
+        )),
     }
-    Ok(())
 }
 
-fn fpinject(f: &mut File, lex: &mut Lexicon, source_path: &str) -> Result<(), std::io::Error> {
+fn fpinject(file: &mut File, lex: &mut Lexicon, source_path: &str) -> io::Result<()> {
     let content = fs::read_to_string(source_path)?;
     let mut output = String::new();
     let mut temp = String::new();
     let mut in_template = false;
 
     for c in content.chars() {
-        if c == '{' {
-            in_template = true;
-            continue;
-        }
-        if c == '}' {
-            in_template = false;
-            match fptemplate(f, lex, &temp) {
-                Ok(_) => {}
-                Err(e) => return Err(e),
+        match c {
+            '{' => {
+                in_template = true;
             }
-            temp.clear();
-            continue;
-        }
-        if in_template {
-            temp.push(c);
-        } else {
-            output.push(c);
+            '}' => {
+                in_template = false;
+                fptemplate(file, lex, &temp)?;
+                temp.clear();
+            }
+            _ if in_template => {
+                temp.push(c);
+            }
+            _ => {
+                output.push(c);
+            }
         }
     }
-    write!(f, "{}", output)?;
-    Ok(())
+    write!(file, "{}", output)
 }
 
-fn fpportal(f: &mut File, lex: &mut Lexicon, s: &str, head: bool) -> Result<(), std::io::Error> {
-    let mut filename = s.replace(" ", "_").to_lowercase().to_string();
+fn fpportal(file: &mut File, lex: &mut Lexicon, s: &str, head: bool) -> io::Result<()> {
+    let filename = s.replace(" ", "_").to_lowercase();
     let filepath = format!("src/inc/{}.htm", filename);
-    let filepath = Path::new(&filepath);
 
-    // If the file is meta.nav, we need to add a ".htm" suffix
-    if filename == "meta.nav" {
-        filename.push_str(".htm");
-    }
-
-    let target = lex.find_file(&filename);
-
-    match target {
-        None => Err(std::io::Error::new(
-            std::io::ErrorKind::NotFound,
-            format!("Missing portal {}", s),
-        )),
-        Some(idx) => {
-            let page_content = fs::read_to_string(&filepath)?;
+    match lex.find_file(&filename) {
+        Some(_) => {
+            let page_content = fs::read_to_string(filepath)?;
             if head {
-                write!(
-                    f,
-                    "<h2 id='{}'><a href='{}.html'>{}</a></h2>\n",
+                writeln!(
+                    file,
+                    "<h2 id='{}'><a href='{}.html'>{}</a></h2>",
                     filename, s, s
                 )?;
             }
-            write!(f, "{}", page_content)?;
+            write!(file, "{}", page_content)?;
 
             // Increase the reference count for the target page
-            lex.files.entry(filename).and_modify(|e| *e += 1);
+            lex.increment_ref(&filename);
             Ok(())
         }
+        None => Err(io::Error::new(
+            io::ErrorKind::NotFound,
+            format!("Missing portal {}", s),
+        )),
     }
 }
 
@@ -146,14 +137,14 @@ fn create_index_page(lex: &Lexicon) -> Result<(), std::io::Error> {
     fs::write("src/inc/index.htm", index)
 }
 
-fn generate(lex: &mut Lexicon) -> Result<(), std::io::Error> {
+fn generate(lex: &mut Lexicon) -> std::io::Result<()> {
     let filenames = &lex.files.keys().cloned().collect::<Vec<String>>();
     for file in filenames {
         let trimmed_filename = file.trim_end_matches(".htm");
         let dest_path = format!("site/{}.html", trimmed_filename);
         build_page(lex, &file, &dest_path)?;
     }
-    print!("Generated {} files", filenames.len());
+    println!("Generated {} files", filenames.len());
     Ok(())
 }
 
@@ -170,12 +161,12 @@ fn build_page(
         ));
     } else {
         let source_path = format!("src/inc/{}", filename).to_string();
-        let mut f = File::create(dest_path)?;
+        let mut file = File::create(dest_path)?;
         // Begin
-        write!(f, "<!DOCTYPE html><html lang='en'>\n")?;
-        write!(f, "<head>\n");
+        write!(file, "<!DOCTYPE html><html lang='en'>\n")?;
+        write!(file, "<head>\n");
         write!(
-            f,
+            file,
             "{}",
             &format!(
                 "<meta charset='utf-8'>\n
@@ -184,41 +175,42 @@ fn build_page(
             <title>{NAME} &mdash; {filename}</title>\n"
             )
         );
-        write!(f, "</head>\n<body>\n");
+        write!(file, "</head>\n<body>\n");
 
         // Header
-        write!(f, "<header>\n");
-        write!(f,"{}",&format!("<a href='home.html'><img src='../media/interface/logo.svg' alt='{NAME}' height='50'></a>"));
-        write!(f, "</header>\n");
+        write!(file, "<header>\n");
+        write!(file,"{}",&format!("<a href='home.html'><img src='../media/interface/logo.svg' alt='{NAME}' height='50'></a>"));
+        write!(file, "</header>\n");
 
         // Navigation
-        write!(f, "<nav>\n");
-        fpportal(&mut f, lex, "meta.nav", true)?;
-        write!(f, "</nav>\n");
+        write!(file, "<nav>\n");
+        fpportal(&mut file, lex, "meta.nav", true)?;
+        write!(file, "</nav>\n");
 
         // Main
-        write!(f, "<main>\n\n");
-        write!(f, "<!-- Generated file, do not edit -->\n\n");
-        write!(f, "{}", &format!("<h1>{filename}</h1>\n"));
-        fpinject(&mut f, lex, &source_path);
-        write!(f, "\n\n</main>\n");
+        write!(file, "<main>\n\n");
+        write!(file, "<!-- Generated file, do not edit -->\n\n");
+        write!(file, "{}", &format!("<h1>{filename}</h1>\n"));
+        fpinject(&mut file, lex, &source_path);
+        write!(file, "\n\n</main>\n");
 
         // Footer
-        write!(f, "<footer><hr />\n");
-        fpedited(&mut f);
-        write!(f, "<b>Mente</b> © 2023 — \n")?;
-        write!(f, "</footer>\n");
-        write!(f, "</body></html>\n");
+        write!(file, "<footer><hr />\n");
+        fpedited(&mut file);
+        write!(file, "<b>Mente</b> © 2023 — \n")?;
+        write!(file, "</footer>\n");
+        write!(file, "</body></html>\n");
 
-        f.flush();
+        file.flush();
         Ok(())
     }
 }
 
-fn fpedited(f: &mut File) -> Result<(), std::io::Error> {
-    write!(f, "<span style='float:right'>")?;
-    write!(f, "Edited on {}", Local::now())?;
-    write!(f, "</span>")?;
+fn fpedited(file: &mut File) -> Result<(), std::io::Error> {
+    // Add the edited date to the footer as "YYYY-MM-DD"
+    write!(file, "<span style='float:right'>")?;
+    write!(file, "Edited on {}", Local::now().format("%Y-%m-%d"))?;
+    write!(file, "</span>")?;
     Ok(())
 }
 
