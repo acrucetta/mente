@@ -48,6 +48,14 @@ impl Lexicon {
 }
 
 fn fptemplate(file: &mut File, lex: &mut Lexicon, filename: &str) -> io::Result<()> {
+    // Check if it's a template of {/template} type
+    // if so we will add the title plus its content
+    if let Some((0, '/')) = filename.char_indices().next() {
+        let trimmed_filename = filename.trim_start_matches('/');
+        fpportal(file, lex, trimmed_filename, true);
+    }
+
+    // Otherwise, we just add a link to the file
     match lex.find_file(filename) {
         Some(_) => {
             let link = format!(
@@ -93,16 +101,17 @@ fn fpinject(file: &mut File, lex: &mut Lexicon, source_path: &str) -> io::Result
 
 fn fpportal(file: &mut File, lex: &mut Lexicon, s: &str, head: bool) -> io::Result<()> {
     let filename = s.replace(" ", "_").to_lowercase();
-    let filepath = format!("src/inc/{}.htm", filename);
+    let relative_filepath = format!("src/inc/{}.htm", filename);
+    let raw_filepath = format!("{}.htm", filename);
 
-    match lex.find_file(&filename) {
+    match lex.find_file(&raw_filepath) {
         Some(_) => {
-            let page_content = fs::read_to_string(filepath)?;
+            let page_content = fs::read_to_string(relative_filepath)?;
             if head {
                 writeln!(
                     file,
                     "<h2 id='{}'><a href='{}.html'>{}</a></h2>",
-                    filename, s, s
+                    filename, filename, s
                 )?;
             }
             write!(file, "{}", page_content)?;
@@ -183,7 +192,7 @@ fn build_page(
 
         // Navigation
         write!(file, "<nav>\n");
-        fpportal(&mut file, lex, "meta.nav", true)?;
+        fpportal(&mut file, lex, "meta.nav", false)?;
         write!(file, "</nav>\n");
 
         // Main
