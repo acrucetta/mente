@@ -47,23 +47,24 @@ impl Lexicon {
     }
 }
 
-fn fptemplate(file: &mut File, lex: &mut Lexicon, filename: &str) -> io::Result<()> {
+fn add_connection(file: &mut File, lex: &mut Lexicon, filename: &str) -> io::Result<()> {
+    let std_filename = filename.replace(" ", "_").to_lowercase();
+    let htm_filename = format!("{}.htm", std_filename);
+
     // Check if it's a template of {/template} type
     // if so we will add the title plus its content
     if let Some((0, '/')) = filename.char_indices().next() {
         let trimmed_filename = filename.trim_start_matches('/');
-        fpportal(file, lex, trimmed_filename, true);
+        add_portal(file, lex, trimmed_filename, true);
     }
 
-    // Otherwise, we just add a link to the file
-    match lex.find_file(filename) {
+    match lex.find_file(&htm_filename) {
         Some(_) => {
             let link = format!(
                 "<a href='{}.html' class='local'>{}</a>",
-                filename.replace(" ", "_").to_lowercase(),
-                filename.replace("_", " ")
+                std_filename, filename
             );
-            lex.increment_ref(filename);
+            lex.increment_ref(&htm_filename);
             write!(file, "{}", link)
         }
         None => Err(io::Error::new(
@@ -73,7 +74,7 @@ fn fptemplate(file: &mut File, lex: &mut Lexicon, filename: &str) -> io::Result<
     }
 }
 
-fn fpinject(file: &mut File, lex: &mut Lexicon, source_path: &str) -> io::Result<()> {
+fn add_main_body(file: &mut File, lex: &mut Lexicon, source_path: &str) -> io::Result<()> {
     let content = fs::read_to_string(source_path)?;
     let mut temp = String::new();
     let mut in_template = false;
@@ -85,7 +86,7 @@ fn fpinject(file: &mut File, lex: &mut Lexicon, source_path: &str) -> io::Result
             }
             '}' => {
                 in_template = false;
-                fptemplate(file, lex, &temp)?;
+                add_connection(file, lex, &temp)?;
                 temp.clear();
             }
             _ if in_template => {
@@ -99,7 +100,7 @@ fn fpinject(file: &mut File, lex: &mut Lexicon, source_path: &str) -> io::Result
     Ok(())
 }
 
-fn fpportal(file: &mut File, lex: &mut Lexicon, s: &str, head: bool) -> io::Result<()> {
+fn add_portal(file: &mut File, lex: &mut Lexicon, s: &str, head: bool) -> io::Result<()> {
     let filename = s.replace(" ", "_").to_lowercase();
     let relative_filepath = format!("src/inc/{}.htm", filename);
     let raw_filepath = format!("{}.htm", filename);
@@ -130,22 +131,24 @@ fn fpportal(file: &mut File, lex: &mut Lexicon, s: &str, head: bool) -> io::Resu
 fn create_index_page(lex: &Lexicon) -> Result<(), std::io::Error> {
     let mut index = String::new();
     index.push_str("<html><head><title>Index</title></head><body>");
+    index.push_str("<ul class='col2 capital'>");
     for (filename, _) in &lex.files {
         // If the file is an index.htm file, skip it
-        if filename == "index.htm" {
+        if filename == "index.htm" || filename == "meta.nav.htm" {
             continue;
         }
+        let name_without_extension = filename.trim_end_matches(".htm");
         index.push_str(&format!(
-            "<a href=\"{}\">{}</a><br>",
-            filename,
-            filename.trim_end_matches(".htm")
+            "<li><a href=\"{}.html\">{}</a></li>",
+            name_without_extension,
+            name_without_extension.replace("_", " ")
         ));
     }
-    index.push_str("</body></html>");
+    index.push_str("</ul></body></html>");
     fs::write("src/inc/index.htm", index)
 }
 
-fn generate(lex: &mut Lexicon) -> std::io::Result<()> {
+fn generate_pages(lex: &mut Lexicon) -> std::io::Result<()> {
     let filenames = &lex.files.keys().cloned().collect::<Vec<String>>();
     for file in filenames {
         let trimmed_filename = file.trim_end_matches(".htm");
@@ -192,14 +195,14 @@ fn build_page(
 
         // Navigation
         write!(file, "<nav>\n");
-        fpportal(&mut file, lex, "meta.nav", false)?;
+        add_portal(&mut file, lex, "meta.nav", false)?;
         write!(file, "</nav>\n");
 
         // Main
         write!(file, "<main>\n\n");
         write!(file, "<!-- Generated file, do not edit -->\n\n");
         write!(file, "{}", &format!("<h1>{filename}</h1>\n"));
-        fpinject(&mut file, lex, &source_path);
+        add_main_body(&mut file, lex, &source_path);
         write!(file, "\n\n</main>\n");
 
         // Footer
@@ -237,7 +240,7 @@ fn main() {
     create_index_page(&lexicon);
 
     // Generate the HTML pages
-    match generate(&mut lexicon) {
+    match generate_pages(&mut lexicon) {
         Ok(_) => println!("\nGeneration Complete"),
         Err(e) => println!("Error Generating: {}", e),
     }
@@ -260,7 +263,7 @@ mod tests {
 
         let mut output = File::create("src/inc/output.htm").unwrap();
 
-        fpinject(&mut output, &mut lexicon, source_path).unwrap();
+        add_main_body(&mut output, &mut lexicon, source_path).unwrap();
 
         // Check the result
         let result = fs::read_to_string("src/inc/output.htm").unwrap();
