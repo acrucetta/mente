@@ -190,7 +190,7 @@ fn build_page(
 
         // Header
         write!(file, "<header>\n");
-        write!(file,"{}",&format!("<a href='home.html'><img src='../media/interface/logo.svg' alt='{NAME}' height='50'></a>"));
+        write!(file,"{}",&format!("<a href='home.html'><img src='../media/interface/logo.svg' alt='{NAME}' height='100'></a>"));
         write!(file, "</header>\n");
 
         // Navigation
