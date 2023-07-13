@@ -40,8 +40,8 @@ jobs:
       - name: Upload sites artifact
         uses: actions/upload-artifact@v2
         with:
-          name: sites
-          path: sites/
+          name: site
+          path: site/
           
       - name: Upload media artifact
         uses: actions/upload-artifact@v2
