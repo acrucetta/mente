@@ -190,7 +190,7 @@ fn build_page(
 
         // Header
         write!(file, "<header>\n");
-        write!(file,"{}",&format!("<a href='home.html'><img src='../media/interface/logo.svg' alt='{NAME}' height='100'></a>"));
+        write!(file,"{}",&format!("<a href='https://andrescn.me/mente/site/about.html'><img src='../media/interface/logo.svg' alt='{NAME}' height='100'></a>"));
         write!(file, "</header>\n");
 
         // Navigation
@@ -226,6 +226,10 @@ fn fpedited(file: &mut File) -> Result<(), std::io::Error> {
 }
 
 fn main() {
+    // Before we start, we empty the ..site/ directory
+    let _ = fs::remove_dir_all("site");
+    let _ = fs::create_dir("site");
+
     let mut lexicon = Lexicon::new();
     let input_dir = Path::new("src/inc");
 
