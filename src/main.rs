@@ -225,10 +225,36 @@ fn fpedited(file: &mut File) -> Result<(), std::io::Error> {
     Ok(())
 }
 
+fn generate_html_from_markdown(path: &str) -> Result<(), std::io::Error> {
+    let entries = fs::read_dir(Path::new(path))?;
+
+    for entry in entries {
+        let entry = entry?;
+        let filename = entry.file_name().into_string().unwrap();
+        if filename.ends_with(".md") {
+            let markdown_input = fs::read_to_string(format!("{}/{}", path, filename))?;
+            let mut html_output = String::new();
+            let parser = pulldown_cmark::Parser::new(&markdown_input);
+            pulldown_cmark::html::push_html(&mut html_output, parser);
+
+            write!(
+                File::create(format!("src/inc/{}.htm", filename.trim_end_matches(".md")))?,
+                "{}",
+                html_output
+            )?;
+        }
+    }
+    Ok(())
+}
+
 fn main() {
     // Before we start, we empty the ..site/ directory
     let _ = fs::remove_dir_all("site");
     let _ = fs::create_dir("site");
+
+    // We now have also markdown files, we need to conver them
+    // to .htm files and place them in the src/inc/ directory
+    generate_html_from_markdown("src/md");
 
     let mut lexicon = Lexicon::new();
     let input_dir = Path::new("src/inc");
@@ -253,7 +279,7 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::io::BufReader;
+    use std::io::{BufReader, Read};
 
     #[test]
     fn test_fpinject() {
@@ -282,5 +308,18 @@ mod tests {
         // Clean up
         fs::remove_file(source_path).unwrap();
         fs::remove_file("src/inc/output.htm").unwrap();
+    }
+
+    #[test]
+    fn test_generate_html_from_markdown() {
+        // The test expects a `test` directory under the project root containing a markdown file `test.md`.
+        generate_html_from_markdown("src/md").unwrap();
+
+        let mut file = fs::File::open("src/inc/test.htm").unwrap();
+        let mut contents = String::new();
+        file.read_to_string(&mut contents).unwrap();
+
+        assert!(contents.contains("<h1>Test</h1>"));
+        fs::remove_file("src/inc/test.htm").unwrap();
     }
 }
