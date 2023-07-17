@@ -34,44 +34,61 @@
 <!-- Generated file, do not edit -->
 
 <h1>data_engineering.htm</h1>
-<h2>What is a Data Engineer</h2>
-
-<p>
-  The data engineer is a hub between data producers, such as software engineers,
-  data architects, and DevOps or site-reliability engineers (SREs), and data
-  consumers, such as data analysts, data scientists, and ML engineers. In
-  addition, data engineers will interact with those in operational roles, such
-  as DevOps engineers.
-</p>
-
-<p>
-  Data engineering is all about the movement, manipulation, and management of
-  data.
-</p>
-
-<h2>The Data Engineering Lifecycle</h2>
-
-<p>Insert Image</p>
-
-<p>
-  Data engineers take care of generation, storage, ingestion, transformation,
-  and serving of data.
-</p>
-
-<h2>The Hierarchy of Needs</h2>
-
-<p>
-  Before doing any advanced data science, organizations need to take care of
-  their hierarchy of needs.
-</p>
-
-<p>Insert Image</p>
-
-<h2>Stages of Maturity</h2>
+<p><a href='books.html' class='local'>books</a></p>
+<h2>Chapter 1</h2>
+<h3>Data Engineering Teams</h3>
+<p>The data engineer is a hub between data producers, such as software engineers, data architects, and DevOps or site-reliability engineers (SREs), and data consumers, such as data analysts, data scientists, and ML engineers. In addition, data engineers will interact with those in operational roles, such as DevOps engineers.</p>
+<h3>ML Engineers vs. Data Engineer</h3>
+<p>The ML engineer overlaps with DE, but it develops more advanced ML techniques, train models, and designs and maintains infrastructure running ML processes. It emphasizes more MLOps and other mature practices such as DevOps.</p>
+<h2>Chapter 2</h2>
+<h3>Data Generation</h3>
+<ul>
+<li>Data is coming from a variety of sources now</li>
+<li>It's hard to keep in the same schema. Schema evolution is now considered part of the Agile approach.</li>
+</ul>
+<h3>Storage</h3>
+<ul>
+<li>Cloud architectures often have several storage solutions</li>
+<li>Hot data is data commonly retrieved many times per day. It should be geared for fast retrieval</li>
+<li>Cold data is seldom queried and mostly for archival purposes.</li>
+</ul>
+<h3>Ingestion</h3>
+<ul>
+<li>A common bottleneck of the lifecycle; source systems are outside of your direct control and might have data of poor quality</li>
+<li>The separation of storage and compute makes streaming more popular</li>
+<li>Can my downstream services handle the volume of data I'm sending them?</li>
+<li>Batch is still widely used because of legacy systems, streaming can be useful but it creates increasing amounts of complexity</li>
+</ul>
+<p>Key Questions:</p>
+<ul>
+<li>What are the use cases for the data?</li>
+<li>What is the destination?</li>
+<li>In what volume will it arrive?</li>
+<li>What format is the data in?</li>
+</ul>
+<h3>Transformation</h3>
+<ul>
+<li>Change data into correct types, put records into standard formats, remove bad ones</li>
+<li>Large-scale aggregation for reporting or featurizing data for ML processes</li>
+</ul>
+<h3>Serving</h3>
+<ul>
+<li>Data is served for analytics, ML, and reverse ETL</li>
+<li>Before investing into ML, companies need to build a solid data foundation</li>
+<li>This means setting up the best systems and architecttures across the data engineering and ML lifecycle.</li>
+<li>Analytics then ML</li>
+<li>Reverse ETLs feed bvack the data into source systems. It's useful for businesses relying on SaaS.</li>
+</ul>
+<hr />
+<h3>Data Ops</h3>
+<ul>
+<li>DataOps automation has a similar framework and workflow to DevOps, consisting of change management (environment, code, and data version control), continuous integration/continuous deployment (CI/CD), and configuration as code.</li>
+<li></li>
+</ul>
 
 
 </main>
 <footer><hr />
-<span style='float:right'>Edited on 2023-07-16</span><b>Mente</b> © 2023 — 
+<span style='float:right'>Edited on 2023-07-17</span><b>Mente</b> © 2023 — 
 </footer>
 </body></html>
