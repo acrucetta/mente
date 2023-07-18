@@ -1,10 +1,10 @@
 <p>{books}</p>
-<h2>Chapter 1</h2>
+<h2>Chapter 1: Overview of Data Engineering</h2>
 <h3>Data Engineering Teams</h3>
 <p>The data engineer is a hub between data producers, such as software engineers, data architects, and DevOps or site-reliability engineers (SREs), and data consumers, such as data analysts, data scientists, and ML engineers. In addition, data engineers will interact with those in operational roles, such as DevOps engineers.</p>
 <h3>ML Engineers vs. Data Engineer</h3>
 <p>The ML engineer overlaps with DE, but it develops more advanced ML techniques, train models, and designs and maintains infrastructure running ML processes. It emphasizes more MLOps and other mature practices such as DevOps.</p>
-<h2>Chapter 2</h2>
+<h2>Chapter 2: Main components of Data Engineering</h2>
 <h3>Data Generation</h3>
 <ul>
 <li>Data is coming from a variety of sources now</li>
@@ -47,5 +47,94 @@
 <h3>Data Ops</h3>
 <ul>
 <li>DataOps automation has a similar framework and workflow to DevOps, consisting of change management (environment, code, and data version control), continuous integration/continuous deployment (CI/CD), and configuration as code.</li>
-<li></li>
+<li>DatOps consist of automation, observability and monitoring, and incident response</li>
+</ul>
+<h4>Observability and Monitoring</h4>
+<ul>
+<li>Data is a silent killer; bad data can linger in reports for a long time</li>
+<li>You need to implement observing, monitoring, logging, alerting, and tracing </li>
+<li>DODD focused on making data observability a first-class consideration in the data engineering lifecycle</li>
+</ul>
+<hr />
+<h2>Data Architecture</h2>
+<h3>Types of data architectures</h3>
+<ul>
+<li>Data warehouse: structured, includes the compute
+<ul>
+<li>A subject-oriented, integrated, nonvolatile, and time-variant collection of data in support of mgmt decisions</li>
+<li>Separates OLAP from OLTP</li>
+<li>Centralized and organizes data</li>
+<li>e.g., Snowflake, Amazon Redshift</li>
+</ul>
+</li>
+<li>Data lake: unstructured, data can be in any format
+<ul>
+<li>Common during big data era</li>
+<li>Data can be queried with MapReduce, Spark, Presto, etc...</li>
+</ul>
+</li>
+<li>Data lakehouse: combines benefits from both, introduced by Databricks
+<ul>
+<li>Includes control, data management and data structures</li>
+<li>Still houses data in an object storage and supports a variety of query and transformation engines</li>
+</ul>
+</li>
+</ul>
+<h3>Modern Data Stack</h3>
+<ul>
+<li>Instead of using monolithic toolsets, use cloud-based, plug and play, off-the-shelf components</li>
+<li>Includes data pipelines, storage, monitoring, etc...</li>
+</ul>
+<hr />
+<h2>Chapter 5: Data Generation</h2>
+<h3>Data Logs</h3>
+<ul>
+<li>Insert only: always retain the records, add a timestamp</li>
+</ul>
+<h3>Messages and Streams</h3>
+<ul>
+<li>Message queues and streaming platforms are often used interchangeably</li>
+<li>A message is raw data communicated across two or more systems
+<ul>
+<li>A message is normally sent through a message queue from a publisher to a consumer</li>
+<li>Once the message is delivered, it is removed from the queue</li>
+</ul>
+</li>
+<li>A stream is an append only log of event records
+<ul>
+<li>You use streams when you care about what happened over many events</li>
+</ul>
+</li>
+</ul>
+<h3>Types of time</h3>
+<ul>
+<li>Event time; event is generated</li>
+<li>Ingestion time; event is ingested</li>
+<li>Process time; event is processed</li>
+</ul>
+<h3>Ways of ingesting data</h3>
+<ul>
+<li>APIs
+<ul>
+<li>REST</li>
+<li>GraphQL</li>
+<li>WebHooks
+<ul>
+<li>Event based data transmission pattern</li>
+<li>Data source can be an application backend, a web page, or a mobile app</li>
+</ul>
+</li>
+<li>RPC and gRPC: remote procedure call library; bidirectional exchange of data over HTTP/2
+<ul>
+<li>Imposes more technical standards than REST</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Message queues
+<ul>
+<li>Critical for decoupled microservices and event-driven architectures</li>
+<li>Need to keep in mind the frequency of delivery, message ordering and scalability</li>
+</ul>
+</li>
 </ul>

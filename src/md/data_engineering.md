@@ -2,7 +2,7 @@
 
 {books}
 
-## Chapter 1
+## Chapter 1: Overview of Data Engineering
 
 ### Data Engineering Teams
 The data engineer is a hub between data producers, such as software engineers, data architects, and DevOps or site-reliability engineers (SREs), and data consumers, such as data analysts, data scientists, and ML engineers. In addition, data engineers will interact with those in operational roles, such as DevOps engineers.
@@ -11,7 +11,7 @@ The data engineer is a hub between data producers, such as software engineers, d
 
 The ML engineer overlaps with DE, but it develops more advanced ML techniques, train models, and designs and maintains infrastructure running ML processes. It emphasizes more MLOps and other mature practices such as DevOps.
 
-## Chapter 2
+## Chapter 2: Main components of Data Engineering
 
 ### Data Generation
 - Data is coming from a variety of sources now
@@ -50,4 +50,65 @@ Key Questions:
 ### Data Ops
 
 - DataOps automation has a similar framework and workflow to DevOps, consisting of change management (environment, code, and data version control), continuous integration/continuous deployment (CI/CD), and configuration as code.
-- 
+- DatOps consist of automation, observability and monitoring, and incident response
+
+#### Observability and Monitoring
+- Data is a silent killer; bad data can linger in reports for a long time
+- You need to implement observing, monitoring, logging, alerting, and tracing 
+- DODD focused on making data observability a first-class consideration in the data engineering lifecycle
+
+---
+
+## Data Architecture
+
+### Types of data architectures
+- Data warehouse: structured, includes the compute
+  - A subject-oriented, integrated, nonvolatile, and time-variant collection of data in support of mgmt decisions
+  - Separates OLAP from OLTP
+  - Centralized and organizes data
+  - e.g., Snowflake, Amazon Redshift
+- Data lake: unstructured, data can be in any format
+  - Common during big data era
+  - Data can be queried with MapReduce, Spark, Presto, etc...
+- Data lakehouse: combines benefits from both, introduced by Databricks
+  - Includes control, data management and data structures
+  - Still houses data in an object storage and supports a variety of query and transformation engines
+  
+### Modern Data Stack
+- Instead of using monolithic toolsets, use cloud-based, plug and play, off-the-shelf components
+- Includes data pipelines, storage, monitoring, etc...
+
+---
+
+## Chapter 5: Data Generation
+
+### Data Logs
+- Insert only: always retain the records, add a timestamp
+
+### Messages and Streams
+- Message queues and streaming platforms are often used interchangeably
+- A message is raw data communicated across two or more systems
+  - A message is normally sent through a message queue from a publisher to a consumer
+  - Once the message is delivered, it is removed from the queue
+- A stream is an append only log of event records
+  - You use streams when you care about what happened over many events
+
+### Types of time
+- Event time; event is generated
+- Ingestion time; event is ingested
+- Process time; event is processed
+
+### Ways of ingesting data
+- APIs
+  - REST
+  - GraphQL
+  - WebHooks
+    - Event based data transmission pattern
+    - Data source can be an application backend, a web page, or a mobile app
+  - RPC and gRPC: remote procedure call library; bidirectional exchange of data over HTTP/2
+    - Imposes more technical standards than REST
+- Message queues
+  - Critical for decoupled microservices and event-driven architectures
+  - Need to keep in mind the frequency of delivery, message ordering and scalability
+
+
