@@ -162,3 +162,42 @@
 <li>Orchestration: how often do we recieve the data, can we integrate with the upstream application team</li>
 <li>SWE: Can the code access with the right credentials, how do we authenticate, how do we access (API, REST), can we parallelize the work, how do we deploy code changes?</li>
 </ul>
+<h2>Chapter 7: Storage</h2>
+<p>The raw ingredients are: disk drives, memory, networking and CUPU, serialization, compression and caching</p>
+<h3>Raw Ingredients</h3>
+<ul>
+<li>Magnetic Disk Drives
+<ul>
+<li>They can be slow but are cheap</li>
+<li>They are constrained by disk transfer speed and rotational latency</li>
+<li>Storing info in parallel can make them faster</li>
+<li>The max speed is 200-300 MB/s (20 hours for 30 TB)</li>
+<li>Used widely because of how cheap they are</li>
+<li>If we use multiple, the bottleneck becomes network and CPU</li>
+</ul>
+</li>
+<li>Solid State Drives
+<ul>
+<li>Stores data in flash memory cells</li>
+<li>They're really fast (0.1 ms)</li>
+<li>Used for OLTP Systems; allow Postgres</li>
+<li>Cost 20-30 cents per GB (10x magnetic drives)</li>
+<li>SSD can be used in some OLAP for caching</li>
+</ul>
+</li>
+<li>RAM
+<ul>
+<li>Attached to CPU; stores code</li>
+<li>It's volatile, if it fails it gets reset</li>
+<li>1000 times faster than SSD</li>
+<li>$10/GB</li>
+<li>Stores data in capacitors, needs to be refreshed over time</li>
+</ul>
+</li>
+<li>Networking and CPU
+<ul>
+<li>Availability zones impact the storage access</li>
+<li>Trade off in spreading data vs. keeping it under on zone</li>
+</ul>
+</li>
+</ul>

@@ -129,3 +129,32 @@ The ML engineer overlaps with DE, but it develops more advanced ML techniques, t
 - Orchestration: how often do we recieve the data, can we integrate with the upstream application team
 - SWE: Can the code access with the right credentials, how do we authenticate, how do we access (API, REST), can we parallelize the work, how do we deploy code changes?
 
+## Chapter 7: Storage
+
+The raw ingredients are: disk drives, memory, networking and CUPU, serialization, compression and caching
+
+### Raw Ingredients
+- Magnetic Disk Drives
+  - They can be slow but are cheap
+  - They are constrained by disk transfer speed and rotational latency
+  - Storing info in parallel can make them faster
+  - The max speed is 200-300 MB/s (20 hours for 30 TB)
+  - Used widely because of how cheap they are
+  - If we use multiple, the bottleneck becomes network and CPU
+- Solid State Drives
+  - Stores data in flash memory cells
+  - They're really fast (0.1 ms)
+  - Used for OLTP Systems; allow Postgres
+  - Cost 20-30 cents per GB (10x magnetic drives)
+  - SSD can be used in some OLAP for caching
+- RAM
+  - Attached to CPU; stores code
+  - It's volatile, if it fails it gets reset
+  - 1000 times faster than SSD
+  - $10/GB
+  - Stores data in capacitors, needs to be refreshed over time
+- Networking and CPU
+  - Availability zones impact the storage access
+  - Trade off in spreading data vs. keeping it under on zone
+
+  
