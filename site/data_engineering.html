@@ -36,6 +36,7 @@
 <h1>data_engineering.htm</h1>
 <p><a href='books.html' class='local'>books</a></p>
 <h2>Chapter 1: Overview of Data Engineering</h2>
+<p><img src="https://www.oreilly.com/api/v2/epubs/9781098108298/files/assets/fode_0201.png" alt="lifecycle" /></p>
 <h3>Data Engineering Teams</h3>
 <p>The data engineer is a hub between data producers, such as software engineers, data architects, and DevOps or site-reliability engineers (SREs), and data consumers, such as data analysts, data scientists, and ML engineers. In addition, data engineers will interact with those in operational roles, such as DevOps engineers.</p>
 <h3>ML Engineers vs. Data Engineer</h3>
@@ -59,7 +60,7 @@
 <li>Can my downstream services handle the volume of data I'm sending them?</li>
 <li>Batch is still widely used because of legacy systems, streaming can be useful but it creates increasing amounts of complexity</li>
 </ul>
-<p>Key Questions:</p>
+<p><strong>Key Questions:</strong></p>
 <ul>
 <li>What are the use cases for the data?</li>
 <li>What is the destination?</li>
@@ -92,8 +93,8 @@
 <li>DODD focused on making data observability a first-class consideration in the data engineering lifecycle</li>
 </ul>
 <hr />
-<h2>Data Architecture</h2>
-<h3>Types of data architectures</h3>
+<h3>Data Architecture</h3>
+<h4>Types of data architectures</h4>
 <ul>
 <li>Data warehouse: structured, includes the compute
 <ul>
@@ -116,7 +117,7 @@
 </ul>
 </li>
 </ul>
-<h3>Modern Data Stack</h3>
+<h4>Modern Data Stack</h4>
 <ul>
 <li>Instead of using monolithic toolsets, use cloud-based, plug and play, off-the-shelf components</li>
 <li>Includes data pipelines, storage, monitoring, etc...</li>
@@ -171,13 +172,36 @@
 <ul>
 <li>Critical for decoupled microservices and event-driven architectures</li>
 <li>Need to keep in mind the frequency of delivery, message ordering and scalability</li>
+<li>Some issues with queues can be the order of the messages</li>
+<li>Ideally, should be idempotent; outcome is the same after processing it multiple times</li>
 </ul>
 </li>
+<li>Event streaming platform
+<ul>
+<li>Produces data in an ordered log of records</li>
+<li>Includes
+<ul>
+<li>Topics - collection of related events</li>
+<li>Stream partitions</li>
+</ul>
+</li>
+<li>Tend to be more fault tolerant because they're distributed</li>
+</ul>
+</li>
+</ul>
+<h3>Ingestion undercurrents</h3>
+<ul>
+<li>Security: how is the data secured and encrypted; do we have a VPN, or an SSO?</li>
+<li>Data management: who manages the data, what's the quality, what if the schema changes, is the data HIPAA?</li>
+<li>DataOps: how will we know when there's an issue, how are we monitoring, is the schema conformant, what do we do if something bad happens</li>
+<li>Architecture: what if the system fails, what do we do if we lose data, how available are the sources, who's in charge of them</li>
+<li>Orchestration: how often do we recieve the data, can we integrate with the upstream application team</li>
+<li>SWE: Can the code access with the right credentials, how do we authenticate, how do we access (API, REST), can we parallelize the work, how do we deploy code changes?</li>
 </ul>
 
 
 </main>
 <footer><hr />
-<span style='float:right'>Edited on 2023-07-18</span><b>Mente</b> © 2023 — 
+<span style='float:right'>Edited on 2023-07-19</span><b>Mente</b> © 2023 — 
 </footer>
 </body></html>

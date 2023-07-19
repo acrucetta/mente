@@ -4,6 +4,8 @@
 
 ## Chapter 1: Overview of Data Engineering
 
+![lifecycle](https://www.oreilly.com/api/v2/epubs/9781098108298/files/assets/fode_0201.png)
+
 ### Data Engineering Teams
 The data engineer is a hub between data producers, such as software engineers, data architects, and DevOps or site-reliability engineers (SREs), and data consumers, such as data analysts, data scientists, and ML engineers. In addition, data engineers will interact with those in operational roles, such as DevOps engineers.
 
@@ -28,7 +30,7 @@ The ML engineer overlaps with DE, but it develops more advanced ML techniques, t
 - Can my downstream services handle the volume of data I'm sending them?
 - Batch is still widely used because of legacy systems, streaming can be useful but it creates increasing amounts of complexity
 
-Key Questions:
+**Key Questions:**
 - What are the use cases for the data?
 - What is the destination?
 - In what volume will it arrive?
@@ -59,9 +61,9 @@ Key Questions:
 
 ---
 
-## Data Architecture
+### Data Architecture
 
-### Types of data architectures
+#### Types of data architectures
 - Data warehouse: structured, includes the compute
   - A subject-oriented, integrated, nonvolatile, and time-variant collection of data in support of mgmt decisions
   - Separates OLAP from OLTP
@@ -74,7 +76,7 @@ Key Questions:
   - Includes control, data management and data structures
   - Still houses data in an object storage and supports a variety of query and transformation engines
   
-### Modern Data Stack
+#### Modern Data Stack
 - Instead of using monolithic toolsets, use cloud-based, plug and play, off-the-shelf components
 - Includes data pipelines, storage, monitoring, etc...
 
@@ -110,5 +112,20 @@ Key Questions:
 - Message queues
   - Critical for decoupled microservices and event-driven architectures
   - Need to keep in mind the frequency of delivery, message ordering and scalability
+  - Some issues with queues can be the order of the messages
+  - Ideally, should be idempotent; outcome is the same after processing it multiple times
+- Event streaming platform
+  - Produces data in an ordered log of records
+  - Includes
+    - Topics - collection of related events
+    - Stream partitions
+  - Tend to be more fault tolerant because they're distributed
 
+### Ingestion undercurrents
+- Security: how is the data secured and encrypted; do we have a VPN, or an SSO?
+- Data management: who manages the data, what's the quality, what if the schema changes, is the data HIPAA?
+- DataOps: how will we know when there's an issue, how are we monitoring, is the schema conformant, what do we do if something bad happens
+- Architecture: what if the system fails, what do we do if we lose data, how available are the sources, who's in charge of them
+- Orchestration: how often do we recieve the data, can we integrate with the upstream application team
+- SWE: Can the code access with the right credentials, how do we authenticate, how do we access (API, REST), can we parallelize the work, how do we deploy code changes?
 
