@@ -47,8 +47,6 @@ The ML engineer overlaps with DE, but it develops more advanced ML techniques, t
 - Analytics then ML
 - Reverse ETLs feed bvack the data into source systems. It's useful for businesses relying on SaaS.
 
----
-
 ### Data Ops
 
 - DataOps automation has a similar framework and workflow to DevOps, consisting of change management (environment, code, and data version control), continuous integration/continuous deployment (CI/CD), and configuration as code.
@@ -58,8 +56,6 @@ The ML engineer overlaps with DE, but it develops more advanced ML techniques, t
 - Data is a silent killer; bad data can linger in reports for a long time
 - You need to implement observing, monitoring, logging, alerting, and tracing 
 - DODD focused on making data observability a first-class consideration in the data engineering lifecycle
-
----
 
 ### Data Architecture
 
@@ -79,8 +75,6 @@ The ML engineer overlaps with DE, but it develops more advanced ML techniques, t
 #### Modern Data Stack
 - Instead of using monolithic toolsets, use cloud-based, plug and play, off-the-shelf components
 - Includes data pipelines, storage, monitoring, etc...
-
----
 
 ## Chapter 5: Data Generation
 
