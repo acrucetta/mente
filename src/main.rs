@@ -5,7 +5,7 @@ use std::{
     path::Path,
 };
 
-use chrono::{DateTime, Local};
+use chrono::{Local};
 
 const NAME: &str = "Mente";
 const DOMAIN: &str = "https://men.te";
@@ -48,7 +48,7 @@ impl Lexicon {
 }
 
 fn add_connection(file: &mut File, lex: &mut Lexicon, filename: &str) -> io::Result<()> {
-    let std_filename = filename.replace(" ", "_").to_lowercase();
+    let std_filename = filename.replace(' ', "_").to_lowercase();
     let htm_filename = format!("{}.htm", std_filename);
 
     // Check if it's a template of {/template} type
@@ -101,7 +101,7 @@ fn add_main_body(file: &mut File, lex: &mut Lexicon, source_path: &str) -> io::R
 }
 
 fn add_portal(file: &mut File, lex: &mut Lexicon, s: &str, head: bool) -> io::Result<()> {
-    let filename = s.replace(" ", "_").to_lowercase();
+    let filename = s.replace(' ', "_").to_lowercase();
     let relative_filepath = format!("src/inc/{}.htm", filename);
     let raw_filepath = format!("{}.htm", filename);
 
@@ -141,7 +141,7 @@ fn create_index_page(lex: &Lexicon) -> Result<(), std::io::Error> {
         index.push_str(&format!(
             "<li><a href=\"{}.html\">{}</a></li>",
             name_without_extension,
-            name_without_extension.replace("_", " ")
+            name_without_extension.replace('_', " ")
         ));
     }
     index.push_str("</ul></body></html>");
@@ -153,7 +153,7 @@ fn generate_pages(lex: &mut Lexicon) -> std::io::Result<()> {
     for file in filenames {
         let trimmed_filename = file.trim_end_matches(".htm");
         let dest_path = format!("site/{}.html", trimmed_filename);
-        build_page(lex, &file, &dest_path)?;
+        build_page(lex, file, &dest_path)?;
     }
     println!("Generated {} files", filenames.len());
     Ok(())
@@ -166,16 +166,16 @@ fn build_page(
 ) -> Result<(), std::io::Error> {
     // Check if the file exists in the inc/ directory
     if !Path::new(&format!("src/inc/{}", filename)).exists() {
-        return Err(std::io::Error::new(
+        Err(std::io::Error::new(
             std::io::ErrorKind::NotFound,
             format!("Missing file {filename}"),
-        ));
+        ))
     } else {
-        let source_path = format!("src/inc/{}", filename).to_string();
+        let source_path = format!("src/inc/{}", filename);
         let mut file = File::create(dest_path)?;
         // Begin
-        write!(file, "<!DOCTYPE html><html lang='en'>\n")?;
-        write!(file, "<head>\n");
+        writeln!(file, "<!DOCTYPE html><html lang='en'>")?;
+        writeln!(file, "<head>");
         write!(
             file,
             "{}",
@@ -189,14 +189,14 @@ fn build_page(
         write!(file, "</head>\n<body>\n");
 
         // Header
-        write!(file, "<header>\n");
+        writeln!(file, "<header>");
         write!(file,"{}",&format!("<a href='https://andrescn.me/mente/site/about.html'><img src='../media/interface/logo.svg' alt='{NAME}' height='100'></a>"));
-        write!(file, "</header>\n");
+        writeln!(file, "</header>");
 
         // Navigation
-        write!(file, "<nav>\n");
+        writeln!(file, "<nav>");
         add_portal(&mut file, lex, "meta.nav", false)?;
-        write!(file, "</nav>\n");
+        writeln!(file, "</nav>");
 
         // Main
         write!(file, "<main>\n\n");
@@ -206,11 +206,11 @@ fn build_page(
         write!(file, "\n\n</main>\n");
 
         // Footer
-        write!(file, "<footer><hr />\n");
+        writeln!(file, "<footer><hr />");
         fpedited(&mut file);
-        write!(file, "<b>Mente</b> © 2023 — \n")?;
-        write!(file, "</footer>\n");
-        write!(file, "</body></html>\n");
+        writeln!(file, "<b>Mente</b> © 2023 — ")?;
+        writeln!(file, "</footer>");
+        writeln!(file, "</body></html>");
 
         file.flush();
         Ok(())
@@ -279,7 +279,7 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::io::{BufReader, Read};
+    use std::io::{Read};
 
     #[test]
     fn test_fpinject() {
