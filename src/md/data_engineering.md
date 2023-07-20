@@ -1,7 +1,3 @@
-
-
-{books}
-
 ## Chapter 1: Overview of Data Engineering
 
 ![lifecycle](https://www.oreilly.com/api/v2/epubs/9781098108298/files/assets/fode_0201.png)
@@ -186,5 +182,4 @@ Types of file storage
 Data abstractions
 - Data warehouse: standard olap architecture. 
 - Data lake: massive store where data was retained raw and unprocessed. Originally built on Hadoop systems. Now we're separating compute and storage.
-- Data lakehouse: combines aspects of the data warehouse and data lake. Stores data in object storage. Adds robust table and schema support for incremental updates and deletes. Has file management layer with data mgmt and transf tools. Easier to send data when other tools can directly read from the object. 
-- 
+- Data lakehouse: combines aspects of the data warehouse and data lake. Stores data in object storage. Adds robust table and schema support for incremental updates and deletes. Has file management layer with data mgmt and transf tools. Easier to send data when other tools can directly read from the object
