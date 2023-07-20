@@ -150,5 +150,41 @@ The raw ingredients are: disk drives, memory, networking and CUPU, serialization
 - Networking and CPU
   - Availability zones impact the storage access
   - Trade off in spreading data vs. keeping it under on zone
+- Serialization
+  - Flattening and packing data into standard format that reader will be able to decode
+  - e.g., Apache Parquet
+- Compression
+  - Increasing scan speed per disk
+- Caching
 
-  
+![caching](https://assets-global.website-files.com/60d9fbbfcd9fcb40bad8aac3/63a4c83b39bde30ffb8aeec9_Screenshot2022-12-22at11.22.43AM_A1aXhW1Nn.png)
+
+### Data Storage Systems
+
+BASIC
+- Basis of eventual consistency
+- Basically available; consistency is not guaranteed
+- Soft state - state of transaction is fuzzy
+- Eventual consistency - at some point, reading data will return consistent values
+
+Why do BASIC? It allows us to use large-scale distributed systems. i.e., scale horizontally.
+
+When do we do strong consistency? When we can tolerate longer query times but want the correct data every time.
+
+Types of file storage
+- Cloud filesystem services: e.g., Amazon Elastic File System; exposed through the NFS4 protocol
+- Block storage: type of raw storage provided by SSDs and magnetic disks; standard for VMs
+- RAID: redundant array of independent disks. Controls multiple disks to improve data durability, enhance performance, and combine capacity
+- Cloud virtualized block storage: similar to storage area network (block storage over a network). They separate data from the host server. Can persist the data when an EC2 instance shuts down. Highly scalable.
+- Object storage - contains objects of all shapes and sizes. Amazon S3, Azure Blob Storage. We lose a lot of the writing flexibility with file storage on a local disk. Objects are written once as a stream of bytes. To change data or append you must rewrite the full object.
+  - Object stores are the gold standard for data lakes.
+  - Object stores are key value stores.
+  - We have bucket names and item values
+- Cache and Memory Storage systems: e.g., memcached, a key-value store desgined for caching db query results, api call repsonses and more. Redis, a key-value store, supports more complex data types. Can tolerate a small amount of data loss.
+- Streaming storage: stored data is temporal. Kafka now allows long data retention. 
+
+Data abstractions
+- Data warehouse: standard olap architecture. 
+- Data lake: massive store where data was retained raw and unprocessed. Originally built on Hadoop systems. Now we're separating compute and storage.
+- Data lakehouse: combines aspects of the data warehouse and data lake. Stores data in object storage. Adds robust table and schema support for incremental updates and deletes. Has file management layer with data mgmt and transf tools. Easier to send data when other tools can directly read from the object. 
+- 

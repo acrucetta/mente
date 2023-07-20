@@ -7,6 +7,6 @@ Projects
 - Working on Go compiler from the book Writing a Compiler in Go
 
 Reading
-- Finisihing The 3 Body Problem
+- Finished The 3 Body Problem
 - Started reading about Computer Networking and Nand To Tetris
 - Started listening to Bill Walsh's biography
