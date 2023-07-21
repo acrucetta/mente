@@ -1,4 +1,4 @@
-## Chapter 1: Overview of Data Engineering
+## Overview of Data Engineering
 
 ![lifecycle](https://www.oreilly.com/api/v2/epubs/9781098108298/files/assets/fode_0201.png)
 
@@ -10,7 +10,7 @@ The data engineer is a hub between data producers, such as software engineers, d
 
 The ML engineer overlaps with DE, but it develops more advanced ML techniques, train models, and designs and maintains infrastructure running ML processes. It emphasizes more MLOps and other mature practices such as DevOps.
 
-## Chapter 2: Main components of Data Engineering
+## Main components of Data Engineering
 
 ### Data Generation
 - Data is coming from a variety of sources now
@@ -53,7 +53,7 @@ The ML engineer overlaps with DE, but it develops more advanced ML techniques, t
 - DataOps automation has a similar framework and workflow to DevOps, consisting of change management (environment, code, and data version control), continuous integration/continuous deployment (CI/CD), and configuration as code.
 - DatOps consist of automation, observability and monitoring, and incident response
 
-#### Observability and Monitoring
+### Observability and Monitoring
 
 - Data is a silent killer; bad data can linger in reports for a long time
 - You need to implement observing, monitoring, logging, alerting, and tracing 
@@ -61,7 +61,7 @@ The ML engineer overlaps with DE, but it develops more advanced ML techniques, t
 
 ### Data Architecture
 
-#### Types of data architectures
+Types of data architectures
 
 - Data warehouse: structured, includes the compute
   - A subject-oriented, integrated, nonvolatile, and time-variant collection of data in support of mgmt decisions
@@ -75,12 +75,12 @@ The ML engineer overlaps with DE, but it develops more advanced ML techniques, t
   - Includes control, data management and data structures
   - Still houses data in an object storage and supports a variety of query and transformation engines
   
-#### Modern Data Stack
+Modern Data Stack
 
 - Instead of using monolithic toolsets, use cloud-based, plug and play, off-the-shelf components
 - Includes data pipelines, storage, monitoring, etc...
 
-## Chapter 5: Data Generation
+## Data Generation
 
 ### Data Logs
 - Insert only: always retain the records, add a timestamp
@@ -131,7 +131,7 @@ The ML engineer overlaps with DE, but it develops more advanced ML techniques, t
 - Orchestration: how often do we recieve the data, can we integrate with the upstream application team
 - SWE: Can the code access with the right credentials, how do we authenticate, how do we access (API, REST), can we parallelize the work, how do we deploy code changes?
 
-## Chapter 7: Storage
+## Storage
 
 The raw ingredients are: disk drives, memory, networking and CUPU, serialization, compression and caching
 
@@ -196,3 +196,67 @@ Data abstractions
 - Data warehouse: standard olap architecture. 
 - Data lake: massive store where data was retained raw and unprocessed. Originally built on Hadoop systems. Now we're separating compute and storage.
 - Data lakehouse: combines aspects of the data warehouse and data lake. Stores data in object storage. Adds robust table and schema support for incremental updates and deletes. Has file management layer with data mgmt and transf tools. Easier to send data when other tools can directly read from the object
+
+## Data Ingestion
+
+It's the process of moving data from one place to the other. A data pipeline is the combination of architecture, systems, and processed that move data through the stages of the DE lifecycle.
+
+Considerations:
+- Bounded vs. unbounded
+  - Discrete batches or stream of consciousness (stream of data)
+- Frequency
+  - Batch, micro batch or real time (or streaming)
+- Sync or async
+  - With sync, the source, ingestion, and destination have complex dependencies and are tightly coupled
+  - With async, dependencies can operate at the level of individual events; like microservices. 
+- Serialization or deserialization
+  - Encoding the data from the source and preparing data structures for transmission
+- Throughput and scalability
+  - Will your ingestion be able to keep up with a sudden influx of backlogged data
+- Reliability and durability
+  - Reliability entails high uptime and proper failover for ingestion systems
+  - Durability entails making sure data isn't lost or corrupted
+  - Need to build redundancy and self healing based on the impact and cost of losing data
+- Payload
+  - Data type
+  - Data shape (json,  tabular, unstructured)
+  - Schema
+- Push vs. pull vs. poll patterns
+  - If there's a change, pull (polling)
+  - Push from source to destination
+  - Destination pulls from source
+
+**Ways to ingest data**
+- Direct DB connection
+  - OBDC or JBDC via API
+- Change Data Capture
+  - Ingesting changes from a source system
+  - Batch oriented CDC; every 24 hours update changes in records
+  - Continuous CDC; capture all table history and support near real time data ingestion
+  - CDC can consume database resoures, CPU time, network bandwitdth, disk bandwidth
+- APIs
+  - Increasingly popular
+  - Common with SaaS platforms
+- Message Queues and Event-Streaming
+- Managed data connectors
+  - Managed by vendor
+- SFTP and SCP; run over SSH connection
+- Webhooks; aka reverse APIs
+  - The data provider defines an API request spec; iit makes the API calls rather than receiving them
+  - The consumer needs to provide an endpoint for the provider to call
+  - Can be brittle, difficult to maintain and inefficient
+- Web scraping
+
+**Undercurrent of data ingestion**
+- DataOps
+  - Need to monitor uptime, latency, and data volumes
+  - How will you respond if ingestion job fails
+  - Monitoring should be there from the beginning
+  - Is there proper testing and deployment automation? Can you roll it back?
+- Data quality
+  - Data can regress whenever and without warning
+  - Need to monitor statistics, spikes, etc...
+  - Implement logs to capture history, checks, exception handling
+  - Can you do some statistical data testing? averages, nulls, outliers?
+
+  

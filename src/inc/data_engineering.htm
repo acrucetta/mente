@@ -1,10 +1,10 @@
-<h2>Chapter 1: Overview of Data Engineering</h2>
+<h2>Overview of Data Engineering</h2>
 <p><img src="https://www.oreilly.com/api/v2/epubs/9781098108298/files/assets/fode_0201.png" alt="lifecycle" /></p>
 <h3>Data Engineering Teams</h3>
 <p>The data engineer is a hub between data producers, such as software engineers, data architects, and DevOps or site-reliability engineers (SREs), and data consumers, such as data analysts, data scientists, and ML engineers. In addition, data engineers will interact with those in operational roles, such as DevOps engineers.</p>
 <h3>ML Engineers vs. Data Engineer</h3>
 <p>The ML engineer overlaps with DE, but it develops more advanced ML techniques, train models, and designs and maintains infrastructure running ML processes. It emphasizes more MLOps and other mature practices such as DevOps.</p>
-<h2>Chapter 2: Main components of Data Engineering</h2>
+<h2>Main components of Data Engineering</h2>
 <h3>Data Generation</h3>
 <ul>
 <li>Data is coming from a variety of sources now</li>
@@ -48,14 +48,14 @@
 <li>DataOps automation has a similar framework and workflow to DevOps, consisting of change management (environment, code, and data version control), continuous integration/continuous deployment (CI/CD), and configuration as code.</li>
 <li>DatOps consist of automation, observability and monitoring, and incident response</li>
 </ul>
-<h4>Observability and Monitoring</h4>
+<h3>Observability and Monitoring</h3>
 <ul>
 <li>Data is a silent killer; bad data can linger in reports for a long time</li>
 <li>You need to implement observing, monitoring, logging, alerting, and tracing </li>
 <li>DODD focused on making data observability a first-class consideration in the data engineering lifecycle</li>
 </ul>
 <h3>Data Architecture</h3>
-<h4>Types of data architectures</h4>
+<p>Types of data architectures</p>
 <ul>
 <li>Data warehouse: structured, includes the compute
 <ul>
@@ -78,12 +78,12 @@
 </ul>
 </li>
 </ul>
-<h4>Modern Data Stack</h4>
+<p>Modern Data Stack</p>
 <ul>
 <li>Instead of using monolithic toolsets, use cloud-based, plug and play, off-the-shelf components</li>
 <li>Includes data pipelines, storage, monitoring, etc...</li>
 </ul>
-<h2>Chapter 5: Data Generation</h2>
+<h2>Data Generation</h2>
 <h3>Data Logs</h3>
 <ul>
 <li>Insert only: always retain the records, add a timestamp</li>
@@ -158,7 +158,7 @@
 <li>Orchestration: how often do we recieve the data, can we integrate with the upstream application team</li>
 <li>SWE: Can the code access with the right credentials, how do we authenticate, how do we access (API, REST), can we parallelize the work, how do we deploy code changes?</li>
 </ul>
-<h2>Chapter 7: Storage</h2>
+<h2>Storage</h2>
 <p>The raw ingredients are: disk drives, memory, networking and CUPU, serialization, compression and caching</p>
 <h3>Raw Ingredients</h3>
 <ul>
@@ -241,4 +241,112 @@
 <li>Data warehouse: standard olap architecture. </li>
 <li>Data lake: massive store where data was retained raw and unprocessed. Originally built on Hadoop systems. Now we're separating compute and storage.</li>
 <li>Data lakehouse: combines aspects of the data warehouse and data lake. Stores data in object storage. Adds robust table and schema support for incremental updates and deletes. Has file management layer with data mgmt and transf tools. Easier to send data when other tools can directly read from the object</li>
+</ul>
+<h2>Data Ingestion</h2>
+<p>It's the process of moving data from one place to the other. A data pipeline is the combination of architecture, systems, and processed that move data through the stages of the DE lifecycle.</p>
+<p>Considerations:</p>
+<ul>
+<li>Bounded vs. unbounded
+<ul>
+<li>Discrete batches or stream of consciousness (stream of data)</li>
+</ul>
+</li>
+<li>Frequency
+<ul>
+<li>Batch, micro batch or real time (or streaming)</li>
+</ul>
+</li>
+<li>Sync or async
+<ul>
+<li>With sync, the source, ingestion, and destination have complex dependencies and are tightly coupled</li>
+<li>With async, dependencies can operate at the level of individual events; like microservices. </li>
+</ul>
+</li>
+<li>Serialization or deserialization
+<ul>
+<li>Encoding the data from the source and preparing data structures for transmission</li>
+</ul>
+</li>
+<li>Throughput and scalability
+<ul>
+<li>Will your ingestion be able to keep up with a sudden influx of backlogged data</li>
+</ul>
+</li>
+<li>Reliability and durability
+<ul>
+<li>Reliability entails high uptime and proper failover for ingestion systems</li>
+<li>Durability entails making sure data isn't lost or corrupted</li>
+<li>Need to build redundancy and self healing based on the impact and cost of losing data</li>
+</ul>
+</li>
+<li>Payload
+<ul>
+<li>Data type</li>
+<li>Data shape (json,  tabular, unstructured)</li>
+<li>Schema</li>
+</ul>
+</li>
+<li>Push vs. pull vs. poll patterns
+<ul>
+<li>If there's a change, pull (polling)</li>
+<li>Push from source to destination</li>
+<li>Destination pulls from source</li>
+</ul>
+</li>
+</ul>
+<p><strong>Ways to ingest data</strong></p>
+<ul>
+<li>Direct DB connection
+<ul>
+<li>OBDC or JBDC via API</li>
+</ul>
+</li>
+<li>Change Data Capture
+<ul>
+<li>Ingesting changes from a source system</li>
+<li>Batch oriented CDC; every 24 hours update changes in records</li>
+<li>Continuous CDC; capture all table history and support near real time data ingestion</li>
+<li>CDC can consume database resoures, CPU time, network bandwitdth, disk bandwidth</li>
+</ul>
+</li>
+<li>APIs
+<ul>
+<li>Increasingly popular</li>
+<li>Common with SaaS platforms</li>
+</ul>
+</li>
+<li>Message Queues and Event-Streaming</li>
+<li>Managed data connectors
+<ul>
+<li>Managed by vendor</li>
+</ul>
+</li>
+<li>SFTP and SCP; run over SSH connection</li>
+<li>Webhooks; aka reverse APIs
+<ul>
+<li>The data provider defines an API request spec; iit makes the API calls rather than receiving them</li>
+<li>The consumer needs to provide an endpoint for the provider to call</li>
+<li>Can be brittle, difficult to maintain and inefficient</li>
+</ul>
+</li>
+<li>Web scraping</li>
+</ul>
+<p><strong>Undercurrent of data ingestion</strong></p>
+<ul>
+<li>DataOps
+<ul>
+<li>Need to monitor uptime, latency, and data volumes</li>
+<li>How will you respond if ingestion job fails</li>
+<li>Monitoring should be there from the beginning</li>
+<li>Is there proper testing and deployment automation? Can you roll it back?</li>
+</ul>
+</li>
+<li>Data quality
+<ul>
+<li>Data can regress whenever and without warning</li>
+<li>Need to monitor statistics, spikes, etc...</li>
+<li>Implement logs to capture history, checks, exception handling</li>
+<li>Can you do some statistical data testing? averages, nulls, outliers?</li>
+</ul>
+</li>
 </ul>
