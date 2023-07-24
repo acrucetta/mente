@@ -1,0 +1,30 @@
+<h2>Application Logging</h2>
+<p>Logs should be greppable. It should be focused entirely on a single line of log. NEVER over multiple lines.</p>
+<p>We want to answer questions such as:</p>
+<ul>
+<li>When did user 55 last log in?</li>
+<li>Is our incoming connection receiving messages?</li>
+<li>How many times did our web server go dead?</li>
+<li>Did any transaction fail to complete?</li>
+</ul>
+<p>Problems to avoid:</p>
+<ol>
+<li>Log is missing necessary information</li>
+<li>Log unsuitable for grep because of redundant information (if it mentions a website on every linge we can't find those that were activated by the website)</li>
+<li>Information is split across more than one line</li>
+<li>Error reported to user but not logged</li>
+</ol>
+<p>e.g., </p>
+<p>try {
+do something
+} catch {
+do nothing
+}</p>
+<p>Logs can be saved into multiple files depending on how often they happen:</p>
+<ul>
+<li>Message log</li>
+<li>Connection log</li>
+<li>Stacktrace log</li>
+</ul>
+<p>Logs must contain timestamps with timezone, to the millisecond or nanosecond.</p>
+<p>Always log to local disk, don't try to log to the network or to shared folders.</p>
