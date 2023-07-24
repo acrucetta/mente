@@ -259,4 +259,51 @@ Considerations:
   - Implement logs to capture history, checks, exception handling
   - Can you do some statistical data testing? averages, nulls, outliers?
 
-  
+## Data Transformation
+
+The lifetime of a SQL query is:
+- Query issued
+- Parsing and conversion to bytecode
+- Query planning and optimization
+- Query execution
+- Return results
+
+A data model represents the way data relates to the real world. How it must be organized to reflect the organization's processes, definitions, workflow and logic.
+
+Types of normalization (Codd normal forms)
+- Denormalized - no normalization, nested and redundant data allowed
+- First normal form - each column is unique and has a single value; table has a unitque primary key
+- Second normal form - 1NF plus partial dependencies are removed
+- Third normal form - 2NF plus each table contains only relevant fields related to its primary key and has no dependencies
+
+Data modeling
+- Star schema: data is modeled with two general types of tables: facts and dimentions
+  - Facts is a table of numbers. e.g., order ID, customer key, date key, gross sale amount
+  - Dimension tables as qualitative data referencing a fact; smaller than fact tables. e.g., datekey, year, quarter, month, day of week.
+
+Update patterns
+- Truncate and reload; wipe old data and reload
+- Insert only; insert new records without changing or deleting old records.
+- Delete; deletes are more expensive than inserts in columnar system. Insert deletion inserts a new record with a deleted flag. Queries can get more complicated
+- Upsert/merge; upserting takes a set of source records and looks for matches using a primary key. When it matches, it updates the record, otherwise it inserts the new record.
+
+## Serving data
+
+What a data engineer should know about ML:
+- When to use which models?
+- How to wrangle data for unstructured and structured data?
+- How to encode data for various types
+- Batch vs. online learning?
+- When to use AutoML vs. handcrafting an ML model?
+- Classification vs. regression
+- When to train locally, on a cluster, or at the edge
+- What are data cascades?
+
+## New trends in data engineering
+- Application stacks will be data stacks. Applications will integrate real time automation and decision making powered by streaming pipelines and ML
+- We will have a live data stack; application and source systems will feed data to low latency fast query processing DBs, which will feed data to report, analytics, and ML
+- We will have more streaming pipelines and real time analytical DBs
+  - Data will move in a contiguous flow moving away from batch ingestion
+  - Shift away from ELT and more to stream transform and load.
+  - This live data stack will be powered by OLAP DBs built for streaming
+- We will have tighter feedback loops between applications and ML. 
