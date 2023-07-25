@@ -1,6 +1,4 @@
 
-{books}
-
 ## Computer Networking: A Top Down Approach
 
 ### Chapter 1
@@ -38,3 +36,23 @@ We can have: client-server or peer to peer architecture.
 Client-server has an always-on host called the server serving many requests from other hosts called clients. Clients don't talk with each other. The server has a fixed address. E.g., the web, FTP, e-mail.
 
 In a P2P architecture, there is minimal or no reliance on always-on-infrastructure servers. The applications communicated with each other. Some examples are BitTorrent, LimeWire, Skype.
+
+The process that initiates the communication is the client. The process that waits to be contacted is the server.
+
+A process sends message into, and receives messages through a socket. A socket is the interface between the app layer and the transport layer of a host. Also referred to as the API between the application and the network.
+
+What are the services provided by the transport layer protocol:
+- Reliable data transfer
+- Throughput: how many bits/second can it provide. Particularly useful for bandwidth-sensitive applications, i.e., media apps. Elastic applications can make use of as much or as little throughput as available. (e.g., email, file transfers)
+- Timing: every bit the sender pumps arrives no more than 100 ms later.
+- Security: a protocol can encrypt all data transmitted by the sending process. 
+
+Transport services provided by the internet:
+
+TCP Services
+- TCP has the client and the server exchange info before the app level messages begin to flow. i.e, the handshake. When the app finishes it must tear down the connection.
+- It sends all the data without error in the proper order.
+- Includes congestion control mechanisms. It can throttle the transmission rate. (not as good for videos)
+
+UDP Services
+- No frills, lightweight transfer protocol, provides minimal services. Is connectionless, no handshakes.

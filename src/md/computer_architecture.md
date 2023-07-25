@@ -14,3 +14,11 @@ A typical architecture:
 
 ![hack cpu interface](https://blog.logancyang.com/images/cs4ds/hackcpuinput.png)
 
+We can have general purpose or single purpose computers. General purpose are PCs and cellphones. Single purpose are embedded in cars, cameras, media stremers.
+
+When computers shared the same address for data and instructions it's called the Harvard architecture. They're cheaper to build and can be optimized. It's the architecture of choice in many dedicated embedde computers.
+
+Much of the work of computer architects goes towards achieving better performance. This is done by caching algorithms, optimizing access to I/O devices, parallelism, prefetching amongst others. 
+
+The two main camps in design are: Complex Instruction Set Computing (CISC) and Reduced Instruction Set Computing (RISC). RISC camp builds simpler processors and tighter instruction sets, arguing for better performance.
+
