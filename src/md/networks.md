@@ -77,16 +77,19 @@ Port -> The process within that address (e.g., 80 for web)
 
 Request:
 
+```
 GET /somedir/page.html HTTP/1.1 
 Host: www.someschool.edu
 Connection: close
 User-agent: Mozilla/4.0
 Accept-language: fr
+```
 
 By including connection - close we tell the server to close the connection after the object.
 
 Response:
 
+```
 HTTP/1.1 200 OK 
 Connection: close
 Date: Sat, 07 Jul 2007 12:00:15 GMT
@@ -94,6 +97,7 @@ Server: Apache/1.3.0 (Unix)
 Last-Modified: Sun, 6 May 2007 09:23:24 GMT
 Content-Length: 6821
 Content-Type: text/html
+```
 
 **Cookies** help HTTP responses by creating an entry of the response in a backend database. Saves the user information.
 
