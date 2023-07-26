@@ -56,3 +56,51 @@ TCP Services
 
 UDP Services
 - No frills, lightweight transfer protocol, provides minimal services. Is connectionless, no handshakes.
+- Doesn't include a congestion control mechanism
+
+SSL (Secure Sockets Layer)
+- Enhancement for TCP
+- Has to  be coded in the application
+- Encrypts the data over TCP
+
+![common services](https://www.linyibin.cn/images/Technology-ComputerNetworking-Internet-PopularApplications.png)
+
+IP Address -> The address of the host
+Port -> The process within that address (e.g., 80 for web)
+
+### HTTP
+- Web's application layer protocol
+- Defines how web client request web pages from web servers
+- Uses TCP as the underlying transfer protocol
+- Maintains no information about clients, it's said to be stateless
+- Information can be shared over the same TCP connection or different ones; creating persistent or non-persistent connections
+
+Request:
+
+GET /somedir/page.html HTTP/1.1 
+Host: www.someschool.edu
+Connection: close
+User-agent: Mozilla/4.0
+Accept-language: fr
+
+By including connection - close we tell the server to close the connection after the object.
+
+Response:
+
+HTTP/1.1 200 OK 
+Connection: close
+Date: Sat, 07 Jul 2007 12:00:15 GMT
+Server: Apache/1.3.0 (Unix)
+Last-Modified: Sun, 6 May 2007 09:23:24 GMT
+Content-Length: 6821
+Content-Type: text/html
+
+**Cookies** help HTTP responses by creating an entry of the response in a backend database. Saves the user information.
+
+**Web Caching**
+A proxy server that satisfies the HTTP requests on behalf of the server.
+
+![cache web](https://mscancer22.tripod.com/sitebuildercontent/sitebuilderpictures/kurose_320719_c02f10.gif)
+
+The HTTP response lands on the web cache, if it has a copy locally it returns it. If not, it opens a TCP connection to the origin server.
+
