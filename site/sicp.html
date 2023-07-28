@@ -1,0 +1,94 @@
+<!DOCTYPE html><html lang='en'>
+<head>
+<meta charset='utf-8'>
+
+            <meta name='viewport' content='width=device-width,initial-scale=1'>
+
+            <link rel='stylesheet' type='text/css' href='../links/main.css'>
+
+            <title>Mente &mdash; sicp.htm</title>
+</head>
+<body>
+<header>
+<a href='https://andrescn.me/mente/site/about.html'><img src='../media/interface/logo.svg' alt='Mente' height='100'></a></header>
+<nav>
+<details open>
+  <summary>Menu</summary>
+  <section class="site-nav">
+    <section>
+      <ul class="nobull capital">
+        <li><a href="about.html">About</a></li>
+        <li><a href="books.html">Books</a></li>
+        <li><a href="projects.html">Projects</a></li>
+      </ul>
+    </section>
+    <section>
+      <h2><a id='meta'>Meta</a></h2>
+      <ul class='nobull capital'>
+        <li><a href="index.html">Index</a></li>
+      </ul>
+  </section>
+</details></nav>
+<main>
+
+<!-- Generated file, do not edit -->
+
+<h1>sicp.htm</h1>
+<h2>Structure and Interpretation of Computer Programs</h2>
+<p>Every language has:</p>
+<ul>
+<li>Primitive expressions</li>
+<li>Means of combination</li>
+<li>Means of abstraction</li>
+</ul>
+<p>E.g.,</p>
+<pre><code class="language-lisp">(- 136 214)
+
+(define size 2)
+(define radius 10)
+</code></pre>
+<p>To evaluate combinations we:</p>
+<ol>
+<li>Evaluate the sub-expressions</li>
+<li>Apply the procedure that is the value of the leftmost subexpression to the other arguments</li>
+</ol>
+<p>This is recursive in nature.</p>
+<pre><code class="language-lisp">
+(* (+ 2 (* 4 6))
+   (+ 3 5 7))  
+
+</code></pre>
+<p>Compound procedures:</p>
+<ul>
+<li>Numbers and arithmetic are primitive data and procedures</li>
+<li>Nesting combinations provides a means of combining operations</li>
+<li>Definitions that associate names with values provide a limited means of abstraction</li>
+</ul>
+<pre><code class="language-lisp">(define (square x)(* x x))
+
+(square 21)
+441
+</code></pre>
+<p>There are two ways of evaluating:</p>
+<ul>
+<li>Applicative order: evaluate the arguments and then apply</li>
+<li>Normal order: fully expand and then reduce</li>
+</ul>
+<p>Lisp uses applicative-order evaluation.</p>
+<p>Conditionals</p>
+<pre><code class="language-lisp">(define (abs x)
+  (cond ((&gt; x 0) x)
+        ((= x 0) 0)
+        ((&lt; x 0) (- x))))
+
+(define (abs x)
+  (cond ((&lt; x 0) (- x))
+        (else x)))
+</code></pre>
+
+
+</main>
+<footer><hr />
+<span style='float:right'>Edited on 2023-07-28</span><b>Mente</b> © 2023 — 
+</footer>
+</body></html>

@@ -1,0 +1,51 @@
+<h2>Structure and Interpretation of Computer Programs</h2>
+<p>Every language has:</p>
+<ul>
+<li>Primitive expressions</li>
+<li>Means of combination</li>
+<li>Means of abstraction</li>
+</ul>
+<p>E.g.,</p>
+<pre><code class="language-lisp">(- 136 214)
+
+(define size 2)
+(define radius 10)
+</code></pre>
+<p>To evaluate combinations we:</p>
+<ol>
+<li>Evaluate the sub-expressions</li>
+<li>Apply the procedure that is the value of the leftmost subexpression to the other arguments</li>
+</ol>
+<p>This is recursive in nature.</p>
+<pre><code class="language-lisp">
+(* (+ 2 (* 4 6))
+   (+ 3 5 7))  
+
+</code></pre>
+<p>Compound procedures:</p>
+<ul>
+<li>Numbers and arithmetic are primitive data and procedures</li>
+<li>Nesting combinations provides a means of combining operations</li>
+<li>Definitions that associate names with values provide a limited means of abstraction</li>
+</ul>
+<pre><code class="language-lisp">(define (square x)(* x x))
+
+(square 21)
+441
+</code></pre>
+<p>There are two ways of evaluating:</p>
+<ul>
+<li>Applicative order: evaluate the arguments and then apply</li>
+<li>Normal order: fully expand and then reduce</li>
+</ul>
+<p>Lisp uses applicative-order evaluation.</p>
+<p>Conditionals</p>
+<pre><code class="language-lisp">(define (abs x)
+  (cond ((&gt; x 0) x)
+        ((= x 0) 0)
+        ((&lt; x 0) (- x))))
+
+(define (abs x)
+  (cond ((&lt; x 0) (- x))
+        (else x)))
+</code></pre>
