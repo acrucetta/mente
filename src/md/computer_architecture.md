@@ -20,5 +20,5 @@ When computers shared the same address for data and instructions it's called the
 
 Much of the work of computer architects goes towards achieving better performance. This is done by caching algorithms, optimizing access to I/O devices, parallelism, prefetching amongst others. 
 
-The two main camps in design are: Complex Instruction Set Computing (CISC) and Reduced Instruction Set Computing (RISC). RISC camp builds simpler processors and tighter instruction sets, arguing for better performance.
+The two main camps in design are: Complex Instruction Set Computing (CISC) and Reduced Instruction Set Computing (RISC). RISC camp builds simpler processors and tighter instruction set:s, arguing for better performance.
 
