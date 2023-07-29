@@ -1,0 +1,33 @@
+<h2>Virtual Machines</h2>
+<p>A virtual machine is a program that acts like a computer. It simulates a CPU along with a few other hardware components.</p>
+<p>VMs allow us to port programs into several CPUs. </p>
+<p><img src="https://www.jmeiners.com/lc3-vm/img/vm.gif" alt="https://www.jmeiners.com/lc3-vm/img/vm.gif" /></p>
+<p>The only cost is the overhead of the VM itself and the further abstraction from the machine. This is a trade-off that's taken.</p>
+<p>Ethereum smart contracts are examples of virtual machines. They are run inside of a VM that has no access to the file system, network, disc, etc...</p>
+<p><strong>Instruction Set</strong></p>
+<p>Instructions have both an opcode and a set of parameters.</p>
+<p>Each opcode represents tasks the CPU &quot;knows&quot; how to do. </p>
+<p>Examples:</p>
+<pre><code class="language-c">enum
+{
+    OP_BR = 0, /* branch */
+    OP_ADD,    /* add  */
+    OP_LD,     /* load */
+    OP_ST,     /* store */
+    OP_JSR,    /* jump register */
+    OP_AND,    /* bitwise and */
+    OP_LDR,    /* load register */
+    OP_STR,    /* store register */
+    OP_RTI,    /* unused */
+    OP_NOT,    /* bitwise not */
+    OP_LDI,    /* load indirect */
+    OP_STI,    /* store indirect */
+    OP_JMP,    /* jump */
+    OP_RES,    /* reserved (unused) */
+    OP_LEA,    /* load effective address */
+    OP_TRAP    /* execute trap */
+};
+</code></pre>
+<p>Assembly language is a readable and writable form encoded in plain text. A tool called an {assembler} transforms each line of text into a 16-bit binary.</p>
+<p><img src="https://www.jmeiners.com/lc3-vm/img/assembler.gif" alt="https://www.jmeiners.com/lc3-vm/img/assembler.gif" /></p>
+<p>An assembler convers assembly language (already low level) into machine code. The compiler translates high-level source code into lower level languages like assembly code or machine code.</p>

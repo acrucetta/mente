@@ -1,0 +1,57 @@
+<h2>Module 0</h2>
+<p>Machine Language: Overview</p>
+<p>It needs to tell the hardware what to do (operations), it needs to know which instruction to perform at a given space of time, and it needs to tell the hardware what to operate on (addressing).</p>
+<p>Rarely people write in machine language; too complicated; people would rather program in higher level languages.</p>
+<pre><code>Instruction: 010001000110010
+
+Translates to: ADD R3 R2
+</code></pre>
+<p>A symbolic assembler can translate &quot;index&quot; to Mem[129]</p>
+<p>Machine Language Elements</p>
+<ul>
+<li>What are the supported ops</li>
+<li>What do they operate on</li>
+<li>How is the program controlled</li>
+</ul>
+<p>Machine Operations:</p>
+<ul>
+<li>Usually correspond to what's in the hardware
+<ul>
+<li>Arithmetic operations</li>
+<li>Logical operations</li>
+<li>Flow control (&quot;go to instruction X&quot;)</li>
+</ul>
+</li>
+</ul>
+<h3>Memory</h3>
+<ul>
+<li>Accessing a memory location is expensive: need to supply a long address.</li>
+<li>Solution: Memory Hierarchy
+<ul>
+<li>Registers; inside of the CPU
+<ul>
+<li>Data registers (R0, R1, R2)</li>
+<li>Address registers (ARO, AR1, AR2) </li>
+</ul>
+</li>
+<li>We have fast memory close to the CPU (cache)</li>
+<li>Main memory, slower, but bigger</li>
+<li>Disk, slower, but bigger</li>
+</ul>
+</li>
+</ul>
+<h3>Addressing Modes:</h3>
+<ul>
+<li>Register: Add R1, R2</li>
+<li>Direct: Add R1, M[200]</li>
+<li>Indirect: Add R1, @A</li>
+<li>Immediate: Add R1, 5</li>
+</ul>
+<h3>Control Flow</h3>
+<ul>
+<li>Sometimes we need to jump unconditionally to another location. We need to provide the address of the location</li>
+<li>Sometimes we have conditional jumps</li>
+</ul>
+<pre><code>JGT R1,0, cont // Jump if R1&gt;0
+Subtract R1, 0 R1 // R1 &lt;- (0-R1)
+</code></pre>

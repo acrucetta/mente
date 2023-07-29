@@ -6,7 +6,7 @@
 
             <link rel='stylesheet' type='text/css' href='../links/main.css'>
 
-            <title>Mente &mdash; logging.htm</title>
+            <title>Mente &mdash; virtual_machine.htm</title>
 </head>
 <body>
 <header>
@@ -33,25 +33,19 @@
 
 <!-- Generated file, do not edit -->
 
-<h1>logging.htm</h1>
-<h2>Application Logging</h2>
-<p>Logs should be greppable. It should be focused entirely on a single line of log. NEVER over multiple lines.</p>
-<p>We want to answer questions such as:</p>
-<ul>
-<li>When did user 55 last log in?</li>
-<li>Is our incoming connection receiving messages?</li>
-<li>How many times did our web server go dead?</li>
-<li>Did any transaction fail to complete?</li>
-</ul>
-<p>Problems to avoid:</p>
-<ol>
-<li>Log is missing necessary information</li>
-<li>Log unsuitable for grep because of redundant information (if it mentions a website on every linge we can't find those that were activated by the website)</li>
-<li>Information is split across more than one line</li>
-<li>Error reported to user but not logged</li>
-</ol>
-<p>e.g., </p>
-<p>try 
+<h1>virtual_machine.htm</h1>
+<h2>Virtual Machines</h2>
+<p>A virtual machine is a program that acts like a computer. It simulates a CPU along with a few other hardware components.</p>
+<p>VMs allow us to port programs into several CPUs. </p>
+<p><img src="https://www.jmeiners.com/lc3-vm/img/vm.gif" alt="https://www.jmeiners.com/lc3-vm/img/vm.gif" /></p>
+<p>The only cost is the overhead of the VM itself and the further abstraction from the machine. This is a trade-off that's taken.</p>
+<p>Ethereum smart contracts are examples of virtual machines. They are run inside of a VM that has no access to the file system, network, disc, etc...</p>
+<p><strong>Instruction Set</strong></p>
+<p>Instructions have both an opcode and a set of parameters.</p>
+<p>Each opcode represents tasks the CPU &quot;knows&quot; how to do. </p>
+<p>Examples:</p>
+<pre><code class="language-c">enum
+
 
 </main>
 <footer><hr />
