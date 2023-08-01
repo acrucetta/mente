@@ -1,3 +1,4 @@
+<h2>Nand to Tetris - Coursera Notes</h2>
 <h2>Module 0</h2>
 <p>Machine Language: Overview</p>
 <p>It needs to tell the hardware what to do (operations), it needs to know which instruction to perform at a given space of time, and it needs to tell the hardware what to operate on (addressing).</p>
@@ -31,7 +32,7 @@ Translates to: ADD R3 R2
 <li>Registers; inside of the CPU
 <ul>
 <li>Data registers (R0, R1, R2)</li>
-<li>Address registers (ARO, AR1, AR2) </li>
+<li>Address registers (ARO, AR1, AR2)</li>
 </ul>
 </li>
 <li>We have fast memory close to the CPU (cache)</li>
@@ -54,4 +55,152 @@ Translates to: ADD R3 R2
 </ul>
 <pre><code>JGT R1,0, cont // Jump if R1&gt;0
 Subtract R1, 0 R1 // R1 &lt;- (0-R1)
+</code></pre>
+<h3>The Hack Computer</h3>
+<p>A 16-bit machine consisting of:</p>
+<ul>
+<li>Data memory (RAM) sequences of 16 bit registers</li>
+<li>Instruction memory (ROM) - read only memory</li>
+<li>CPU for the instructions</li>
+<li>Instruction buses</li>
+</ul>
+<p>Hack machine language contains:</p>
+<ul>
+<li>16-bit A instructions</li>
+<li>16-bit C instructions</li>
+</ul>
+<p>The hack machine recognizes:</p>
+<ul>
+<li>D registers</li>
+<li>A registers</li>
+<li>M registers (register addressed by A)</li>
+</ul>
+<p>The A instructions:</p>
+<pre><code>@value
+- Non negative decimal constant
+
+Sets the A register to a value; it becomes the selected RAM registers
+
+E.g., @21
+
+// Set RAM[100] to -1
+@100 // A=100
+M=-1 // RAM[100] = -1
+</code></pre>
+<p>The C instructions:</p>
+<pre><code>dest = comp; jump (both dest and jump are optional)
+
+comp = 0,1,-1!D,!A,M-1
+dest = null, M , D, MD, AM
+jump = null, JGT, JEQ, JGE, JLT, JNE
+
+
+E.g.,
+// Set RAM[300] to the value of the D register minus 1
+@300
+M=D-1
+
+// IF (D-1==0) jump to another instructions in ROM[56]
+@56 // A=56
+D-1; JEQ // If (D-1==0); go to 56
+</code></pre>
+<p>Binary syntax:</p>
+<pre><code>dest = comp; jump
+
+1 1 1 a c1 c2 c3 c4 c5 c6 d1 d2 d3 j1 j2 j3
+</code></pre>
+<p>Each instruction for c is represented in a table with computations. We match them to the symbol table. Same with the destination; we have a set of possible destinations.</p>
+<h3>Handling Input and Output</h3>
+<p>i.e., Keyboard and Screen; enter and display outputs</p>
+<p>High level: use libraries enabling them.
+Low level: bits.</p>
+<p><strong>Screen</strong></p>
+<p>We have a screen memory map. A designated area dedicated to manage a display unit. The display is refreshed from the memory map many times per second. The output is effected by writing code that manipulates the screen.</p>
+<p>We have a table 256 by 512 b/w. We either turn the pixel on or off. Each bit value maps to the actual pixel.</p>
+<p>When accessing memory we can only 16 bits in a chunk. To set pixels on or off.</p>
+<p><code>i=32*row+col/16</code></p>
+<pre><code>1. word = Screen[32*row + col/16]
+2. word = RAM[16384 + 32*row + col/16]
+3. Set the (col%16)nth bit of word to 0 or 1
+4. Commit the word to RAM
+</code></pre>
+<p><strong>Keyboard Memory Map</strong></p>
+<p>When a key is pressed the key scan code appears in the keyboard memory map.</p>
+<h3>Low Level Programming</h3>
+<p>Working with registers and memory:</p>
+<ul>
+<li>D: Data registers</li>
+<li>A: address</li>
+<li>M: currently selected, M=RAM[A]</li>
+</ul>
+<pre><code>// D = 10
+@10
+D=A
+
+// D++
+D=D+1
+
+// D=RAM[17]
+@17
+D=M
+</code></pre>
+<p>The assembly language ignores blank spaces.</p>
+<pre><code>@0
+D=M
+
+@1
+D=D+M
+
+@2
+M=D
+</code></pre>
+<p>To prevent further instructions from happening, we call an infinite loop.</p>
+<p>e.g.,
+<code>@6 0;JMPT</code></p>
+<p>We have a set of built-in symbols, the below are virtual registers:</p>
+<p>symbol|value
+R0|0
+R1|1
+R2|2
+R3|3</p>
+<h2>Other Features</h2>
+<ul>
+<li>Branching</li>
+<li>Variables</li>
+<li>Iterative Processing</li>
+</ul>
+<p><strong>Branching</strong></p>
+<pre><code>...
+</code></pre>
+<p><strong>Variables</strong></p>
+<pre><code>
+@R1
+D=M
+@temp
+M=D //TEMP=R1
+
+@R0
+D=M
+@R1
+M=D
+
+@temp
+D=M
+@R0
+M=D //R0=TEMP
+
+(END)
+@END
+0;JMP
+
+</code></pre>
+<p><strong>Iterative processing</strong></p>
+<p><img src="image.png" alt="Alt text" /></p>
+<p>Best practices:</p>
+<ol>
+<li>Design the program using pseudo code</li>
+<li>Write the program in assembly</li>
+<li>Test the program on paper using a table of values</li>
+</ol>
+<pre><code>
 </code></pre>

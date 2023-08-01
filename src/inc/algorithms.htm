@@ -1,0 +1,83 @@
+<h2>Algorithms - Coursera Notes</h2>
+<p>Algorithms: method for solving a problem.
+Data structure: method to store information.</p>
+<h2>Week 1</h2>
+<p>Steps to develop a usable algorithm:</p>
+<ol>
+<li>Model the problem</li>
+<li>Find an algorithm to solve it</li>
+<li>Fast enought / fits in memory?</li>
+<li>If not, figure out why</li>
+<li>Find a way to address the problem</li>
+<li>Iterate until satisfied</li>
+</ol>
+<h3>Dynamic Connectivity</h3>
+<p>Is there a path between two objects? Used in many applications. The union-find is a problem of maintaining a collection of disjoint sets and performing two operations.</p>
+<p>We need to implement: find query and union command.</p>
+<p>Find query: check if two objects are in the same component.
+Union: replace components with their union.</p>
+<p>We need to check our API design before implementing it.</p>
+<p><strong>Quick Find (eager approach)</strong>:</p>
+<ul>
+<li>Data structure: integer array id[] of size N</li>
+<li>Interpretation: two objects are connected if they have the same ID.</li>
+</ul>
+<p>Cost model: numer of array accesses.</p>
+<p>Find: check if p and q have the same id.</p>
+<p>Union: to merge components containing p and q, change all entries whose id equals id[p] to id[q].</p>
+<p><strong>Quick Union (lazy approach):</strong></p>
+<ul>
+<li>Data structure: integer array id[] of size N</li>
+<li>Interpretation: id[i] is parent of i</li>
+<li>Root of i is id[id[id[...id[i]...]]]</li>
+</ul>
+<p>Find: check if p and q have the same root.</p>
+<p>Union: to merge components containing p and q, set the id of p's root to the id of q's root.</p>
+<p>Quick-find: union too expensive. Trees are flat.</p>
+<p>Quick-union: trees can get tall. Find too expensive (could be N array accesses).</p>
+<p><strong>Improvements</strong></p>
+<p>Weighted quick-union</p>
+<ul>
+<li>Modify quick-union to avoid tall trees</li>
+<li>Keep track of size of each tree (number of objects)</li>
+<li>Balance by linking root of smaller tree to root of larger tree</li>
+</ul>
+<p>In sumamry, we try to avoid tall trees as we iterate through the array.</p>
+<p><img src="image-1.png" alt="weighted tree comparison" /></p>
+<pre><code class="language-python">
+class QuickUnion:
+    def __init__(self, n):
+        self.id = [i for i in range(n)]
+        self.sz = [1 for i in range(n)]
+
+    def root(self, i):
+        while i != self.id[i]:
+            i = self.id[i]
+        return i
+
+    def connected(self, p, q):
+        return self.root(p) == self.root(q)
+
+    def union(self, p, q):
+        i = self.root(p)
+        j = self.root(q)
+        self.id[i] = j
+
+    def weighted_union(self, p, q):
+        i = self.root(p)
+        j = self.root(q)
+        if i == j:
+            return
+        if self.sz[i] &lt; self.sz[j]:
+            self.id[i] = j
+            self.sz[j] += self.sz[i]
+        else:
+            self.id[j] = i
+            self.sz[i] += self.sz[j]
+</code></pre>
+<p><strong>Running time:</strong></p>
+<ul>
+<li>Find: takes time proportional to depth of p and q</li>
+<li>Union: takes constant time, given roots</li>
+</ul>
+<p>Depth of any node x is at most lg N.</p>
