@@ -37,7 +37,7 @@
 <h2>Algorithms - Coursera Notes</h2>
 <p>Algorithms: method for solving a problem.
 Data structure: method to store information.</p>
-<h2>Week 1</h2>
+<h2>Week 1: Quick Union</h2>
 <p>Steps to develop a usable algorithm:</p>
 <ol>
 <li>Model the problem</li>
@@ -71,7 +71,7 @@ Union: replace components with their union.</p>
 <p>Union: to merge components containing p and q, set the id of p's root to the id of q's root.</p>
 <p>Quick-find: union too expensive. Trees are flat.</p>
 <p>Quick-union: trees can get tall. Find too expensive (could be N array accesses).</p>
-<p><strong>Improvements</strong></p>
+<h3>Improvements</h3>
 <p>Weighted quick-union</p>
 <ul>
 <li>Modify quick-union to avoid tall trees</li>
@@ -117,10 +117,42 @@ class QuickUnion:
 <li>Union: takes constant time, given roots</li>
 </ul>
 <p>Depth of any node x is at most lg N.</p>
+<h3>Union-Find Applications</h3>
+<ul>
+<li>Games</li>
+<li>Dynamic connectivity</li>
+<li>Percolation</li>
+</ul>
+<p><strong>Percolation</strong></p>
+<p>N by N grid sites. A system percolates iff top and botom are connected by open sites.</p>
+<p>Can be thought of as water flowing through surfaces. Or in Social networks if we want to know whether people are connected.</p>
+<p><strong>The subtext of the problem is:</strong></p>
+<ul>
+<li>We model the problem</li>
+<li>Then we find an algorithm</li>
+<li>We check whether it's fast or not</li>
+<li>We address the problem</li>
+<li>And iterate...</li>
+</ul>
+<h2>Week 2: Analysis of Algorithms</h2>
+<p>The key is running time; we used to have a cranking machine; how many cranks we need to do to compute.</p>
+<p>Why analyze algorithms?</p>
+<ul>
+<li>Predict performance</li>
+<li>Compare algorithms</li>
+<li>Provide guarantees</li>
+<li>Understand theoretical basis</li>
+</ul>
+<p>One of the most important ones is the FFT algorithm; takes only $N log N$ steps.  Another one is the N-body simulation. </p>
+<p>We use the scientific method to analyze algorithms: Observe, hypothesize, predict, verify, and validate.</p>
+<p>Experiments must be <strong>reproducible</strong> and <strong>falsifiable</strong>.</p>
+<h3>3-Sum Example</h3>
+<p>How many distinct integers add up to zero. </p>
+<p>Brute force: do a triple for loop. (it will take n^3)</p>
 
 
 </main>
 <footer><hr />
-<span style='float:right'>Edited on 2023-08-01</span><b>Mente</b> © 2023 — 
+<span style='float:right'>Edited on 2023-08-05</span><b>Mente</b> © 2023 — 
 </footer>
 </body></html>

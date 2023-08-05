@@ -1,7 +1,5 @@
 ## Nand to Tetris - Coursera Notes
 
-## Module 0
-
 Machine Language: Overview
 
 It needs to tell the hardware what to do (operations), it needs to know which instruction to perform at a given space of time, and it needs to tell the hardware what to operate on (addressing).
@@ -244,6 +242,52 @@ Best practices:
 2. Write the program in assembly
 3. Test the program on paper using a table of values
 
+**Pointers**
+
+Variables that store the address of array and i are called pointers. Whenever we access something with a pointer we need to use A=M.
+
+```machine
+// for (i=0; i<n; i++) {
+//  arr[i] = -1
+//}
+
+// if (i==0) goto END
+@i
+D=M
+@n
+D=D-M
+@END
+D;JEQ
+
+// RAM[arr+i] = -1
+@arr
+D=M
+@i
+A=D+M
+M=-1
+
+// i++
+@i
+M=M+1
+
+@LOOP
+0;JMP
+
+(END)
+@END
+0;JMP
 ```
 
-```
+**Input/Output**
+
+IO devices are connected to designated areas in the RAM.
+
+We call them SCREEN and KB in the memory map.
+
+![Alt text](image-2.png)
+
+Keyboard: Each key is connected to a particular memory address. We just need to say @KBD.
+
+If the register contains 0; no key. Otherwise the register contains the scan code of the pressed key.
+
+_Any program can be presented in the low level language_

@@ -3,7 +3,7 @@
 Algorithms: method for solving a problem.
 Data structure: method to store information.
 
-## Week 1
+## Week 1: Quick Union
 
 Steps to develop a usable algorithm:
 
@@ -50,7 +50,7 @@ Quick-find: union too expensive. Trees are flat.
 
 Quick-union: trees can get tall. Find too expensive (could be N array accesses).
 
-**Improvements**
+### Improvements
 
 Weighted quick-union
 
@@ -101,3 +101,48 @@ class QuickUnion:
 - Union: takes constant time, given roots
 
 Depth of any node x is at most lg N.
+
+### Union-Find Applications
+
+- Games
+- Dynamic connectivity
+- Percolation
+
+**Percolation**
+
+N by N grid sites. A system percolates iff top and botom are connected by open sites.
+
+Can be thought of as water flowing through surfaces. Or in Social networks if we want to know whether people are connected.
+
+**The subtext of the problem is:**
+
+- We model the problem
+- Then we find an algorithm
+- We check whether it's fast or not
+- We address the problem
+- And iterate...
+
+## Week 2: Analysis of Algorithms
+
+The key is running time; we used to have a cranking machine; how many cranks we need to do to compute.
+
+Why analyze algorithms?
+- Predict performance
+- Compare algorithms
+- Provide guarantees
+- Understand theoretical basis
+
+One of the most important ones is the FFT algorithm; takes only $N log N$ steps.  Another one is the N-body simulation. 
+
+We use the scientific method to analyze algorithms: Observe, hypothesize, predict, verify, and validate.
+
+Experiments must be **reproducible** and **falsifiable**.
+
+### 3-Sum Example
+
+How many distinct integers add up to zero. 
+
+Brute force: do a triple for loop. (it will take n^3)
+
+
+
