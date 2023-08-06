@@ -1,3 +1,11 @@
+### August 2023
+
+Projects
+- Taking the Algorithms class in coursera 
+
+Reading
+- Started reading SICP and Dune
+- Listening to Bill Walsh's biography
 
 ### July 2023
 
