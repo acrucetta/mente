@@ -127,22 +127,46 @@ Can be thought of as water flowing through surfaces. Or in Social networks if we
 The key is running time; we used to have a cranking machine; how many cranks we need to do to compute.
 
 Why analyze algorithms?
+
 - Predict performance
 - Compare algorithms
 - Provide guarantees
 - Understand theoretical basis
 
-One of the most important ones is the FFT algorithm; takes only $N log N$ steps.  Another one is the N-body simulation. 
+One of the most important ones is the FFT algorithm; takes only $N log N$ steps. Another one is the N-body simulation.
 
 We use the scientific method to analyze algorithms: Observe, hypothesize, predict, verify, and validate.
 
 Experiments must be **reproducible** and **falsifiable**.
 
-### 3-Sum Example
+**3-Sum Example**
 
-How many distinct integers add up to zero. 
+How many distinct integers add up to zero.
 
 Brute force: do a triple for loop. (it will take n^3)
 
+**Mathematical models of runtime**
 
+Donald Knuth first proposed the total run-time when programs were running for too long.
 
+E.g., how many instructions as a function of input size N?
+
+Turing said we should just count the most expensive operations instead of each addition.
+
+By focusing on one operation you can simplify the frequency counts.
+
+**Order of growth classifications**
+
+Small set of functions: log N, N, NlogN, N^2, N^3, 2^N
+
+![Alt text](image-3.png)
+
+Based on binary search we can find a better algorithm for 3-Sum. We can use N^2 log N instead of N^3.
+
+Instructions:
+
+- Sort the N integers
+  - Insertion sort: N^2
+- For each pair of integers a and b, binary search for -(a+b)
+  - Binary search: log N
+- Only count if a[i] < a[j]] < a[k]
