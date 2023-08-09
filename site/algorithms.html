@@ -172,6 +172,126 @@ class QuickUnion:
 </li>
 <li>Only count if a[i] &lt; a[j]] &lt; a[k]</li>
 </ul>
+<h3>Types of analysis</h3>
+<p>We have best case, worst case, and average case. Lower bound on cost, upper bound on cost, and expected cost.</p>
+<p>We can have different approaches:</p>
+<ol>
+<li>Design for worst case</li>
+<li>Randomize the input</li>
+</ol>
+<p>The main approach is to reduce variability by focusing on the worst case scenario. We want to find an optimal algorithm.</p>
+<p>We have many notations</p>
+<ul>
+<li>Big Theta ($Big \theta$): asymptotic order of growth</li>
+<li>Big Oh: to develop upper bounds</li>
+<li>Big Omega: to develop lower bounds</li>
+</ul>
+<p>Example:</p>
+<ul>
+<li>3 Sum
+<ul>
+<li>Improved algorithm gives us O($N^2logN$)</li>
+<li>Lower bound (proof that no algorithm can do better): $\omega(N)$</li>
+</ul>
+</li>
+</ul>
+<p>The approach:</p>
+<ul>
+<li>Develop algorithm</li>
+<li>Prove a lower bound</li>
+</ul>
+<p>We can also have tilde notation. It's used to provide an approximate model. </p>
+<h3>Memory</h3>
+<p>Typical memory usage for primitive types:</p>
+<ul>
+<li>Boolean (1); Char (2); Double (8); Int (8)</li>
+<li>Int[][] ~4MN; int[] ~4N+24; </li>
+</ul>
+<p>Typical memory usage for objects in Java:</p>
+<ul>
+<li>Object overhead 16 bytes</li>
+<li>Ref 8 bytes</li>
+<li>Padding multiple of 8 bytes</li>
+</ul>
+<h2>Week 2</h2>
+<h3>Stacks and queues</h3>
+<ul>
+<li>They're fundamental data types</li>
+<li>Stack has push and pop (LIFO)</li>
+<li>Queue has enqueue and dequeue (FIFO)</li>
+</ul>
+<h3>Stacks</h3>
+<ul>
+<li>push(); pop(); isEmpty()</li>
+<li>We build the stack with a LinkedList
+<ul>
+<li>push - insert node to the beginning</li>
+<li>pop - remove node from the beginning</li>
+</ul>
+</li>
+</ul>
+<pre><code class="language-java">pop()
+String item = first.item;
+first = first.next;
+
+push()
+Node oldfirst = first;
+first = new Node();
+first.item = &quot;not&quot;;
+first.next= oldfirst
+</code></pre>
+<ul>
+<li>Every op takes constant time in the worst case.</li>
+<li>A tack with N items uses ~40N bytes.</li>
+<li>Every object in Java has 16 bytes of overhead.</li>
+</ul>
+<p><strong>Alternative Implementation</strong></p>
+<ul>
+<li>Use array s[] to store N items on stack</li>
+<li>push(): add new item at S[N]</li>
+<li>pop(): remove item from S[N-1]</li>
+<li>Cons: need to define the capacity ahead of time</li>
+</ul>
+<p>We have to worry about loitering in Java. To avoid that we need to set the removed item to Null so it can be reclaimed by the garbage collector.</p>
+<p><strong>Resizing arrays implementations</strong></p>
+<p>Q: How can we grow the array?
+A: If the array is full, create a new array of twice the size and copy the items. ~3N.</p>
+<p>Q: How to shrink array?
+A: Wait until the array is one-quarter full. Invariant; if the array is always between 25% and 100%</p>
+<p>The worst case for push and pop will be N. </p>
+<p><strong>Memory:</strong> It uses between 8N and 32N. </p>
+<h3>Tradeoffs</h3>
+<ul>
+<li>Linked list: 
+<ul>
+<li>Every op takes constant time in worst case</li>
+<li>We need to use extra time and space to deal with the links</li>
+</ul>
+</li>
+<li>Stack
+<ul>
+<li>Every op takes constant amortized time</li>
+<li>Less wasted space</li>
+</ul>
+</li>
+</ul>
+<h3>Queues</h3>
+<p><strong>LinkedList</strong></p>
+<pre><code>enqueue()
+
+String item = first.item;
+first = first.next;
+return item;
+
+dequeue()
+
+Node oldlast = last;
+Node last = new Node();
+last.item =&quot;not&quot;;
+last.next = null;
+
+oldlast.next = last;
+</code></pre>
 
 
 </main>
