@@ -170,3 +170,119 @@ Instructions:
 - For each pair of integers a and b, binary search for -(a+b)
   - Binary search: log N
 - Only count if a[i] < a[j]] < a[k]
+
+### Types of analysis
+
+We have best case, worst case, and average case. Lower bound on cost, upper bound on cost, and expected cost.
+
+We can have different approaches:
+1. Design for worst case
+2. Randomize the input
+
+The main approach is to reduce variability by focusing on the worst case scenario. We want to find an optimal algorithm.
+
+We have many notations
+- Big Theta ($Big \theta$): asymptotic order of growth
+- Big Oh: to develop upper bounds
+- Big Omega: to develop lower bounds
+
+Example:
+- 3 Sum
+	- Improved algorithm gives us O($N^2logN$)
+	- Lower bound (proof that no algorithm can do better): $\omega(N)$
+
+The approach:
+- Develop algorithm
+- Prove a lower bound
+
+We can also have tilde notation. It's used to provide an approximate model. 
+
+### Memory
+
+Typical memory usage for primitive types:
+- Boolean (1); Char (2); Double (8); Int (8)
+- Int[][] ~4MN; int[] ~4N+24; 
+
+Typical memory usage for objects in Java:
+- Object overhead 16 bytes
+- Ref 8 bytes
+- Padding multiple of 8 bytes
+
+## Week 2
+
+### Stacks and queues
+- They're fundamental data types
+- Stack has push and pop (LIFO)
+- Queue has enqueue and dequeue (FIFO)
+
+### Stacks
+- push(); pop(); isEmpty()
+- We build the stack with a LinkedList
+	- push - insert node to the beginning
+	- pop - remove node from the beginning
+
+```java
+pop()
+String item = first.item;
+first = first.next;
+
+push()
+Node oldfirst = first;
+first = new Node();
+first.item = "not";
+first.next= oldfirst
+```
+
+- Every op takes constant time in the worst case.
+- A tack with N items uses ~40N bytes.
+- Every object in Java has 16 bytes of overhead.
+
+**Alternative Implementation**
+- Use array s[] to store N items on stack
+- push(): add new item at S[N]
+- pop(): remove item from S[N-1]
+- Cons: need to define the capacity ahead of time
+
+We have to worry about loitering in Java. To avoid that we need to set the removed item to Null so it can be reclaimed by the garbage collector.
+
+**Resizing arrays implementations**
+
+Q: How can we grow the array?
+A: If the array is full, create a new array of twice the size and copy the items. ~3N.
+
+Q: How to shrink array?
+A: Wait until the array is one-quarter full. Invariant; if the array is always between 25% and 100%
+
+The worst case for push and pop will be N. 
+
+**Memory:** It uses between 8N and 32N. 
+
+### Tradeoffs
+- Linked list: 
+	- Every op takes constant time in worst case
+	- We need to use extra time and space to deal with the links
+- Stack
+	- Every op takes constant amortized time
+	- Less wasted space
+
+### Queues
+
+**LinkedList**
+
+```
+enqueue()
+
+String item = first.item;
+first = first.next;
+return item;
+
+dequeue()
+
+Node oldlast = last;
+Node last = new Node();
+last.item ="not";
+last.next = null;
+
+oldlast.next = last;
+```
+

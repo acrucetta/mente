@@ -1,7 +1,7 @@
 
-## My now page
+## What I'm up to now
 
-Things I'm learning now
+Things I'm learning 
 - Algorithms & Data Structures
 - Structure and Interpretation of Computer Languages (SICP)
 
