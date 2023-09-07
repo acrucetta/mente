@@ -177,7 +177,7 @@ class QuickUnion:
 <li>Ref 8 bytes</li>
 <li>Padding multiple of 8 bytes</li>
 </ul>
-<h2>Week 2</h2>
+<h2>Week 2: Stacks and Queues</h2>
 <h3>Stacks and queues</h3>
 <ul>
 <li>They're fundamental data types</li>
@@ -256,3 +256,354 @@ last.next = null;
 
 oldlast.next = last;
 </code></pre>
+<h3>Generics</h3>
+<p>We have implemented stacks of strings, but what about URLs, Ints, Vans...</p>
+<p>We use the generic type name in Java <code>&lt;Item&gt;</code></p>
+<p>Java doesn't allow generic array creation. We need to create an array of Objects and pass it to a list of items.</p>
+<pre><code>s = (Item[]) new Object([Capacity])
+</code></pre>
+<p>Q: What to do about primitive types?</p>
+<p>Wrapper type: each primitive type has a wrapper object type. Integer is a wrapper type for int.</p>
+<h3>Iteration</h3>
+<p>Design challenge: How can we support iteration over stack items by items.</p>
+<p>An Iterable is a method that returns an Iterator. It has methods hasNext() and next()</p>
+<p>Why make data structures Iterable? It can helps us write elegant code. Allows us to use <code>for each statements</code></p>
+<h3>Week 2: Self Questions</h3>
+<ul>
+<li>Why does the stack have contant push and pop time?
+<ul>
+<li>Because we just need to return the first item or last item in the structure without iterating over its values</li>
+</ul>
+</li>
+<li>What are advantages of a LinkedList over a stack?
+<ul>
+<li>Arrays provide immediate access to any item; but we need to know the size on initialization</li>
+<li>Linked List use space proportional to size but we need a reference to access an item</li>
+</ul>
+</li>
+<li>When do we use the LinkedList, when do we use the stack
+<ul>
+<li>Depending on the access patterns and memory consumption; stacks are easy for push/pop but to find items it takes a bit more time. We do have resizing issues.</li>
+</ul>
+</li>
+<li>What's the time complexity of each one?</li>
+<li>How does Java deal with Generics and Iterators?</li>
+<li>Why is it better to use Iterators? What does that allows us to do?</li>
+<li>What is the origin of LinkedLists?
+<ul>
+<li>They were initially used by LISP in 1950s as the primary structure for all programs and data. IT presented challenges because they're hard to debug. </li>
+</ul>
+</li>
+<li>Why can't we remove an item a O(n) complexity from a Stack?
+<ul>
+<li>Because we still have to shift all the other positions next to the item removed. This would cost a linear amount of time.</li>
+</ul>
+</li>
+</ul>
+<h2>Week 2: Sorting</h2>
+<p><strong>Q:</strong> How does Sort knows how to sort Doubles, Strings, and files without any information?</p>
+<ul>
+<li>We use callbacks: the sort() function calls the object's compareTo method.</li>
+<li>Commonly implemented in other programming languages.</li>
+</ul>
+<p>The sort implementation takes a Comparable[] object. Then call the <code>.compareTo()</code> code.</p>
+<p>Yes, you're right. Let's break down the definitions for each of these properties in the context of a binary relation ( $\leq$ ) on a set ( S ):</p>
+<ol>
+<li>
+<p><strong>Antisymmetry</strong>: </p>
+<ul>
+<li>This means that two distinct elements cannot both be &quot;less than or equal to&quot; each other. If they are, they must actually be the same element.</li>
+</ul>
+</li>
+<li>
+<p><strong>Transitivity</strong>: </p>
+<ul>
+<li>This captures the intuitive idea that if ( a ) is &quot;less than or equal to&quot; ( b ) and ( b ) is &quot;less than or equal to&quot; ( c ), then ( a ) should also be &quot;less than or equal to&quot; ( c ).</li>
+</ul>
+</li>
+<li>
+<p><strong>Totality (or Completeness)</strong>: </p>
+<ul>
+<li>This means that given any two elements in the set, one must be &quot;less than or equal to&quot; the other or vice-versa. This ensures that there are no two elements which can't be compared in the order.</li>
+</ul>
+</li>
+</ol>
+<p>Ex standard order for natural and real numbers, alphabetical orders, chronological orders.</p>
+<p><strong>Comparable API</strong></p>
+<ul>
+<li>Less than return -1</li>
+<li>Equal return 0</li>
+<li>More than return +1</li>
+</ul>
+<h3>Selection Sort</h3>
+<p>In iteration I, find index min of smallest remaining entry; swap a[I] and a[min]</p>
+<p>Algorithm: scans from left to right.</p>
+<p>Selection sort uses $~N^2/2$ compares. It takes quadratic time, even if the input is sorted.</p>
+<p><img src="https://www.programiz.com/sites/tutorial2program/files/Selection-sort-0.png" alt="" /></p>
+<h3>Insertion Sort</h3>
+<p>In iteration I we swap a[i] with each larger entry to its left. </p>
+<p>To sort a randomly ordered arra with distinct keys, it uses $~1/4 N^2$ compares and $~1/4N^2$ exchanges.</p>
+<p>If the array is in reverse order, it has to go all the way back to the beginning; if it's in ascending order, it takes 0 exchanges.</p>
+<p>For partially sorted arrays, it takes linear time. An array is partially sorted if the number of inversions is less than some constant cN.</p>
+<p><img src="https://media.geeksforgeeks.org/wp-content/uploads/insertionsort.png" alt="insertion sort" /></p>
+<h3>Shellsort</h3>
+<p>Move entries more than one position at a time by h-sorting the array. An h-sorted array is h interleaved sorted subsequences. (1959 sorting method)</p>
+<p>H-sort is just insertion sort with stride length h. Why do this?</p>
+<ul>
+<li>Big increments -&gt; small subarray</li>
+<li>Small increments -&gt; nearly in order</li>
+</ul>
+<p>Which increment sequence to use?</p>
+<ul>
+<li>Powers of two? Powers of two minus one?</li>
+<li>3x+1? Easy to compute</li>
+<li>Sedgewick: 1,5,19,41...</li>
+</ul>
+<p>The worst case number of compares used by shell sort is $O(N^(3/2))$</p>
+<p>Shell sort is a simple idea leading to substantial performance gains. It involves very little code, used often in hardware (embedded systems)</p>
+<p><img src="https://static.javatpoint.com/ds/images/shell-sort-algorithm2.png" alt="shell sort" /></p>
+<h3>Shuffle sort</h3>
+<ul>
+<li>Generate a random real number for each array entry</li>
+<li>Sort using these random numbers as the key; uniformly random permutation</li>
+</ul>
+<p>Knuth sort: in iteration I, pick integer r between 0 and I uniformly at random. Then we swap a[I] and a[r].</p>
+<h3>Convex Hull</h3>
+<p>The convex hull of a set of N points is the smallest perimeter fence enclosing the points.</p>
+<p><img src="https://miro.medium.com/v2/resize:fit:677/1*F4IUmOJbbLMJiTgHxpoc7Q.png" alt="" /></p>
+<p>E.g., </p>
+<ul>
+<li>find shortest path in the plane from s to t avoiding a polygonal obstacle. </li>
+<li>find the farthest path between two points</li>
+</ul>
+<p>Graham scan demo</p>
+<ul>
+<li>Choose point p with smallest y-coordinate</li>
+<li>Sort points by polar angle with p</li>
+<li>Consider points in oder,, discard unless it creates a ccw turn</li>
+</ul>
+<p><strong>Week 3: Self-Questions</strong></p>
+<ul>
+<li>When should I use which sort?
+<ul>
+<li>Insertion Sort</li>
+<li>Select Sort</li>
+<li>Merge Sort</li>
+<li>Shell Sort</li>
+<li>Shuffling</li>
+</ul>
+</li>
+<li>Why are some sorts better than others in specific occasions?</li>
+<li>What are the most widely used sorts?</li>
+</ul>
+<h2>Week 3: Merge Sort</h2>
+<ul>
+<li>Divide array into two halves</li>
+<li>Recursively sort each array</li>
+<li>Merge the two halves</li>
+</ul>
+<p>Copy to an auxiliary array.
+**
+<img src="https://www.programiz.com/sites/tutorial2program/files/merge-sort-example_0.png" alt="mergesort" /></p>
+<p>Mergesort uses at most NlgN compares and 6NlgN array accesses to sort any array of size N.</p>
+<p>Mergesort uses extra space proportions to N.</p>
+<p>Practical improvements:</p>
+<ul>
+<li>Use insertion sort for small subarrays; merge sort has too much overhead for tiny arrays</li>
+<li>The cut-off for mergesort is 7 items</li>
+<li>Stop if already sorted; is the biggest item in first half &lt; smallest item in second half</li>
+</ul>
+<pre><code class="language-python"># split in half
+m = n / 2
+
+# recursive sorts
+sort a[1..m]
+sort a[m+1..n]
+
+# merge sorted sub-arrays using temp array
+b = copy of a[1..m]
+i = 1, j = m+1, k = 1
+while i &lt;= m and j &lt;= n,
+    a[k++] = (a[j] &lt; b[i]) ? a[j++] : b[i++]
+    → invariant: a[1..k] in final position
+while i &lt;= m,
+    a[k++] = b[i++]
+    → invariant: a[1..k] in final position
+</code></pre>
+<h3>Bottom-up Merge Sort (no recursion)</h3>
+<p>Basic plan</p>
+<ul>
+<li>Pass through array merging subarrays of size 1</li>
+<li>Repeat for subarrays of size 2,4,8,16...</li>
+<li>Uses space proportional to the array</li>
+</ul>
+<h3>Sorting Complexity</h3>
+<p>Computational complexity: framework to study efficiency of algorithms to solve problem X.</p>
+<ul>
+<li>Model of computation: allowable ops.</li>
+<li>Cost model: operation counts.</li>
+<li>Upper bound: cost guarantee provided by some algorithm</li>
+<li>Lower bound: Proven limit on cost for all algorithms of X</li>
+<li>Optimal algorithm: best possible cost guarantee (lower bound - upper bound)</li>
+</ul>
+<p><strong>E.g. Sorting</strong></p>
+<ul>
+<li>Model of computation: decision tree</li>
+<li>Cost model: # of compares</li>
+<li>Upper bound: ~N log N</li>
+<li>Lower bound: ~N log N</li>
+<li>Optimal algorithm: mergesort
+<ul>
+<li>Optimal with respect to # of compares</li>
+<li>Not optimal with respect to usage</li>
+<li>We use theory as guide</li>
+</ul>
+</li>
+</ul>
+<h3>Comparators</h3>
+<p>We also have a comparator interface to sort using an alternate order. </p>
+<p><code>int compare(Key v, Key w)</code></p>
+<p>E.g., </p>
+<ul>
+<li>Compare students by name, by section, etc...</li>
+</ul>
+<pre><code class="language-java">Arrays.sort(a, Student.BY_NAME)
+Arrays.sort(points, p.POLAR_ORDER)
+</code></pre>
+<h3>Stability</h3>
+<p>A typical application: first sort by name, then by section.</p>
+<p>A stable sort is one that presents the same order of items with a given key.</p>
+<p>Insertion sort and merge sort are stable (but not selection sort or shell sort)</p>
+<p>We can move items past items that are equal.</p>
+<h3>Self Questions</h3>
+<ul>
+<li>When do we care about stability for sorting</li>
+<li>Why are some algorithms stable and others aren't?</li>
+</ul>
+<h3>Week 3: Quick-sort</h3>
+<p>Basic Plan:</p>
+<ul>
+<li>Shuffle the array</li>
+<li>Partition so that, for some k
+<ul>
+<li>entry a[j] is in place</li>
+<li>no larger entry to the left of j</li>
+<li>no smaller entry to the right of j</li>
+</ul>
+</li>
+<li>Sort each piece recursively</li>
+</ul>
+<p>Summary:</p>
+<ul>
+<li>We keep swapping 2 pointers as long as the left is less than the right</li>
+<li>Once they cross we stop and swap the lo with J</li>
+</ul>
+<p>Implementation details:</p>
+<ul>
+<li>Partitioning is in-place: using an extra array can make partitioning easier</li>
+<li>Terminating the loop: tricky to check if pointers cross</li>
+<li>Shuffling is needed for the performance guarantee</li>
+</ul>
+<p>Performance:</p>
+<ul>
+<li>Number of compares 1.39 N Log N (39% more than merge sort)</li>
+<li>Worst case is quadratic but not likely </li>
+</ul>
+<p>Properties:</p>
+<ul>
+<li>Quick-sort is an in-place sorting algorithm</li>
+<li>Quick sort is not stable</li>
+<li>We can improve it with median-of-3 and cutoff to insertion sort</li>
+</ul>
+<h3>Week 3: Selection Sort</h3>
+<p><strong>Goal</strong>: Given an array of N items, find the Kth largest. i.e., return the top K.</p>
+<p>Quick Select:</p>
+<ul>
+<li>Partition array so that: entry a[j] is in place</li>
+<li>No larger entry to the left of j</li>
+<li>No smaller entry to the right of j</li>
+<li>Repeat in one subarray, depending on j; finished when j equals k.</li>
+</ul>
+<p>3-Way Quick sort (Dijkstra Implementation)</p>
+<ul>
+<li>We have 3 pointers; move the ones less than the value to the left</li>
+<li>Move the ones higher than the value to the right</li>
+<li>We increment the pointer if the value is equal to the current value</li>
+<li>We end up with all values even the duplicates sorted</li>
+</ul>
+<h3>Week 3: Applications</h3>
+<ul>
+<li>Sort a list of names</li>
+<li>Find the median</li>
+<li>Data compression</li>
+<li>Computer graphics</li>
+<li>Load balancing on a parallel computer </li>
+</ul>
+<p><strong>Each sort type will have different attributes:</strong></p>
+<ul>
+<li>Stable</li>
+<li>Parallel</li>
+<li>Deterministic</li>
+<li>Keys all distinct</li>
+<li>Multiple key types</li>
+<li>Linked lists or arrays</li>
+<li>Large or small items</li>
+<li>Is the array randomly ordered</li>
+<li>Do we need a guaranteed performance</li>
+</ul>
+<p>System sorts cannot possibly cover all possible algorithms.</p>
+<h3>Week 3: Self Questions</h3>
+<ul>
+<li>Why does Arrays.sort() Arrays.sort() in Java use mergesort instead of quicksort when sorting reference types?
+<ul>
+<li>The Java API for Arrays.sort() for reference types requires that it is stable and guarantees nlogn performance. Neither of these are properties of standard quicksort.</li>
+</ul>
+</li>
+</ul>
+<h2>Week 4</h2>
+<h3>Priority Queues API</h3>
+<p>Collections:</p>
+<ul>
+<li>Stack</li>
+<li>Queue</li>
+<li>Randomized queue</li>
+<li>Priority queue - remove largest or smallest item</li>
+</ul>
+<p>Applications:</p>
+<ul>
+<li>Statistics</li>
+<li>Artificial Intelligence</li>
+<li>Number theory</li>
+<li>Graph searching</li>
+<li>Operating systems - load balancing</li>
+</ul>
+<p>Implementation:</p>
+<ul>
+<li>It allows us to find the largest M items in a steam of N items in NlogM (as compared with other data structures that have NM)</li>
+</ul>
+<p>The binary heap comes from a complete binary tree. Perfectly balanced except for the bottom level.</p>
+<p>Heap-ordered binary tree</p>
+<ul>
+<li>Keys in nodes</li>
+<li>Parent's key no smaller than children's keys</li>
+</ul>
+<p><img src="https://media.geeksforgeeks.org/wp-content/cdn-uploads/20221220165711/MinHeapAndMaxHeap1.png" alt="https://media.geeksforgeeks.org/wp-content/cdn-uploads/20221220165711/MinHeapAndMaxHeap1.png" /></p>
+<p>If we insert a key larger than its parents we exchange them until the order is restored. </p>
+<p>To insert into a heap, we add a node at the end then swim it up with at most 1 + lg N compares. AKA Peter principle; promoted to level of incompetence.</p>
+<p>If the parent's key becomes smaller than one or both, we figure out which children is higher then exchange them until the order is restored (recursively). AKA better subordinate promoted (power struggle)</p>
+<p>To delete the maximum, we exchange root with node at end, then sink it down. At most 2 Log N compares.</p>
+<p>Considerations:</p>
+<ul>
+<li>Client does not change keys while they're on the PQ</li>
+<li>Best practice: use immutable keys</li>
+</ul>
+<p>Java Note on Immutability: when we use <em>final</em> those values can't change once created. </p>
+<p>Immutable: String, Integer, Double, Color, Vector, Transaction...</p>
+<p>Why use?</p>
+<ul>
+<li>Simplifies debugging</li>
+<li>Safer </li>
+<li>Simplifies concurrent programming</li>
+<li>Safe to use as key</li>
+</ul>
+<p><em>We should make classes immutable as much as possible - Creator of Java</em></p>

@@ -1,0 +1,58 @@
+<!DOCTYPE html><html lang='en'>
+<head>
+<meta charset='utf-8'>
+
+            <meta name='viewport' content='width=device-width,initial-scale=1'>
+
+            <link rel='stylesheet' type='text/css' href='../links/main.css'>
+
+            <title>Mente &mdash; bayes.htm</title>
+</head>
+<body>
+<header>
+<a href='https://andrescn.me/mente/site/about.html'><img src='../media/interface/logo.svg' alt='Mente' height='100'></a></header>
+<nav>
+<details open>
+  <summary>Menu</summary>
+  <section class="site-nav">
+    <section>
+      <ul class="nobull capital">
+        <li><a href="about.html">About</a></li>
+        <li><a href="books.html">Books</a></li>
+        <li><a href="projects.html">Projects</a></li>
+      </ul>
+    </section>
+    <section>
+      <h2><a id='meta'>Meta</a></h2>
+      <ul class='nobull capital'>
+        <li><a href="index.html">Index</a></li>
+      </ul>
+  </section>
+</details></nav>
+<main>
+
+<!-- Generated file, do not edit -->
+
+<h1>bayes.htm</h1>
+<h2>Bayes' Probability</h2>
+<p><em>Take evidence and account for false positives</em></p>
+<h3>Formula</h3>
+<p><img src="https://betterexplained.com/ColorizedMath/img/Bayes_Theorem.png" alt="bayes illustrated" /></p>
+<ul>
+<li>Pr(H|E) = Chance of having cancer (H) given a positive test (E). This is what we want to know: How likely is it to have cancer with a positive result? In our case it was 7.8%.</li>
+<li>Pr(E|H) = Chance of a positive test (E) given that you had cancer (H). This is the chance of a true positive, 80% in our case.</li>
+<li>Pr(H) = Chance of having cancer (1%).</li>
+<li>Pr(not H) = Chance of not having cancer (99%).</li>
+<li>Pr(E|not H) = Chance of a positive test (E) given that you didn’t have cancer (not H). This is a false positive, 9.6% in our case.</li>
+</ul>
+<p>It comes down to the change of a <strong>true positive</strong> divided by the change of any <strong>positive.</strong></p>
+<p><img src="https://betterexplained.com/wp-content/plugins/wp-latexrender/pictures/abb9243a6a7d838ec02cc5f9713e5604.png" alt="" /></p>
+<p>It summarizes to the change Pr(E) of getting any positive result, whether a true positive in the cancer population or a false positive in the non-cancer population. (A weighting factor)</p>
+<p>When we normalize for false positives we get the very low chance of cancer given a positive test.</p>
+
+
+</main>
+<footer><hr />
+<span style='float:right'>Edited on 2023-09-07</span><b>Mente</b> © 2023 — 
+</footer>
+</body></html>

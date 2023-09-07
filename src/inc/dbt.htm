@@ -1,0 +1,62 @@
+<h2>Dbt Notes</h2>
+<h3>Incremental models:</h3>
+<p>They need:</p>
+<ul>
+<li>a <strong>filter</strong> to select just the new or updated records</li>
+<li>a <strong>conditional</strong> block that wraps our filter and only applies it when we want it</li>
+<li><strong>configuration</strong> that tells dbt we want to build incrementally and helps apply the conditional filter when needed</li>
+</ul>
+<pre><code class="language-sql">
+select * from orders
+
+where
+  updated_at &gt; (select max(updated_at) from {{ this }})
+  
+</code></pre>
+<p><strong>Config for incremental models</strong></p>
+<p>Note: order_id can also be an array [&quot;a&quot;,&quot;b&quot;] or you can define a surrogate key.</p>
+<pre><code>{{
+    config(
+        materialized='incremental',
+        unique_key='order_id'
+    )
+}}
+
+select ...
+</code></pre>
+<p>We’ve added a new config option unique_key, that tells dbt that <strong>if it finds a record in our previous run</strong> — the data in the warehouse already — with the same unique id (in our case order_id for our orders table) that exists in the new data we’re adding incrementally, <strong>to update that record instead of adding it as a separate row.</strong></p>
+<p><strong>Full example</strong></p>
+<pre><code class="language-sql">{{
+    config(
+        materialized='incremental',
+        unique_key='order_id'
+    )
+}}
+
+select * from orders
+
+{% if is_incremental() %}
+
+where
+  updated_at &gt; (select max(updated_at) from {{ this }})
+
+{% endif %}
+</code></pre>
+<p><strong>Strategies</strong></p>
+<p><strong>Append</strong>: only use if duplicates aren't a problem. Takes records and inserts them; it can't update or delete records.</p>
+<p><img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*f2dyZA9N_j8ox9RkOwegUg.png" alt="" /></p>
+<p><strong>Merge</strong>: Need to specify a unique key. If it exists, it will merge the update record.</p>
+<p><img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*o59bXBWxVHQ7-8vTcQGHEA.png" alt="" /></p>
+<p><strong>Summary of Strategies</strong></p>
+<p><img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*MTBNKDCa_csd--9qk4b9pA.png" alt="" /></p>
+<h3>is_incremental()</h3>
+<p>The is_incremental() macro will return True if all of the following conditions are met:</p>
+<ol>
+<li>the destination table already exists in the database</li>
+<li>dbt is not running in full-refresh mode</li>
+<li>the running model is configured with materialized='incremental'</li>
+</ol>
+<p><strong>Considerations</strong></p>
+<ul>
+<li>Run full-refresh on the weekends or on a weekly or monthly to prevent data drift (dbt build --ful-refresh -s orders)</li>
+</ul>

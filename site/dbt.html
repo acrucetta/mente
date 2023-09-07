@@ -6,7 +6,7 @@
 
             <link rel='stylesheet' type='text/css' href='../links/main.css'>
 
-            <title>Mente &mdash; meta.nav.htm</title>
+            <title>Mente &mdash; dbt.htm</title>
 </head>
 <body>
 <header>
@@ -33,24 +33,20 @@
 
 <!-- Generated file, do not edit -->
 
-<h1>meta.nav.htm</h1>
-<details open>
-  <summary>Menu</summary>
-  <section class="site-nav">
-    <section>
-      <ul class="nobull capital">
-        <li><a href="about.html">About</a></li>
-        <li><a href="books.html">Books</a></li>
-        <li><a href="projects.html">Projects</a></li>
-      </ul>
-    </section>
-    <section>
-      <h2><a id='meta'>Meta</a></h2>
-      <ul class='nobull capital'>
-        <li><a href="index.html">Index</a></li>
-      </ul>
-  </section>
-</details>
+<h1>dbt.htm</h1>
+<h2>Dbt Notes</h2>
+<h3>Incremental models:</h3>
+<p>They need:</p>
+<ul>
+<li>a <strong>filter</strong> to select just the new or updated records</li>
+<li>a <strong>conditional</strong> block that wraps our filter and only applies it when we want it</li>
+<li><strong>configuration</strong> that tells dbt we want to build incrementally and helps apply the conditional filter when needed</li>
+</ul>
+<pre><code class="language-sql">
+select * from orders
+
+where
+  updated_at &gt; (select max(updated_at) from 
 
 </main>
 <footer><hr />
