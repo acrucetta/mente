@@ -607,3 +607,20 @@ Arrays.sort(points, p.POLAR_ORDER)
 <li>Safe to use as key</li>
 </ul>
 <p><em>We should make classes immutable as much as possible - Creator of Java</em></p>
+<h3>Week 3: Heapsort</h3>
+<ul>
+<li>We start with an unordered list of numbers; we transform it into a max heap (&quot;heapify&quot;)</li>
+<li>Then we replace the item at the root with the last item. Repeating until the size of the heap is greater than 1</li>
+</ul>
+<p><strong>Complexity</strong></p>
+<ul>
+<li>Best Case: O(n log n)</li>
+<li>Average Case: O(n log n)</li>
+<li>Worst Case: O(n log n)</li>
+</ul>
+<p>Significance: In-place sorting algorithm with NlogN worst-case.</p>
+<ul>
+<li>Mergesort: no, linear extra space</li>
+<li>Quicksort, no, quadratic time in worst case</li>
+<li>Heapsort: yes</li>
+</ul>
