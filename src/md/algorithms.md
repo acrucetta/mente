@@ -640,3 +640,18 @@ Why use?
 
 *We should make classes immutable as much as possible - Creator of Java*
 
+### Week 3: Heapsort
+
+- We start with an unordered list of numbers; we transform it into a max heap ("heapify")
+- Then we replace the item at the root with the last item. Repeating until the size of the heap is greater than 1
+
+**Complexity**
+- Best Case: O(n log n)
+- Average Case: O(n log n)
+- Worst Case: O(n log n)
+
+Significance: In-place sorting algorithm with NlogN worst-case.
+- Mergesort: no, linear extra space
+- Quicksort, no, quadratic time in worst case
+- Heapsort: yes
+
