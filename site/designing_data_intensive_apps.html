@@ -35,7 +35,19 @@
 
 <h1>designing_data_intensive_apps.htm</h1>
 <h1>Designing Data-Intensive Apps</h1>
-<h3>Data Models and Query Languages</h3>
+<h2>Chapter 1: Foundations of Data Systems</h2>
+<ul>
+<li>Reliability - tolerating hardware and software faults</li>
+<li>Scalability - measuring load and performance; latency; percentiles; throughput</li>
+<li>Maintainability - operability, simplicity, and evolvability</li>
+</ul>
+<h3>Reliability</h3>
+<ul>
+<li>Reliability implies &quot;continuing to work correctly even when things go wrong&quot;</li>
+<li>What goes wrong are called <em>faults</em>, systems that anticipate faults are called <em>fault-tolerant</em> or <em>resilient</em>.</li>
+<li>Many faults are due to poor error handling; by inducing faults we can ensure the system works as expected (see Netflix Chaos Monkeys)</li>
+</ul>
+<h2>Data Models and Query Languages</h2>
 <p><strong>Relational Model</strong></p>
 <p>The roots of relational databases lie in business data processing, which was performed on mainframe computers in the 1960s and ’70s. The use cases appear mundane from today’s perspective: typically transaction processing (entering sales or banking transactions, airline reservations, stock-keeping in warehouses) and batch processing (customer invoicing, payroll, reporting).</p>
 <p><strong>Birth of NoSQL</strong></p>
@@ -58,7 +70,7 @@
 <p>The document model has limitations: for example, you cannot refer directly to a nested item within a document, but instead you need to say something like “the second item in the list of positions for user 251”</p>
 <p>However, if your application does use many-to-many relationships, the document model becomes less appealing. It’s possible to reduce the need for joins by denormalizing, but then the application code needs to do additional work to keep the denormalized data consistent.</p>
 <p>Document databases are sometimes called schemaless, but that’s misleading, as the code that reads the data usually assumes some kind of structure—i.e., there is an implicit schema, but it is not enforced by the database</p>
-<h3>Transaction Processing or Analytics</h3>
+<h2>Transaction Processing or Analytics</h2>
 <p>Records are inserted or updated based on the user’s input. Because these applications are interactive, the access pattern became known as <em>online transaction processing</em>(OLTP)</p>
 <p>Usually, an analytic query needs to scan over a huge number of records, only reading a few columns per record, and calculates aggregate statistics (such as count, sum, or average) rather than returning the raw data to the user. For example, if your data is a table of sales transactions, then analytic queries might be:</p>
 <ul>
@@ -71,7 +83,7 @@
 <p>Table 3-1.</p>
 <p>![[/image1.png]]</p>
 <p>These OLTP systems are usually expected to be highly available and to process transactions with low latency since they are often critical to the operation of the business. Database administrators, therefore, closely guard their OLTP databases. They are usually reluctant to let business analysts run ad hoc analytic queries on an OLTP database since those queries are often expensive, scanning large parts of the dataset, which can harm the performance of concurrently executing transactions.</p>
-<h3>Data Warehouse</h3>
+<h2>Data Warehouse</h2>
 <p>A <em>data warehouse</em>, by contrast, is a separate database that analysts can query to their hearts’ content without affecting OLTP operations [48]. The data warehouse contains a read-only copy of the data in all the various OLTP systems in the company. Data is extracted from OLTP databases (either a periodic data dump or a continuous stream of updates), transformed into an analysis-friendly schema, cleaned up, and then loaded into the data warehouse. This process of getting data into the</p>
 <p>The warehouse is known as <em>Extract–Transform–Load</em> (ETL)</p>
 <p>![[/image2.png]]</p>
@@ -130,6 +142,6 @@
 
 </main>
 <footer><hr />
-<span style='float:right'>Edited on 2023-09-11</span><b>Mente</b> © 2023 — 
+<span style='float:right'>Edited on 2023-09-21</span><b>Mente</b> © 2023 — 
 </footer>
 </body></html>
