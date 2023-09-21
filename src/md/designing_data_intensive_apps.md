@@ -1,6 +1,17 @@
 # Designing Data-Intensive Apps
 
-### Data Models and Query Languages
+## Chapter 1: Foundations of Data Systems
+- Reliability - tolerating hardware and software faults
+- Scalability - measuring load and performance; latency; percentiles; throughput
+- Maintainability - operability, simplicity, and evolvability
+
+### Reliability
+- Reliability implies "continuing to work correctly even when things go wrong"
+- What goes wrong are called *faults*, systems that anticipate faults are called *fault-tolerant* or *resilient*.
+- Many faults are due to poor error handling; by inducing faults we can ensure the system works as expected (see Netflix Chaos Monkeys)
+
+
+## Data Models and Query Languages
 
 **Relational Model**
 
@@ -34,7 +45,7 @@ However, if your application does use many-to-many relationships, the document m
 
 Document databases are sometimes called schemaless, but that’s misleading, as the code that reads the data usually assumes some kind of structure—i.e., there is an implicit schema, but it is not enforced by the database
 
-### Transaction Processing or Analytics
+## Transaction Processing or Analytics
 
 Records are inserted or updated based on the user’s input. Because these applications are interactive, the access pattern became known as _online transaction processing_(OLTP)
 
@@ -54,7 +65,7 @@ Table 3-1.
 
 These OLTP systems are usually expected to be highly available and to process transactions with low latency since they are often critical to the operation of the business. Database administrators, therefore, closely guard their OLTP databases. They are usually reluctant to let business analysts run ad hoc analytic queries on an OLTP database since those queries are often expensive, scanning large parts of the dataset, which can harm the performance of concurrently executing transactions.
 
-### Data Warehouse
+## Data Warehouse
 
 A _data warehouse_, by contrast, is a separate database that analysts can query to their hearts’ content without affecting OLTP operations [48]. The data warehouse contains a read-only copy of the data in all the various OLTP systems in the company. Data is extracted from OLTP databases (either a periodic data dump or a continuous stream of updates), transformed into an analysis-friendly schema, cleaned up, and then loaded into the data warehouse. This process of getting data into the
 
