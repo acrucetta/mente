@@ -655,3 +655,127 @@ Significance: In-place sorting algorithm with NlogN worst-case.
 - Quicksort, no, quadratic time in worst case
 - Heapsort: yes
 
+## Week 4: Symbol Tables
+
+- Insert a value with a specified key
+- Given a key, search for the corresponding value
+
+**DNS lookup**
+- Insert URL with specified IP address
+- Given URL, find corresponding IP address
+
+API Examples
+- put
+- get
+- delete
+- contains
+- isEmpty
+- size
+- keys
+
+We associate one value with each key. 
+
+Conventions:
+- Values are not null
+- Method get() returns null if key not present
+- Method put() overwrites old value with new value
+
+Value type: any generic type.
+- Assume keys are Comparable: we use compareTo()
+- Assume keys are any generic type; use equals() to est equality
+
+Best practices - use immutable types for symbol table keys.
+- Immutables in Java: String ,Integer, Double, File...
+- Mutable in Java: StringBuilder, java.net, URL, arrays
+
+All Java classes inherit a method equals()
+- Reflexive
+- Symmetric
+- Transitive
+- Non-null
+
+### Symbol Table Implementations
+
+**Sequential Search (Unordered LinkedList)**
+- Performance
+	- Search - N
+	- Insert - N
+	- Search Hit - N/2
+	- Inser - N
+- Key Interface
+	- equals()
+
+We use a LinkedList in this implementation.
+
+**Binary search in an ordered array**
+- Data structure: maintain an ordered array of key-value pairs
+- We use a rank helper function to find how many keys < K
+- Performance
+	- Worst
+		- Search - log N
+		- Insert N
+	- Avg Case
+		- Search Hit - log N
+		- Inser - N/2
+- Key Interface:
+	- compareTo()
+
+### Ordered Operations
+- We want to be able to do min(); get(); floor(); select(7); ceiling() etc... on a symbol table
+- These ops come natural in a binary search operation
+
+We can add more operations to a Symbol Table such as:
+- deleteMin()
+- deleteMax()
+- select()
+- rank()
+- min() / max()
+- ordered iteration
+
+We normally argue against wide interfaces. 
+
+
+### Binary Search Trees
+
+A BST is a binary tree in symmetric order.
+
+It is either: 
+- Empty
+- Two disjoint binary trees (left and right)
+
+Each node has a key and every node's key is:
+- Larger than all the keys in its left subtree
+- Smaller than all the keys in its right subtree
+
+```java
+
+private class Node
+{
+	private Key key;
+	private Value val;
+	private Node left, right;
+	
+	public Node(Key key, Value val)
+	{
+		this.key = key;
+		this.val = val;
+	}
+}
+
+public Value get(Key key)
+{
+	Node x = root;
+	while (x != null)
+	{
+		int cmp = key.compareTo(x.key)
+		if (cmp < 0) x = x.left;
+		else if (cmp > 0) x = x.right;
+		else if (cmp == 0) return x.val;
+	}
+	return null;
+}
+
+```
+
+
+

@@ -3,13 +3,13 @@
 
 **Things I'm learning** 
 - Algorithms & Data Structures (notes: {algorithms})
-- Structure and Interpretation of Computer Languages (notes: {sic})
-- How we consume energy (notes: {energy})
+- How to use Linux and set-up applications with Kubernetes (notes: {devops})
 
 **Questions I'm focused on**
 - How do virtual machines compile language?
-- What makes an intuitive text editor?
 - How do ML domain accelerators work?
+- How can I deploy my own website on a remote server?
+- How can we use Kubernetes to handle ML deployments?
 
 **Problems I'm interested in**
 - What does it mean to transition to cleaner energy?
