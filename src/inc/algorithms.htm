@@ -624,3 +624,146 @@ Arrays.sort(points, p.POLAR_ORDER)
 <li>Quicksort, no, quadratic time in worst case</li>
 <li>Heapsort: yes</li>
 </ul>
+<h2>Week 4: Symbol Tables</h2>
+<ul>
+<li>Insert a value with a specified key</li>
+<li>Given a key, search for the corresponding value</li>
+</ul>
+<p><strong>DNS lookup</strong></p>
+<ul>
+<li>Insert URL with specified IP address</li>
+<li>Given URL, find corresponding IP address</li>
+</ul>
+<p>API Examples</p>
+<ul>
+<li>put</li>
+<li>get</li>
+<li>delete</li>
+<li>contains</li>
+<li>isEmpty</li>
+<li>size</li>
+<li>keys</li>
+</ul>
+<p>We associate one value with each key. </p>
+<p>Conventions:</p>
+<ul>
+<li>Values are not null</li>
+<li>Method get() returns null if key not present</li>
+<li>Method put() overwrites old value with new value</li>
+</ul>
+<p>Value type: any generic type.</p>
+<ul>
+<li>Assume keys are Comparable: we use compareTo()</li>
+<li>Assume keys are any generic type; use equals() to est equality</li>
+</ul>
+<p>Best practices - use immutable types for symbol table keys.</p>
+<ul>
+<li>Immutables in Java: String ,Integer, Double, File...</li>
+<li>Mutable in Java: StringBuilder, java.net, URL, arrays</li>
+</ul>
+<p>All Java classes inherit a method equals()</p>
+<ul>
+<li>Reflexive</li>
+<li>Symmetric</li>
+<li>Transitive</li>
+<li>Non-null</li>
+</ul>
+<h3>Symbol Table Implementations</h3>
+<p><strong>Sequential Search (Unordered LinkedList)</strong></p>
+<ul>
+<li>Performance
+<ul>
+<li>Search - N</li>
+<li>Insert - N</li>
+<li>Search Hit - N/2</li>
+<li>Inser - N</li>
+</ul>
+</li>
+<li>Key Interface
+<ul>
+<li>equals()</li>
+</ul>
+</li>
+</ul>
+<p>We use a LinkedList in this implementation.</p>
+<p><strong>Binary search in an ordered array</strong></p>
+<ul>
+<li>Data structure: maintain an ordered array of key-value pairs</li>
+<li>We use a rank helper function to find how many keys &lt; K</li>
+<li>Performance
+<ul>
+<li>Worst
+<ul>
+<li>Search - log N</li>
+<li>Insert N</li>
+</ul>
+</li>
+<li>Avg Case
+<ul>
+<li>Search Hit - log N</li>
+<li>Inser - N/2</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Key Interface:
+<ul>
+<li>compareTo()</li>
+</ul>
+</li>
+</ul>
+<h3>Ordered Operations</h3>
+<ul>
+<li>We want to be able to do min(); get(); floor(); select(7); ceiling() etc... on a symbol table</li>
+<li>These ops come natural in a binary search operation</li>
+</ul>
+<p>We can add more operations to a Symbol Table such as:</p>
+<ul>
+<li>deleteMin()</li>
+<li>deleteMax()</li>
+<li>select()</li>
+<li>rank()</li>
+<li>min() / max()</li>
+<li>ordered iteration</li>
+</ul>
+<p>We normally argue against wide interfaces. </p>
+<h3>Binary Search Trees</h3>
+<p>A BST is a binary tree in symmetric order.</p>
+<p>It is either: </p>
+<ul>
+<li>Empty</li>
+<li>Two disjoint binary trees (left and right)</li>
+</ul>
+<p>Each node has a key and every node's key is:</p>
+<ul>
+<li>Larger than all the keys in its left subtree</li>
+<li>Smaller than all the keys in its right subtree</li>
+</ul>
+<pre><code class="language-java">
+private class Node
+{
+	private Key key;
+	private Value val;
+	private Node left, right;
+	
+	public Node(Key key, Value val)
+	{
+		this.key = key;
+		this.val = val;
+	}
+}
+
+public Value get(Key key)
+{
+	Node x = root;
+	while (x != null)
+	{
+		int cmp = key.compareTo(x.key)
+		if (cmp &lt; 0) x = x.left;
+		else if (cmp &gt; 0) x = x.right;
+		else if (cmp == 0) return x.val;
+	}
+	return null;
+}
+
+</code></pre>
