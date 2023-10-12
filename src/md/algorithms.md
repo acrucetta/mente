@@ -778,4 +778,79 @@ public Value get(Key key)
 ```
 
 
+## Week 5: Balanced Search Trees
+
+### 2-3 Search Trees
+
+Allow 1 or 2 keys per node. 2 node equals one key with two children. 3 node equals 2 keys with 3 children.
+
+Every path from root to null has same length. Inorder traversal yields keys in ascending order.
+
+Search:
+- Compare search key against keys in node
+- Find interval containing search key
+- Follow associated link (rec)
+
+Inserting
+- We want to keep the 2 key 3 node or 1 key 2 node strategy. Therefore we need to insert and check recursively so that the condition is met across the nodes we changed.
+- We may have some temporary 4 nodes; we split them and convert them to 1 key 2 nodes and increase the height by 1
+- Splitting a 4 node is a local transformation with a constant number of operations
+
+Tree Height
+- Worst case: log N (all 2 nodes)
+- Best case: log3N or .631 log N (all 3 nodes)
+
+### Red Black B-Trees
+
+A red-black tree is a binary search tree with one extra bit of storage per node: its color, which can be either RED or BLACK. By constraining the node colors on any simple path from the root to a leaf, red-black trees ensure that no such path is more than twice as long as any other, so that the tree is approximately balanced.
+
+A red-black tree is a binary tree that satisfies the following red-black properties:
+1. Every node is either red or black.
+2. The root is black.
+3. Every leaf (NIL) is black.
+4. If a node is red, then both its children are black.
+5. For each node, all simple paths from the node to descendant leaves contain the
+same number of black nodes.
+
+Time Complexity:
+- Search - O(Log N)
+- Insert - O(Log N)
+- Remove - O(Log N)
+
+![https://media.cheggcdn.com/media%2F47a%2F47a9c017-f857-4c93-be2c-0a8f23194b06%2FphpDyOAKI.png](https://media.cheggcdn.com/media%2F47a%2F47a9c017-f857-4c93-be2c-0a8f23194b06%2FphpDyOAKI.png)
+
+Properties:
+- No node has two red links connected to it
+	- Every path from root to null link has same number of black links
+	- Red links lean left
+
+
+**Search**
+
+Search is the same after as for elementary BST (ignore color). Most other operations are also identical
+
+We now add a boolean color to the class.
+
+```
+private class Node {
+	Key key;
+	Value val;
+	Node left, right;
+	boolean color;
+}
+```
+
+**Rotations**
+
+Left rotation:
+- Check the node is red
+- Orient a temporarily right leaning red link to lean left
+
+Right rotation:
+- Orient a left leaning red link to temporarily lean right
+
+Color flip:
+- Recolor to split a temporary 4-node
+
+With the operations above, we maintain 1-1 correspondence with 2-3 trees by applying elementary red-black BST operations
 
