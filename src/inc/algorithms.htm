@@ -767,3 +767,76 @@ public Value get(Key key)
 }
 
 </code></pre>
+<h2>Week 5: Balanced Search Trees</h2>
+<h3>2-3 Search Trees</h3>
+<p>Allow 1 or 2 keys per node. 2 node equals one key with two children. 3 node equals 2 keys with 3 children.</p>
+<p>Every path from root to null has same length. Inorder traversal yields keys in ascending order.</p>
+<p>Search:</p>
+<ul>
+<li>Compare search key against keys in node</li>
+<li>Find interval containing search key</li>
+<li>Follow associated link (rec)</li>
+</ul>
+<p>Inserting</p>
+<ul>
+<li>We want to keep the 2 key 3 node or 1 key 2 node strategy. Therefore we need to insert and check recursively so that the condition is met across the nodes we changed.</li>
+<li>We may have some temporary 4 nodes; we split them and convert them to 1 key 2 nodes and increase the height by 1</li>
+<li>Splitting a 4 node is a local transformation with a constant number of operations</li>
+</ul>
+<p>Tree Height</p>
+<ul>
+<li>Worst case: log N (all 2 nodes)</li>
+<li>Best case: log3N or .631 log N (all 3 nodes)</li>
+</ul>
+<h3>Red Black B-Trees</h3>
+<p>A red-black tree is a binary search tree with one extra bit of storage per node: its color, which can be either RED or BLACK. By constraining the node colors on any simple path from the root to a leaf, red-black trees ensure that no such path is more than twice as long as any other, so that the tree is approximately balanced.</p>
+<p>A red-black tree is a binary tree that satisfies the following red-black properties:</p>
+<ol>
+<li>Every node is either red or black.</li>
+<li>The root is black.</li>
+<li>Every leaf (NIL) is black.</li>
+<li>If a node is red, then both its children are black.</li>
+<li>For each node, all simple paths from the node to descendant leaves contain the
+same number of black nodes.</li>
+</ol>
+<p>Time Complexity:</p>
+<ul>
+<li>Search - O(Log N)</li>
+<li>Insert - O(Log N)</li>
+<li>Remove - O(Log N)</li>
+</ul>
+<p><img src="https://media.cheggcdn.com/media%2F47a%2F47a9c017-f857-4c93-be2c-0a8f23194b06%2FphpDyOAKI.png" alt="https://media.cheggcdn.com/media%2F47a%2F47a9c017-f857-4c93-be2c-0a8f23194b06%2FphpDyOAKI.png" /></p>
+<p>Properties:</p>
+<ul>
+<li>No node has two red links connected to it
+<ul>
+<li>Every path from root to null link has same number of black links</li>
+<li>Red links lean left</li>
+</ul>
+</li>
+</ul>
+<p><strong>Search</strong></p>
+<p>Search is the same after as for elementary BST (ignore color). Most other operations are also identical</p>
+<p>We now add a boolean color to the class.</p>
+<pre><code>private class Node {
+	Key key;
+	Value val;
+	Node left, right;
+	boolean color;
+}
+</code></pre>
+<p><strong>Rotations</strong></p>
+<p>Left rotation:</p>
+<ul>
+<li>Check the node is red</li>
+<li>Orient a temporarily right leaning red link to lean left</li>
+</ul>
+<p>Right rotation:</p>
+<ul>
+<li>Orient a left leaning red link to temporarily lean right</li>
+</ul>
+<p>Color flip:</p>
+<ul>
+<li>Recolor to split a temporary 4-node</li>
+</ul>
+<p>With the operations above, we maintain 1-1 correspondence with 2-3 trees by applying elementary red-black BST operations</p>
