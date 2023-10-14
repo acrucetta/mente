@@ -6,7 +6,7 @@
 
             <link rel='stylesheet' type='text/css' href='../links/main.css'>
 
-            <title>Mente &mdash; dbt.htm</title>
+            <title>Mente &mdash; data_ingestion.htm</title>
 </head>
 <body>
 <header>
@@ -33,20 +33,26 @@
 
 <!-- Generated file, do not edit -->
 
-<h1>dbt.htm</h1>
-<h2>Dbt Notes</h2>
-<h3>Incremental models:</h3>
-<p>They need:</p>
+<h1>data_ingestion.htm</h1>
+<h2>Data Ingestion</h2>
+<p>Landscape:</p>
 <ul>
-<li>a <strong>filter</strong> to select just the new or updated records</li>
-<li>a <strong>conditional</strong> block that wraps our filter and only applies it when we want it</li>
-<li><strong>configuration</strong> that tells dbt we want to build incrementally and helps apply the conditional filter when needed</li>
+<li>Managed Solutions
+<ul>
+<li>Fivetran</li>
+<li>Airbyte</li>
+<li>Talend</li>
 </ul>
-<pre><code class="language-sql">
-select * from orders
+</li>
+<li>Self-Serve
+<ul>
+<li>Databricks</li>
+<li>Azure Data Factory</li>
+<li>Airflow / Prefect / Dagster (Pipeline as Code)</li>
+</ul>
+</li>
+</ul>
 
-where
-  updated_at &gt; (select max(updated_at) from 
 
 </main>
 <footer><hr />
