@@ -854,3 +854,22 @@ Color flip:
 
 With the operations above, we maintain 1-1 correspondence with 2-3 trees by applying elementary red-black BST operations
 
+Balance: 
+- The height of the tree is less than 2 Log N in the worst case.
+- Height of the tree is 1.00logN in typical applications
+
+
+## Geometric Applications of BSTs
+
+Intersection among geometric objects. E.g., 2d orthogonal range search. 
+
+Applications in CAD, games, movies, virtual reality, databases...
+
+Extending ordered symbol table:
+- Range search: adding range search btw k1 and k2
+- Range count: how many keys between k1 and k2
+
+Geometric Interpretation:
+- Keys are point on a line
+- Find/count points in a given 1d interval
+

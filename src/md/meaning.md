@@ -1,0 +1,11 @@
+## On Meaning
+
+**Written by John Gardner (The Road to Self-Renewal)**
+
+*The world loves talent but pays off on character.*
+
+*People of every age need commitments beyond the self, need the meaning that commitments provide. Self-preoccupation is a prison, as every self-absorbed person finally knows. Commitments beyond the self can get you out of prison.*
+
+*For many, this life is a vale of tears; for no one is it free of pain. But we are so designed that we can cope with it if we can live in some context of a coherent community and traditionally prescribed patterns of culture. Today you can’t count on any such heritage. You have to build meaning into your life, and you build it through your commitments, whether to your religion, to an ethical order as you conceive it, to your life’s work, to loved ones, to your fellow humans. Young people run around searching for identity, but it isn’t handed out free anymore - not in this transient, rootless, pluralistic society. Your identity is what you’ve committed yourself to.*
+
+*Meaning is not something you stumble across, like the answer to a riddle or the prize in a treasure hunt. Meaning is something you build into your life. You build it out of your own past, out of your affections and loyalties, out of the experience of humankind as it is passed on to you, out of your own talent and understanding, out of the things you believe in, out of the things and people you love, out of the values for which you are willing to sacrifice something. The ingredients are there. You are the only one who can put them together into that unique pattern that will be your life. Let it be a life that has dignity and meaning for you. If it does, then the particular balance of success or failure is of less account.*

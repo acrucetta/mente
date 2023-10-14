@@ -1,3 +1,17 @@
+### October 2023
+
+Projects
+- Continuing with the Algorithms class in Coursera
+- Started working on KodeKloud to learn Linux and DevOps
+
+Reading
+- Finished Dune Messiah
+- Started reading Brothers Karamazov and the Physician
+- Listening to Elon Musk's biography
+
+Misc
+- Went to meditation retreat for 7 days 
+
 ### August 2023
 
 Projects
