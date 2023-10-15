@@ -2,7 +2,6 @@
 
 
 **Written by Dan Luu: https://danluu.com/culture/**
-- Main Points:
 	- Culture is enforced by people
 	- Where you start working can influence what culture you bring to other places
 	- If you want to hire programmers that know how to program ask them programming questions 
