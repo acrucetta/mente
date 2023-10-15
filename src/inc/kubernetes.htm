@@ -1,0 +1,26 @@
+<h2>Kubernetes</h2>
+<p>Came with the rise of microservices; we now use dozens of containers across different environments </p>
+<p>Kubernetes guarantees:</p>
+<ul>
+<li>high availability or no downtime</li>
+<li>scalability or high performance</li>
+<li>disaster recovery - backup and restore</li>
+</ul>
+<p>Basic architecture:</p>
+<ul>
+<li>Linux Master Node (lightweight)
+<ul>
+<li>Worker node (heavy weight) with &quot;kubelet&quot; processes inside each of them</li>
+<li>Each worker node has containers with applications running inside of them</li>
+</ul>
+</li>
+<li>The master node runs Kubernetes processes which include: 
+<ul>
+<li>API server (entry point to K8S cluster). </li>
+<li>Controller manager - keeps track of what's happening in the cluster</li>
+<li>Scheduler - ensures pod placement </li>
+<li>etcd - key value storage; current state </li>
+</ul>
+</li>
+<li>Virtual network unified by a powerful machine connected to all of the nodes</li>
+</ul>
