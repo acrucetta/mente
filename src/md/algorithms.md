@@ -956,3 +956,30 @@ Range search:
 - adapts well to high dimensional and clustered data
 - discovered by an undergrad in an algorithms class
 
+### 1D Interval Search
+
+Data structure to hold a set of overlapping intervals. 
+
+We want to:
+- Insert
+- Search
+- Delete
+- Check for an intersection
+
+E.g., which intervals intersect (9,16)?
+
+Create a BST, each node contains an interval (lo, hi)
+- We use the left endpoint as BST key
+- Store max endpoint in subtree rooted at node
+
+Search:
+- If interval node intersects, return it
+- Else if left subtree is null, go right
+- Else if max endpoint in left subtree is less than lo, go right
+- Else go left
+
+![https://media.geeksforgeeks.org/wp-content/uploads/20200708073504/interval.jpg](https://media.geeksforgeeks.org/wp-content/uploads/20200708073504/interval.jpg)
+
+We can use a Red Black BST to guarantee performance of the search.
+
+Most operations have a brute of 1/N; for interval search trees we have Log N for most cases. 
