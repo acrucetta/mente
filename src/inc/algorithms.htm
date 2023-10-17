@@ -858,3 +858,91 @@ same number of black nodes.</li>
 <li>Keys are point on a line</li>
 <li>Find/count points in a given 1d interval</li>
 </ul>
+<h3>Line Segment Intersection</h3>
+<p>Given N horizontal and vertical line segments, find all intersections.</p>
+<p>Sweep-line algorithm:</p>
+<ul>
+<li>x coordinates define events</li>
+<li>h-segment (left endpoint): insert your coordinates into the BST</li>
+</ul>
+<p>It takes time proportional to NlogN+R to find all R intersections.</p>
+<h3>Kd-Trees</h3>
+<p>We now have 2 dimensional keys. We want to:</p>
+<ul>
+<li>insert a 2d key</li>
+<li>search for a 2d key</li>
+<li>Range search - find all keys that lie in a 2d range</li>
+<li>Range count - count all keys in a 2d range</li>
+</ul>
+<p>Keys are point in the plane. We can find and count the points in a given h-v rectangle.</p>
+<p><strong>Range Search</strong></p>
+<p>Space Time Tradeoff:</p>
+<ul>
+<li>Space: M^2 + N</li>
+<li>Time: 1 + N/M^2</li>
+</ul>
+<p>Running time:</p>
+<ul>
+<li>Init N</li>
+<li>Inser 1</li>
+<li>Range search 1 per point range</li>
+</ul>
+<p>Problem: Points are not evenly distributed </p>
+<ul>
+<li>e.g., USA Map</li>
+</ul>
+<p><img src="https://mma.prnewswire.com/media/1311215/US_Tree_Map_1200x757.jpg?p=twitter" alt="usa map" /></p>
+<p>We space partition the trees to represent a recursive subdivision of 2d space</p>
+<ul>
+<li>Grid: divide space into squares</li>
+<li>2d tree: recursively divide into half-lines</li>
+</ul>
+<p>Applications:</p>
+<ul>
+<li>Accelerate render in Doom</li>
+<li>Flight simulators</li>
+<li>Nearest neighbor search</li>
+<li>Astronomical databases</li>
+</ul>
+<p><img src="https://i.stack.imgur.com/Hs9p6.png" alt="https://i.stack.imgur.com/Hs9p6.png" /></p>
+<p>We partition according to the points and their coordinates. We alternate which coordinates we use as the key. E.g., left child go down, right child go up.</p>
+<p>Range search:</p>
+<ul>
+<li>Find all point in a query axis aligned rectangle 
+<ul>
+<li>Check if point in node lies in given rectangle</li>
+<li>Rec search left/bottom</li>
+<li>Rec search right/top</li>
+</ul>
+</li>
+<li>Typical case: R+logN</li>
+<li>Worst case scenario: R+sqrt(N)</li>
+</ul>
+<p><strong>Nearest Neighbor Search</strong></p>
+<ul>
+<li>Typical case: log N</li>
+<li>Worst case: N</li>
+<li>Algorithm
+<ul>
+<li>Check dist from point in node to query</li>
+<li>Rec search left/bottom</li>
+<li>Rec search right/top</li>
+<li>Organize so we begin by searching for query point</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.stack.imgur.com/hhZE1.jpg" alt="https://i.stack.imgur.com/hhZE1.jpg" /></p>
+<h3>Flocking Boids</h3>
+<p>3 simple rules lead to complex emergent behavior:</p>
+<ul>
+<li>collision avoidance: point away from k nearest boids</li>
+<li>flock centering: point towards the center of mass of k nearest boids</li>
+<li>velocity matching: update velocity to the avg of k nearest boids</li>
+</ul>
+<p><img src="https://repository-images.githubusercontent.com/258305543/28971980-92d2-11ea-8a66-4d0d91c0e790" alt="https://repository-images.githubusercontent.com/258305543/28971980-92d2-11ea-8a66-4d0d91c0e790" /></p>
+<p><strong>KD trees are a simple data structure for processing k-dimensional data:</strong></p>
+<ul>
+<li>widely used</li>
+<li>adapts well to high dimensional and clustered data</li>
+<li>discovered by an undergrad in an algorithms class</li>
+</ul>

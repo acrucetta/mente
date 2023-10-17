@@ -873,3 +873,86 @@ Geometric Interpretation:
 - Keys are point on a line
 - Find/count points in a given 1d interval
 
+### Line Segment Intersection
+
+Given N horizontal and vertical line segments, find all intersections.
+
+Sweep-line algorithm:
+- x coordinates define events
+- h-segment (left endpoint): insert your coordinates into the BST
+
+It takes time proportional to NlogN+R to find all R intersections.
+
+### Kd-Trees
+
+We now have 2 dimensional keys. We want to:
+- insert a 2d key
+- search for a 2d key
+- Range search - find all keys that lie in a 2d range
+- Range count - count all keys in a 2d range
+
+Keys are point in the plane. We can find and count the points in a given h-v rectangle.
+
+**Range Search**
+
+Space Time Tradeoff:
+- Space: M^2 + N
+- Time: 1 + N/M^2
+
+Running time:
+- Init N
+- Inser 1
+- Range search 1 per point range
+
+Problem: Points are not evenly distributed 
+- e.g., USA Map
+
+![usa map](https://mma.prnewswire.com/media/1311215/US_Tree_Map_1200x757.jpg?p=twitter)
+
+We space partition the trees to represent a recursive subdivision of 2d space
+- Grid: divide space into squares
+- 2d tree: recursively divide into half-lines
+
+Applications:
+- Accelerate render in Doom
+- Flight simulators
+- Nearest neighbor search
+- Astronomical databases
+
+![https://i.stack.imgur.com/Hs9p6.png](https://i.stack.imgur.com/Hs9p6.png)
+
+We partition according to the points and their coordinates. We alternate which coordinates we use as the key. E.g., left child go down, right child go up.
+
+Range search:
+- Find all point in a query axis aligned rectangle 
+	- Check if point in node lies in given rectangle
+	- Rec search left/bottom
+	- Rec search right/top
+- Typical case: R+logN
+- Worst case scenario: R+sqrt(N)
+
+**Nearest Neighbor Search**
+- Typical case: log N
+- Worst case: N
+- Algorithm
+	- Check dist from point in node to query
+	- Rec search left/bottom
+	- Rec search right/top
+	- Organize so we begin by searching for query point
+
+![https://i.stack.imgur.com/hhZE1.jpg](https://i.stack.imgur.com/hhZE1.jpg)
+
+### Flocking Boids
+
+3 simple rules lead to complex emergent behavior:
+- collision avoidance: point away from k nearest boids
+- flock centering: point towards the center of mass of k nearest boids
+- velocity matching: update velocity to the avg of k nearest boids
+
+![https://repository-images.githubusercontent.com/258305543/28971980-92d2-11ea-8a66-4d0d91c0e790](https://repository-images.githubusercontent.com/258305543/28971980-92d2-11ea-8a66-4d0d91c0e790)
+
+**KD trees are a simple data structure for processing k-dimensional data:**
+- widely used
+- adapts well to high dimensional and clustered data
+- discovered by an undergrad in an algorithms class
+

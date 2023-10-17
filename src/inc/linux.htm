@@ -1,5 +1,23 @@
 <h2>Linux</h2>
 <p><em>Everything is a file in Unix</em></p>
+<h2>Background</h2>
+<h3>Linux Kernel</h3>
+<p><strong>The kernel takes care of:</strong></p>
+<ul>
+<li>Process scheduling - run multiple processes simultaneously in memory. </li>
+<li>Memory management - share memory across processes using virtual memory management (processes are isolated in the kernel)</li>
+<li>Provision of a file system</li>
+<li>Creation and termination of processes - kernels can load a new program into memory and provide it with resources</li>
+<li>Access to devices - monitors, keyboards etc...</li>
+<li>Networking - receives and transmits network messages</li>
+<li>Provision of a system call API - processes can request the kernel to do tasks with the system calls</li>
+</ul>
+<p><img src="https://learn.microsoft.com/en-us/windows-hardware/drivers/gettingstarted/images/userandkernelmode01.png" alt="https://learn.microsoft.com/en-us/windows-hardware/drivers/gettingstarted/images/userandkernelmode01.png" /></p>
+<p>We have a kernel mode and user mode. Certain operations can only be performed in Kernel mode. E.g., halting instruction for the system, accessing the memory-management hardware, initiating I/O operations.</p>
+<p>It can be useful to see programming from the kernel's POV.</p>
+<p>Processes can't talk to each other, they're completely isolated and doesn't know where its files are held. It is not &quot;self-aware&quot;.</p>
+<p>By contrast the kernel knows and controls everything. It facilitates the running of all the processes. A process can't create another process but it can request that the kernel create it.</p>
+<h2>Commands</h2>
 <h3>File Systems</h3>
 <p>File System Commands:</p>
 <ul>

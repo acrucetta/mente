@@ -2,6 +2,31 @@
 
 *Everything is a file in Unix*
 
+## Background
+
+### Linux Kernel
+
+**The kernel takes care of:**
+- Process scheduling - run multiple processes simultaneously in memory. 
+- Memory management - share memory across processes using virtual memory management (processes are isolated in the kernel)
+- Provision of a file system
+- Creation and termination of processes - kernels can load a new program into memory and provide it with resources
+- Access to devices - monitors, keyboards etc...
+- Networking - receives and transmits network messages
+- Provision of a system call API - processes can request the kernel to do tasks with the system calls
+
+![https://learn.microsoft.com/en-us/windows-hardware/drivers/gettingstarted/images/userandkernelmode01.png](https://learn.microsoft.com/en-us/windows-hardware/drivers/gettingstarted/images/userandkernelmode01.png)
+
+We have a kernel mode and user mode. Certain operations can only be performed in Kernel mode. E.g., halting instruction for the system, accessing the memory-management hardware, initiating I/O operations.
+
+It can be useful to see programming from the kernel's POV.
+
+Processes can't talk to each other, they're completely isolated and doesn't know where its files are held. It is not "self-aware".
+
+By contrast the kernel knows and controls everything. It facilitates the running of all the processes. A process can't create another process but it can request that the kernel create it.
+
+## Commands
+
 ### File Systems
 File System Commands:
 - `ls`
