@@ -11,3 +11,10 @@ At an engineering level; I think it's worth diving deeper into his algorithm:
 3. **Simplify and optimize.** This should come after step two. common mistake is to simplify and optimize a part or a process that should not exist.
 4. **Accelerate cycle time.** Every process can be speeded up. But only do this after you have followed the first three steps. In the Tesla factory, I mistakenly spent a lot of time accelerating processes that I later realized should have been deleted. 
 5. **Automate**. That comes last. The big mistake in Nevada and at Fremont was that I began by trying to automate every step. We should have waited until all the requirements had been questioned, parts and processes deleted, and the bugs were shaken out.
+
+Additional rules he has applied in his career:
+- Skip-level meetings, don't meet with you direct reports, meet with one level below
+- Managers should be technical, they should spend 20% of their time doing engineering work
+- Go direct to the source for information
+- Every process should have a person responsible for it
+
