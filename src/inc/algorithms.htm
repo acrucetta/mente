@@ -946,3 +946,28 @@ same number of black nodes.</li>
 <li>adapts well to high dimensional and clustered data</li>
 <li>discovered by an undergrad in an algorithms class</li>
 </ul>
+<h3>1D Interval Search</h3>
+<p>Data structure to hold a set of overlapping intervals. </p>
+<p>We want to:</p>
+<ul>
+<li>Insert</li>
+<li>Search</li>
+<li>Delete</li>
+<li>Check for an intersection</li>
+</ul>
+<p>E.g., which intervals intersect (9,16)?</p>
+<p>Create a BST, each node contains an interval (lo, hi)</p>
+<ul>
+<li>We use the left endpoint as BST key</li>
+<li>Store max endpoint in subtree rooted at node</li>
+</ul>
+<p>Search:</p>
+<ul>
+<li>If interval node intersects, return it</li>
+<li>Else if left subtree is null, go right</li>
+<li>Else if max endpoint in left subtree is less than lo, go right</li>
+<li>Else go left</li>
+</ul>
+<p><img src="https://media.geeksforgeeks.org/wp-content/uploads/20200708073504/interval.jpg" alt="https://media.geeksforgeeks.org/wp-content/uploads/20200708073504/interval.jpg" /></p>
+<p>We can use a Red Black BST to guarantee performance of the search.</p>
+<p>Most operations have a brute of 1/N; for interval search trees we have Log N for most cases. </p>

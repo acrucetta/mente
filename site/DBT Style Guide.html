@@ -1,0 +1,82 @@
+<!DOCTYPE html><html lang='en'>
+<head>
+<meta charset='utf-8'>
+
+            <meta name='viewport' content='width=device-width,initial-scale=1'>
+
+            <link rel='stylesheet' type='text/css' href='../links/main.css'>
+
+            <title>Mente &mdash; DBT Style Guide.htm</title>
+</head>
+<body>
+<header>
+<a href='https://andrescn.me/mente/site/about.html'><img src='../media/interface/logo.svg' alt='Mente' height='100'></a></header>
+<nav>
+<details open>
+  <summary>Menu</summary>
+  <section class="site-nav">
+    <section>
+      <ul class="nobull capital">
+        <li><a href="about.html">About</a></li>
+        <li><a href="books.html">Books</a></li>
+        <li><a href="projects.html">Projects</a></li>
+      </ul>
+    </section>
+    <section>
+      <h2><a id='meta'>Meta</a></h2>
+      <ul class='nobull capital'>
+        <li><a href="index.html">Index</a></li>
+      </ul>
+  </section>
+</details></nav>
+<main>
+
+<!-- Generated file, do not edit -->
+
+<h1>DBT Style Guide.htm</h1>
+<h1>DBT Style Guide</h1>
+<h2>Style Guide Sources</h2>
+<ul>
+<li><a href="https://github.com/dbt-labs/corp/blob/main/dbt_style_guide.md">Official DBT Labs Style Guide</a></li>
+</ul>
+<h2>Design Principles</h2>
+<ul>
+<li><strong>Fail fast</strong>: Reduce the time it takes for your developers to realize that a code defect exists. You can achieve this by using running linting and data quality tests as part of the CI pipeline. Reduce the time it takes to run the CI pipeline so that developers can get faster feedback cycles.</li>
+<li><strong>Fail left</strong>: encourage your developers to write dbt tests starting from left (dbt sources) to right (data mart dbt models). The earlier in the pipeline you can detect errors and fail the DAG, the easier it is to fix problems. It is very difficult to troubleshoot problems at the end of the DAG that is caused by an upstream failure at the start of the DAG.</li>
+<li><strong>Distributed ownership</strong>: Each dbt model should have an owner (a person). The owner is the person that reviews the PR. The owner would typically be an analytics engineer for a particular domain or business function (a person that understands the business/domain context and can translate that to SQL code). They would be best placed to review the code. See this <a href="https://www.thoughtworks.com/en-au/insights/blog/data-mesh-its-not-about-tech-its-about-ownership-and-communication">blog on domain ownership</a>.</li>
+</ul>
+<h2>DBT Folder Structure Best Practices</h2>
+<ul>
+<li><strong>Staging</strong>
+<ul>
+<li>Model Naming:
+<ul>
+<li>stg_[source_system]__[source_table]</li>
+</ul>
+</li>
+<li>Rules
+<ul>
+<li>✅ Renaming</li>
+<li>✅ Type casting</li>
+<li>✅ Basic computations (e.g. cents to dollars)</li>
+<li>✅ Categorizing (using conditional logic to group values into buckets or booleans, such as in the case when statements above)</li>
+<li>❌ Joins — the goal of staging models is to clean and prepare individual source-conformed concepts for downstream usage. We're creating the most useful version of a source system table, which we can use as a new modular component for our project. In our experience, joins are almost always a bad idea here — they create immediate duplicated computation and confusing relationships that ripple downstream — there are occasionally exceptions though (refer to base models for more info).</li>
+<li>❌ Aggregations — aggregations entail grouping, and we're not doing that at this stage. Remember - staging models are your place to create the building blocks you’ll use all throughout the rest of your project — if we start changing the grain of our tables by grouping in this layer, we’ll lose access to source data that we’ll likely need at some point. We just want to get our individual concepts cleaned and ready for use, and will handle aggregating values downstream.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code class="language-sql">-- stg_stripe__payments.sql
+
+with
+
+source as (
+
+    select * from 
+
+</main>
+<footer><hr />
+<span style='float:right'>Edited on 2023-10-18</span><b>Mente</b> © 2023 — 
+</footer>
+</body></html>

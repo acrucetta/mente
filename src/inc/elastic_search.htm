@@ -1,0 +1,58 @@
+<h2>Elastic Search</h2>
+<p>Elastic search started off as a scalable Lucene; horizontally scalable search engine. It has been a competitor for Hadoop, Spark, and Flink</p>
+<p>It's a server that handles JSON requests.</p>
+<h3>Elastic Stack</h3>
+<p><strong>Kibana</strong></p>
+<ul>
+<li>Web UI for searching and visualizing</li>
+<li>Complex aggregations, graphs, charts</li>
+<li>Often used for log analysis</li>
+</ul>
+<p>ES is not only for searching text anymore. </p>
+<p><strong>Logstash / Beats</strong></p>
+<ul>
+<li>Ways to feed data into Elastic Search</li>
+<li>FileBeat can monitor log files, parse them, and import into Elastic Search in near-real-time</li>
+<li>Not just log files</li>
+</ul>
+<p><strong>X-Pack</strong></p>
+<ul>
+<li>Security</li>
+<li>Machine Learning</li>
+<li>Graph Exploration</li>
+</ul>
+<h3>Basic Concepts</h3>
+<p><strong>Documents</strong>: </p>
+<ul>
+<li>Row in the database</li>
+<li>Something you're searching for</li>
+<li>Any structured JSON data works</li>
+<li>Every document has a unique ID and a type</li>
+</ul>
+<p>E.g.,</p>
+<pre><code class="language-json">{
+    name: &quot;baby carrots&quot;
+    category: &quot;vegetables&quot;
+    brand: &quot;365&quot;
+}
+</code></pre>
+<p><strong>Indices</strong></p>
+<ul>
+<li>Highest level entity</li>
+<li>Can contain collection of types -&gt; collection of documents</li>
+<li>Documents that share similar traits are groupped into an index</li>
+<li>Indices are just a virtual representation; doesn't store in disk</li>
+</ul>
+<p><strong>Restful API</strong></p>
+<p>ES works via HTTP requests and JSON data. Any language or tool that can handle HTTP can use Elastic Search. You don't need anything beyond HTTP requests.</p>
+<p><strong>Client APIs</strong></p>
+<p>Most languages have specialized ES libraries</p>
+<p><strong>Analytic Tools</strong></p>
+<p>Web based UI to view indices and explore them without code</p>
+<h3>Architecture</h3>
+<p>Documents are hashed to a particular shard. Each shard may be on a different node in a cluster. Every shard is a self-contained Lucene index of its own.</p>
+<p>The index has two primary shards and two replicas. The application round robins requests among nodes.</p>
+<p>Write requests are routed to the primary shard, then replicated.</p>
+<p>Read requests are routed to the primary or any replicas</p>
+<p>If we go over the amopunt of shards (200K documents) we can horizontally scale to hold more data. Sharding speeds up the search. We can run a search on all the shards in parallel.</p>
+<p>To prevent losing data, elastic search replicates data across clusters (cross-cluster replication). CCR provides a way to automatically synchronize indices from your primary cluster to a secondary remote cluster.</p>
