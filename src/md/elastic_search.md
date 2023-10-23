@@ -60,7 +60,7 @@ Most languages have specialized ES libraries
 Web based UI to view indices and explore them without code
 
 
-### Architecture
+## Architecture
 
 Documents are hashed to a particular shard. Each shard may be on a different node in a cluster. Every shard is a self-contained Lucene index of its own.
 
@@ -74,5 +74,91 @@ If we go over the amopunt of shards (200K documents) we can horizontally scale t
 
 To prevent losing data, elastic search replicates data across clusters (cross-cluster replication). CCR provides a way to automatically synchronize indices from your primary cluster to a secondary remote cluster.  
 
+### Sharding
+
+Sharding allows us to divide indices into smaller pieces.
+
+e.g., Node A (500 gb); Node B (500 gb)
+
+Index (600 GB) gets placed into both indices.
+
+- A shard is an independent index
+- A shard has no predefined size; it grows as documents are added
+- A shard may store up to about 2 billion documents
+
+Why we shard:
+- Allows us to store more documents
+- Easier to fit large indices
+- Improved parallel performance
+
+Configuring shards:
+- We use to have 5 shards by default
+- Indices are now created with one shard by default
+- We can modify the shards with the split/shrink API
+
+How many shards:
+- If you anticipate millions of docs, consider a couple of shards
+- Otherwise, use the default shards
+
+### Replication
+
+Elastic search natively supports replication. Setting it up can be complicated.
+
+How does replication work?
+- Replication creates copies of shards (replica shards)
+- A shard that was replicated is called "Primary shards"
+
+Node B
+[Primary Shard B][Replica A1][Replica A2]
+
+Choosing replicas:
+- How many replicas are ideal; depends on the use case
+- IS the data stored elsewhere?
+- We should replicate shards at least twice
+
+Snapshots:
+- Snapshots are also back-ups
+- Snapshots can be taken at the index level or for the entire cluster
+- We can take a snashot before running a query; replication can't help with this but it can with a snapshot (rollback to snapshot)
+
+Increasing throughput with replication:
+- Replica shards can serve diff search requests simultaneously
+- Elastic can route to the best shared
+- CPU paralellization can improve performance if multiple shards are on the same node
+
+### Node Roles
+
+Default roles: dim (data, ingest, master)
+
+Master node:
+- A node may be elected as the cluster's master nodes
+- A master node is responsible for creating and deleting indices
+ 
+Data role:
+- Enables a node to store data
+- Storing data includes performing queries related to that data, such as queries
+
+Ingest role:
+- Node that ingests data
+- Ingest pipelines are a series of steps performed when indexing documents 
+- A simplified version of Logstash, directly within Elastic search
+
+Machine Learning
+- Identifies node as ML node
+- useful for running ML jobs
+
+Coordination nodes
+- Processes request; not possible for single setting
+- Essentially a load balancer
+
+When to change node roles:
+- It depends; useful for large clusters
+- Typically done when optimizing the cluster to scale
+- Only change when you know what you're doing
+
+## Commands
+
+- GET /cluster/health
+- GET /_cat/indices
 
 

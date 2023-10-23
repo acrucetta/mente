@@ -2,7 +2,7 @@
 
 *Everything is a file in Unix*
 
-## Background
+## Survey of Linux Fundamentals
 
 ### Linux Kernel
 
@@ -24,6 +24,82 @@ It can be useful to see programming from the kernel's POV.
 Processes can't talk to each other, they're completely isolated and doesn't know where its files are held. It is not "self-aware".
 
 By contrast the kernel knows and controls everything. It facilitates the running of all the processes. A process can't create another process but it can request that the kernel create it.
+
+### Files and Directories
+
+Each file is marked with a type. Some file types can be devices, pipes, sockets, directories and symbolic links. It doesn't need to be a regular file.
+
+Directories contain links to themselves (.) and to their parent directory (..)
+
+Symbolic links provide alternative names for a file. A normal link is a filename plus pointer entry in a directory list. Symbolic links point to target files.
+
+Absolute path names being with a slash (/). E.g., /home/mtk/.bashrc
+
+Relative paths, begin with "../mtk/.bashrc"
+
+The system divides ownership into: owner, group, and others.
+
+### File I/O
+
+The Kernel provides one file type: a sequential stream of bytes. It uses the universal operations: open, read, write, close.
+
+A process inherits 3 file descriptors: 0 std input, 1 std output, 2 std error. C uses these methods with its stdio library (e.g., open, fclose, scan, printf, fgets, fputs)
+
+### Programs 
+
+Programs come in two forms: source code (readable text) and binary machine language instructions.
+
+You can apply filters to them e.g., grep, tr, sort, wc, sed and awk.
+
+### Processes
+
+A process is an instance of an executing program. The kernel loads the code of the program into virtual memory, allocates space for the variables and sets up the data structures.
+
+A process contains segments:
+- Text - instructions 
+- Data - static variables used
+- Heap - area from which programs can allocate extra memory
+- Stack - area of memory that grows and shrinks as functions are called 
+
+We can create a new process with the fork() sys call. The child node created inherits copies of the parent's data, stack, and heap segments. The child uses the execve() sys call to load and execute a new program. (C uses this exec to build additional libraries)
+
+Each process has a unique identifier (PID) and a parent identifier (PPID). 
+
+A process can be terminated with: _exit() or by being killed with a signal. 0 normally means the process succeeded and nonzero indicates some error.
+
+When we boot a system Linux starts a process called init (parent of all processes). Everything derives from it.
+
+A daemon is a special-purpose process. It is long-lived and runs in the background. E.g., syslogd, for system logs, and htpd, to serve web pages.
+
+All processes have soft and hard memory limits that can be adjusted with the given privileges.
+
+### Interprocess Communication and Synchronization 
+
+Most Linux processes run on their own, but some need to communicated with each other through IPC (interprocess communication)
+
+It includes:
+- signals
+- pipes (|)
+- sockets (transfer data to other hosts)
+- file locking - protecting file
+- message queues - exchange packets of data
+- semaphores - sync processes
+- shared memory 
+
+#### Signals
+
+They are often called software interrupts. They are defined as SIGxxxx.
+
+Some examples are:
+- interrupt character (CTRL+c)
+- a process terminated
+- a timer is over
+- invalid memory address
+
+The kill command can send a signal. The process can ignore it, be killed or suspended.
+
+Each program executed by the shell starts in a new process. E.g., `ls -l | sort -k5n | less` includes 3 processes.
+
 
 ## Commands
 

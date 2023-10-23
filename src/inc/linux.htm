@@ -1,6 +1,6 @@
 <h2>Linux</h2>
 <p><em>Everything is a file in Unix</em></p>
-<h2>Background</h2>
+<h2>Survey of Linux Fundamentals</h2>
 <h3>Linux Kernel</h3>
 <p><strong>The kernel takes care of:</strong></p>
 <ul>
@@ -17,6 +17,57 @@
 <p>It can be useful to see programming from the kernel's POV.</p>
 <p>Processes can't talk to each other, they're completely isolated and doesn't know where its files are held. It is not &quot;self-aware&quot;.</p>
 <p>By contrast the kernel knows and controls everything. It facilitates the running of all the processes. A process can't create another process but it can request that the kernel create it.</p>
+<h3>Files and Directories</h3>
+<p>Each file is marked with a type. Some file types can be devices, pipes, sockets, directories and symbolic links. It doesn't need to be a regular file.</p>
+<p>Directories contain links to themselves (.) and to their parent directory (..)</p>
+<p>Symbolic links provide alternative names for a file. A normal link is a filename plus pointer entry in a directory list. Symbolic links point to target files.</p>
+<p>Absolute path names being with a slash (/). E.g., /home/mtk/.bashrc</p>
+<p>Relative paths, begin with &quot;../mtk/.bashrc&quot;</p>
+<p>The system divides ownership into: owner, group, and others.</p>
+<h3>File I/O</h3>
+<p>The Kernel provides one file type: a sequential stream of bytes. It uses the universal operations: open, read, write, close.</p>
+<p>A process inherits 3 file descriptors: 0 std input, 1 std output, 2 std error. C uses these methods with its stdio library (e.g., open, fclose, scan, printf, fgets, fputs)</p>
+<h3>Programs</h3>
+<p>Programs come in two forms: source code (readable text) and binary machine language instructions.</p>
+<p>You can apply filters to them e.g., grep, tr, sort, wc, sed and awk.</p>
+<h3>Processes</h3>
+<p>A process is an instance of an executing program. The kernel loads the code of the program into virtual memory, allocates space for the variables and sets up the data structures.</p>
+<p>A process contains segments:</p>
+<ul>
+<li>Text - instructions </li>
+<li>Data - static variables used</li>
+<li>Heap - area from which programs can allocate extra memory</li>
+<li>Stack - area of memory that grows and shrinks as functions are called </li>
+</ul>
+<p>We can create a new process with the fork() sys call. The child node created inherits copies of the parent's data, stack, and heap segments. The child uses the execve() sys call to load and execute a new program. (C uses this exec to build additional libraries)</p>
+<p>Each process has a unique identifier (PID) and a parent identifier (PPID). </p>
+<p>A process can be terminated with: _exit() or by being killed with a signal. 0 normally means the process succeeded and nonzero indicates some error.</p>
+<p>When we boot a system Linux starts a process called init (parent of all processes). Everything derives from it.</p>
+<p>A daemon is a special-purpose process. It is long-lived and runs in the background. E.g., syslogd, for system logs, and htpd, to serve web pages.</p>
+<p>All processes have soft and hard memory limits that can be adjusted with the given privileges.</p>
+<h3>Interprocess Communication and Synchronization</h3>
+<p>Most Linux processes run on their own, but some need to communicated with each other through IPC (interprocess communication)</p>
+<p>It includes:</p>
+<ul>
+<li>signals</li>
+<li>pipes (|)</li>
+<li>sockets (transfer data to other hosts)</li>
+<li>file locking - protecting file</li>
+<li>message queues - exchange packets of data</li>
+<li>semaphores - sync processes</li>
+<li>shared memory </li>
+</ul>
+<h4>Signals</h4>
+<p>They are often called software interrupts. They are defined as SIGxxxx.</p>
+<p>Some examples are:</p>
+<ul>
+<li>interrupt character (CTRL+c)</li>
+<li>a process terminated</li>
+<li>a timer is over</li>
+<li>invalid memory address</li>
+</ul>
+<p>The kill command can send a signal. The process can ignore it, be killed or suspended.</p>
+<p>Each program executed by the shell starts in a new process. E.g., <code>ls -l | sort -k5n | less</code> includes 3 processes.</p>
 <h2>Commands</h2>
 <h3>File Systems</h3>
 <p>File System Commands:</p>

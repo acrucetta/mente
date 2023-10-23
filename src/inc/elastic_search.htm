@@ -49,10 +49,102 @@
 <p>Most languages have specialized ES libraries</p>
 <p><strong>Analytic Tools</strong></p>
 <p>Web based UI to view indices and explore them without code</p>
-<h3>Architecture</h3>
+<h2>Architecture</h2>
 <p>Documents are hashed to a particular shard. Each shard may be on a different node in a cluster. Every shard is a self-contained Lucene index of its own.</p>
 <p>The index has two primary shards and two replicas. The application round robins requests among nodes.</p>
 <p>Write requests are routed to the primary shard, then replicated.</p>
 <p>Read requests are routed to the primary or any replicas</p>
 <p>If we go over the amopunt of shards (200K documents) we can horizontally scale to hold more data. Sharding speeds up the search. We can run a search on all the shards in parallel.</p>
 <p>To prevent losing data, elastic search replicates data across clusters (cross-cluster replication). CCR provides a way to automatically synchronize indices from your primary cluster to a secondary remote cluster.</p>
+<h3>Sharding</h3>
+<p>Sharding allows us to divide indices into smaller pieces.</p>
+<p>e.g., Node A (500 gb); Node B (500 gb)</p>
+<p>Index (600 GB) gets placed into both indices.</p>
+<ul>
+<li>A shard is an independent index</li>
+<li>A shard has no predefined size; it grows as documents are added</li>
+<li>A shard may store up to about 2 billion documents</li>
+</ul>
+<p>Why we shard:</p>
+<ul>
+<li>Allows us to store more documents</li>
+<li>Easier to fit large indices</li>
+<li>Improved parallel performance</li>
+</ul>
+<p>Configuring shards:</p>
+<ul>
+<li>We use to have 5 shards by default</li>
+<li>Indices are now created with one shard by default</li>
+<li>We can modify the shards with the split/shrink API</li>
+</ul>
+<p>How many shards:</p>
+<ul>
+<li>If you anticipate millions of docs, consider a couple of shards</li>
+<li>Otherwise, use the default shards</li>
+</ul>
+<h3>Replication</h3>
+<p>Elastic search natively supports replication. Setting it up can be complicated.</p>
+<p>How does replication work?</p>
+<ul>
+<li>Replication creates copies of shards (replica shards)</li>
+<li>A shard that was replicated is called &quot;Primary shards&quot;</li>
+</ul>
+<p>Node B
+[Primary Shard B][Replica A1][Replica A2]</p>
+<p>Choosing replicas:</p>
+<ul>
+<li>How many replicas are ideal; depends on the use case</li>
+<li>IS the data stored elsewhere?</li>
+<li>We should replicate shards at least twice</li>
+</ul>
+<p>Snapshots:</p>
+<ul>
+<li>Snapshots are also back-ups</li>
+<li>Snapshots can be taken at the index level or for the entire cluster</li>
+<li>We can take a snashot before running a query; replication can't help with this but it can with a snapshot (rollback to snapshot)</li>
+</ul>
+<p>Increasing throughput with replication:</p>
+<ul>
+<li>Replica shards can serve diff search requests simultaneously</li>
+<li>Elastic can route to the best shared</li>
+<li>CPU paralellization can improve performance if multiple shards are on the same node</li>
+</ul>
+<h3>Node Roles</h3>
+<p>Default roles: dim (data, ingest, master)</p>
+<p>Master node:</p>
+<ul>
+<li>A node may be elected as the cluster's master nodes</li>
+<li>A master node is responsible for creating and deleting indices</li>
+</ul>
+<p>Data role:</p>
+<ul>
+<li>Enables a node to store data</li>
+<li>Storing data includes performing queries related to that data, such as queries</li>
+</ul>
+<p>Ingest role:</p>
+<ul>
+<li>Node that ingests data</li>
+<li>Ingest pipelines are a series of steps performed when indexing documents </li>
+<li>A simplified version of Logstash, directly within Elastic search</li>
+</ul>
+<p>Machine Learning</p>
+<ul>
+<li>Identifies node as ML node</li>
+<li>useful for running ML jobs</li>
+</ul>
+<p>Coordination nodes</p>
+<ul>
+<li>Processes request; not possible for single setting</li>
+<li>Essentially a load balancer</li>
+</ul>
+<p>When to change node roles:</p>
+<ul>
+<li>It depends; useful for large clusters</li>
+<li>Typically done when optimizing the cluster to scale</li>
+<li>Only change when you know what you're doing</li>
+</ul>
+<h2>Commands</h2>
+<ul>
+<li>GET /cluster/health</li>
+<li>GET /_cat/indices</li>
+</ul>

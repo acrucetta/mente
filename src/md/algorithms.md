@@ -983,3 +983,20 @@ Search:
 We can use a Red Black BST to guarantee performance of the search.
 
 Most operations have a brute of 1/N; for interval search trees we have Log N for most cases. 
+
+### Rectangle Intersection Problem
+
+Problem: Find all intersections among a set of N orthogonal rectangles. 
+
+Important problem when designing microprocessors. Designing a computer became a geometric problem.
+
+They had specific design rules:
+- Some wires cannot intersect
+- Certain spacing  needed between diff types of wires
+- Debugging: orthogonal intersection search
+
+We sweep a vertical line from left to right. IT takes proportional to N log N + R log N to find R intersections among a set of N rectangles
+
+It reduces the rectangle problem to a 1 dimensional problem.
+
+![https://miro.medium.com/v2/resize:fit:1400/1*4BRsVG6P-Tw-ApBgNlAyDA.png](https://miro.medium.com/v2/resize:fit:1400/1*4BRsVG6P-Tw-ApBgNlAyDA.png)

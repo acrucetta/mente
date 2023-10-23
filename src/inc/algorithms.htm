@@ -971,3 +971,15 @@ same number of black nodes.</li>
 <p><img src="https://media.geeksforgeeks.org/wp-content/uploads/20200708073504/interval.jpg" alt="https://media.geeksforgeeks.org/wp-content/uploads/20200708073504/interval.jpg" /></p>
 <p>We can use a Red Black BST to guarantee performance of the search.</p>
 <p>Most operations have a brute of 1/N; for interval search trees we have Log N for most cases. </p>
+<h3>Rectangle Intersection Problem</h3>
+<p>Problem: Find all intersections among a set of N orthogonal rectangles. </p>
+<p>Important problem when designing microprocessors. Designing a computer became a geometric problem.</p>
+<p>They had specific design rules:</p>
+<ul>
+<li>Some wires cannot intersect</li>
+<li>Certain spacing  needed between diff types of wires</li>
+<li>Debugging: orthogonal intersection search</li>
+</ul>
+<p>We sweep a vertical line from left to right. IT takes proportional to N log N + R log N to find R intersections among a set of N rectangles</p>
+<p>It reduces the rectangle problem to a 1 dimensional problem.</p>
+<p><img src="https://miro.medium.com/v2/resize:fit:1400/1*4BRsVG6P-Tw-ApBgNlAyDA.png" alt="https://miro.medium.com/v2/resize:fit:1400/1*4BRsVG6P-Tw-ApBgNlAyDA.png" /></p>
