@@ -38,6 +38,16 @@ Mente also includes tests. To run them, use the following command:
 ```bash
 cargo test
 ```
+## Features
+
+TODO
+- Add code syntax highlighting
+- Improve typography based on gwern.net
+- Clean up the deployment pipeline to run cargo run upon committing to main 
+- Test showing images from local folder
+- Add preview of backlinks in the site
+- Code folding-style collapse/disclosure support (both inline & block)
+- Automatic link-ification of keywords (LinkAuto.hs)
 
 License
 Mente is open-source software licensed under MIT.
