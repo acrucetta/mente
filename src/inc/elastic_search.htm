@@ -30,7 +30,7 @@
 <li>Every document has a unique ID and a type</li>
 </ul>
 <p>E.g.,</p>
-<pre><code class="language-json">{
+<pre><code>{
     name: &quot;baby carrots&quot;
     category: &quot;vegetables&quot;
     brand: &quot;365&quot;
@@ -143,6 +143,50 @@
 <li>Typically done when optimizing the cluster to scale</li>
 <li>Only change when you know what you're doing</li>
 </ul>
+<h2>Managing Documents</h2>
+<ul>
+<li>Elastic search documents are immutable</li>
+<li>The existing document is replaced with a modified document</li>
+<li>We can do the same at the app level</li>
+</ul>
+<p><strong>Creating and deleting indices</strong></p>
+<pre><code>DELETE /pages
+
+PUT /products
+{
+	&quot;settings&quot; : {
+	...
+	}
+}
+</code></pre>
+<pre><code>POST /products/_doc/100
+{
+&quot;name&quot;:&quot;Coffee Maker&quot;
+&quot;price&quot;:64
+&quot;in_stock&quot;:10
+}
+</code></pre>
+<pre><code>GET /product/_doc/100
+</code></pre>
+<pre><code>
+Update field
+
+POST /products/_update/100
+{
+	&quot;doc: {
+		&quot;in_stock&quot;:3
+	}
+}
+
+Add field
+
+POST /products/_update/100
+{
+	&quot;doc: {
+		&quot;tags&quot;: [&quot;electronics&quot;]
+	}
+}
+</code></pre>
 <h2>Commands</h2>
 <ul>
 <li>GET /cluster/health</li>

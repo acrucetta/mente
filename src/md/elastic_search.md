@@ -33,7 +33,7 @@ ES is not only for searching text anymore.
 
 E.g.,
 
-```json
+```
 {
     name: "baby carrots"
     category: "vegetables"
@@ -155,6 +155,61 @@ When to change node roles:
 - It depends; useful for large clusters
 - Typically done when optimizing the cluster to scale
 - Only change when you know what you're doing
+
+## Managing Documents
+
+- Elastic search documents are immutable
+- The existing document is replaced with a modified document
+- We can do the same at the app level
+
+**Creating and deleting indices**
+
+```
+DELETE /pages
+
+PUT /products
+{
+	"settings" : {
+	...
+	}
+}
+```
+
+```
+POST /products/_doc/100
+{
+"name":"Coffee Maker"
+"price":64
+"in_stock":10
+}
+```
+
+```
+GET /product/_doc/100
+```
+
+```
+
+Update field
+
+POST /products/_update/100
+{
+	"doc: {
+		"in_stock":3
+	}
+}
+
+Add field
+
+POST /products/_update/100
+{
+	"doc: {
+		"tags": ["electronics"]
+	}
+}
+```
+
+
 
 ## Commands
 
