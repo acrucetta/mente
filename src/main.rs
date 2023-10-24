@@ -8,7 +8,7 @@ use std::{
 use chrono::{Local};
 
 const NAME: &str = "Mente";
-const DOMAIN: &str = "https://men.te";
+const DOMAIN: &str = "andrescn.me/mente";
 const SOURCE: &str = "https://github.com/acrucetta/wiki-links/edit/main";
 
 #[derive(Debug)]

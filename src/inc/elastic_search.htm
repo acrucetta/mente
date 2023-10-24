@@ -30,12 +30,11 @@
 <li>Every document has a unique ID and a type</li>
 </ul>
 <p>E.g.,</p>
-<pre><code>{
-    name: &quot;baby carrots&quot;
-    category: &quot;vegetables&quot;
-    brand: &quot;365&quot;
-}
-</code></pre>
+<p>{
+name: &quot;baby carrots&quot;
+category: &quot;vegetables&quot;
+brand: &quot;365&quot;
+}</p>
 <p><strong>Indices</strong></p>
 <ul>
 <li>Highest level entity</li>
@@ -150,43 +149,34 @@
 <li>We can do the same at the app level</li>
 </ul>
 <p><strong>Creating and deleting indices</strong></p>
-<pre><code>DELETE /pages
-
-PUT /products
+<p>DELETE /pages</p>
+<p>PUT /products
 {
-	&quot;settings&quot; : {
-	...
-	}
+&quot;settings&quot; : {
+...
 }
-</code></pre>
-<pre><code>POST /products/_doc/100
+}</p>
+<p>POST /products/_doc/100
 {
 &quot;name&quot;:&quot;Coffee Maker&quot;
 &quot;price&quot;:64
 &quot;in_stock&quot;:10
-}
-</code></pre>
-<pre><code>GET /product/_doc/100
-</code></pre>
-<pre><code>
-Update field
-
-POST /products/_update/100
+}</p>
+<p>GET /product/_doc/100</p>
+<p><strong>Update field</strong></p>
+<p>POST /products/_update/100
 {
-	&quot;doc: {
-		&quot;in_stock&quot;:3
-	}
+&quot;doc: {
+&quot;in_stock&quot;:3
 }
-
-Add field
-
-POST /products/_update/100
+}</p>
+<p><strong>Add field</strong></p>
+<p>POST /products/_update/100
 {
-	&quot;doc: {
-		&quot;tags&quot;: [&quot;electronics&quot;]
-	}
+&quot;doc: {
+&quot;tags&quot;: [&quot;electronics&quot;]
 }
-</code></pre>
+}</p>
 <h2>Commands</h2>
 <ul>
 <li>GET /cluster/health</li>

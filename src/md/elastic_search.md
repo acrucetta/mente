@@ -33,13 +33,13 @@ ES is not only for searching text anymore.
 
 E.g.,
 
-```
+
 {
     name: "baby carrots"
     category: "vegetables"
     brand: "365"
 }
-```
+
 
 **Indices**
 - Highest level entity
@@ -164,7 +164,6 @@ When to change node roles:
 
 **Creating and deleting indices**
 
-```
 DELETE /pages
 
 PUT /products
@@ -173,24 +172,19 @@ PUT /products
 	...
 	}
 }
-```
 
-```
+
 POST /products/_doc/100
 {
 "name":"Coffee Maker"
 "price":64
 "in_stock":10
 }
-```
 
-```
 GET /product/_doc/100
-```
 
-```
 
-Update field
+**Update field**
 
 POST /products/_update/100
 {
@@ -199,7 +193,7 @@ POST /products/_update/100
 	}
 }
 
-Add field
+**Add field**
 
 POST /products/_update/100
 {
@@ -207,7 +201,6 @@ POST /products/_update/100
 		"tags": ["electronics"]
 	}
 }
-```
 
 
 
