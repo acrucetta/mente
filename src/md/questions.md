@@ -23,3 +23,11 @@ These are some questions I've been compiling from different people over time:
 - am I getting outside of my comfort zone enough?
 - is routine actually helpful all the time?
 - when was the last time I deviated from my daily routine
+
+in difficult times:
+- What are you trying to teach me here? 
+- What issues in my heart are you trying to raise through this?
+- What is it you want me to see?
+- What are you asking me to let go of?
+
+
