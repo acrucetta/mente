@@ -41,6 +41,7 @@ cargo test
 ## Features
 
 TODO
+- Parse markdown with Pandoc
 - Add code syntax highlighting
 - Improve typography based on gwern.net
 - Clean up the deployment pipeline to run cargo run upon committing to main 
