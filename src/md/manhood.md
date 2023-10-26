@@ -1,6 +1,22 @@
 
 ## Notes on Manhood
 
+### From Arnold Schwarzenegger
+
+*So when I see these manfluencer and “trad” (apparently this is the internet way to say traditional) accounts post things about a man should never change a diaper or cook a meal for his family or clean because it’s emasculating, I realize they didn’t have positive male role models like my dad.*
+
+*I know I’m lucky. I want all men and boys who read this crap to realize that being afraid to change a diaper or cook for your family is the opposite of being masculine.*
+
+*The most traditional definitions of masculinity involve being a **provider** and a **protector**.*
+
+*You might think providing means you need to be the only or the biggest salary, but that’s a narrow view. If you’re making sure food is on the table, then you’re providing. You might think protecting means puffing up your chest and sitting on your porch to scare people off. This isn’t the Wild West. Expand your definitions. Changing that diaper protects your kid from an infection.*
+
+*I’m lucky my dad showed me the way so that my version of masculinity can be a mix of lifting 500 pounds, walking miles with a heavy ruck on my back, being the cook for my family, changing a lot of diapers, and having pretend tea parties. I learned from him that doing any of these things and more is the opposite of emasculating — because real men do what needs to be done without asking if it is manly.*
+
+*Masculinity isn’t some puffed-up, showboating thing you must prove every second of every day. The manliest guys will never tell you how masculine they are.*
+
+*Real masculinity is confidence. It’s **strength**. It’s **nurturing**. It’s **positive**.*
+
 ### From Wild at Heart
 
 Becoming a man means transcending your false self. Letting go of the image you want to portray to others and aligning your private and public self.
