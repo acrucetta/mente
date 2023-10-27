@@ -48,7 +48,6 @@ nav .site-nav section ul {
 }
 
 main {
-  max-width: 45em;
   padding: 45px;
   float: left;
   max-width: 700px;
@@ -86,9 +85,10 @@ main>h4 {
   text-transform: capitalize;
 }
 
-
-font-size: 16px;
-margin-top: 0px;
+main p {
+  line-height: 25px;
+  font-size: 16px;
+  margin-top: 0px;
 }
 
 main>ul {
