@@ -4,7 +4,7 @@
 
 I think of strength training as a form of retirement saving. Just as we want to retire with enough money saved up to sustain us for the rest of our lives, we want to reach an older age with enough of a “reserve” of muscle and bone density to protect us from injury and allow us to pursue the activities that we enjoy 
 
-Help people not because they will help you back, but because are able to help them
+Help people not because they will help you back, but because you are able to help them
 
 Choose beliefs that are useful, even if they're not true; e.g. imagine a pot of gold or a tiger behind you when running
 
@@ -32,3 +32,4 @@ Action begets inspiration; once I start working on something I become inspired t
 
 The quality of the recipe is as good as the quality of the ingredients and how you treat them - Danny Meyer
 
+And as the authors of “Crucial Conversations” observe, in any conversation, respect is like air. When it’s present nobody notices it, and when it’s absent it’s all anybody can think about.

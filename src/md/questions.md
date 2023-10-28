@@ -23,6 +23,15 @@ These are some questions I've been compiling from different people over time:
 - am I getting outside of my comfort zone enough?
 - is routine actually helpful all the time?
 - when was the last time I deviated from my daily routine
+- what crossroads are you at?
+- if the next five years is a chapter in your life, what is the chapter about?
+- can you be yourself where you are and still fit in?
+- what is your favorite unimportant thing about you?
+- what would you do if you weren't afraid?
+- if you died today, what would you regret not doing?
+- what have you said yes to that you no longer really believe in?
+- what talent are you not using?
+- how do your ancestors show up in your life?
 
 in difficult times:
 - What are you trying to teach me here? 
