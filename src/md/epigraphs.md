@@ -33,3 +33,7 @@ Action begets inspiration; once I start working on something I become inspired t
 The quality of the recipe is as good as the quality of the ingredients and how you treat them - Danny Meyer
 
 And as the authors of “Crucial Conversations” observe, in any conversation, respect is like air. When it’s present nobody notices it, and when it’s absent it’s all anybody can think about.
+
+“Practical men, who believe themselves to be quite exempt from any intellectual influences, are usually the slaves of some defunct economist." - John Maynard Keynes
+
+Hard work is a competitive advantage. Even the belief that hard work is a competitive advantage is itself now a competitive advantage. - Balaji Srinivasan
