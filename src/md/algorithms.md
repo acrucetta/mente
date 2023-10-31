@@ -1,7 +1,10 @@
-## Algorithms - Coursera Notes
+## Notes on Algorithms
 
-Algorithms: method for solving a problem.
-Data structure: method to store information.
+*Algorithms: method for solving a problem.*
+
+*Data structure: method to store information.*
+
+*Algorithms + Data Structures = Programs*
 
 ## Week 1: Quick Union
 
@@ -1000,3 +1003,79 @@ We sweep a vertical line from left to right. IT takes proportional to N log N + 
 It reduces the rectangle problem to a 1 dimensional problem.
 
 ![https://miro.medium.com/v2/resize:fit:1400/1*4BRsVG6P-Tw-ApBgNlAyDA.png](https://miro.medium.com/v2/resize:fit:1400/1*4BRsVG6P-Tw-ApBgNlAyDA.png)
+
+## Week 6: Hashing
+
+### Hash Tables
+
+Use a hash function that takes the key and reduces it to an array index.
+
+It can cause some issues:
+- Computing the hash function
+- Equality test: need check whether two keys are equal
+- Collision resolution: so many values; we may have 2 values for the same array index
+
+Hashing is a classic space-time tradeoff
+- No space limitation - trivial hash function with key as index
+- No time limitation - trivial collusion resolution with linear probing
+
+Ideal goal:
+- Scramble the keys uniformly to produce a table index
+	- Efficiently computable
+	- Each table index equally likely for each key
+
+Hashing is widely used in system programming. Hash codes return a 32 bit value.
+
+There are hash codes for each data type: integers, booleans, doubles, and strings.
+
+A recipe for user defined types is:
+- Combine each significant field using the 31x + y rule
+- If the field is a primitive type, use wrapper type: hashCode()
+- If field is null, return 0
+- If field is a reference type, use hashCode()
+
+The hash code can be a value between $-2^{31}$ and $2^{31}$. The hash function has an int between 0 and M-1.
+
+Our **main assumption** is that each key is equally likely to hash an int between 0 and M-1. 
+
+## Week 7: Graphs
+
+**Graph**: A set of vertices connected pairwise by edges.
+
+Why graphs? Many applications, broadly useful, challenging branch of computer science and discrete math.
+
+![Enron Emails](https://cambridge-intelligence.com/wp-content/uploads/2015/07/enron-network-visualization-6.png)
+
+- Path: Sequence of vertices connected by edges.
+- Cycle: path whose first and last vertices are the same
+
+Two vertices are connected if there's a path between them.
+
+Some common challenges:
+- Is there a path between A and B?
+- What is the shortest path?
+- Is there a cycle in the graph?
+- Is there a cycle that uses each edge exactly once?
+- How can we connect all of the vertices?
+- What is the best way to connect all the vertices?
+
+**Graph API**
+
+```
+Graph(int V)
+Graph(In in)
+void addEdge(int v, int w)
+Iterable<Int> adj(int v) - vertices adjacent to v
+int V() - num of vertices
+int E() - nuim of edges
+String - toString()
+```
+
+The most widely used representation of graphs is the adjacency-list graph representation.
+
+![Adjacency List Graph](https://media.geeksforgeeks.org/wp-content/uploads/20230727154843/Graph-Representation-of-Undirected-graph-to-Adjacency-List.png)
+
+We use a data structure of type: `Bag<Integer> [] adj;`. To create the graph we use `adj[v]`. 
+
+To add edges we use `adj[v].add(w)` and `adjust[w].add(v)`
+

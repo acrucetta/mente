@@ -6,6 +6,8 @@
 
             <link rel='stylesheet' type='text/css' href='../links/main.css'>
 
+            <link rel='stylesheet' href='tufte.css'>
+
             <title>Mente &mdash; docker.htm</title>
 </head>
 <body>
@@ -34,49 +36,33 @@
 <!-- Generated file, do not edit -->
 
 <h1>docker.htm</h1>
-<h2>Docker</h2>
-<p>Why use Docker?</p>
-<ul>
-<li>Compatibility issues with different servers</li>
-<li>Libraries and dependencies among applications</li>
-<li>Long setup time for local environments</li>
-</ul>
-<p>Containers are isolated environments with their own processes, network, and mounts. They share the same OS kernel. </p>
-<p>Dockers uses LXC containers; providing a high level tool for end-users to use them.</p>
-<p>Containers vs. Virtual Machines</p>
-<ul>
-<li>Virtual machines contain:
-<ul>
-<li>Application</li>
-<li>Library / Dependencies</li>
-<li>OS</li>
-<li>Managed by a Hypervisor and Hardware Infrastructure </li>
-</ul>
-</li>
-<li>Containers contain:
-<ul>
-<li>Applications </li>
-<li>Library / Dependencies</li>
-<li>Managed by Docker, OS, Hardware Infrastructure</li>
-</ul>
-</li>
-</ul>
-<p>Containers consume less disk space. They can boot up faster. Docker has less isolation. VMs have complete isolation.</p>
-<p>In actual environments, you have containers inside of virtual machines. </p>
-<p>Container vs. Image</p>
-<ul>
-<li>Containers run instances of images</li>
-<li>Developers develop applications and hand it to the operations team; this generate issues</li>
-<li>With Docker, we create a Docker file that creates an image and runs the same way anywhere</li>
-<li>Docker contributes to the DevOps culture</li>
-</ul>
-<h2>Docker Commands</h2>
+<h2 id="docker">Docker</h2>
+<p>Why use Docker? - Compatibility issues with different servers -
+Libraries and dependencies among applications - Long setup time for
+local environments</p>
+<p>Containers are isolated environments with their own processes,
+network, and mounts. They share the same OS kernel.</p>
+<p>Dockers uses LXC containers; providing a high level tool for
+end-users to use them.</p>
+<p>Containers vs. Virtual Machines - Virtual machines contain: -
+Application - Library / Dependencies - OS - Managed by a Hypervisor and
+Hardware Infrastructure - Containers contain: - Applications - Library /
+Dependencies - Managed by Docker, OS, Hardware Infrastructure</p>
+<p>Containers consume less disk space. They can boot up faster. Docker
+has less isolation. VMs have complete isolation.</p>
+<p>In actual environments, you have containers inside of virtual
+machines.</p>
+<p>Container vs. Image - Containers run instances of images - Developers
+develop applications and hand it to the operations team; this generate
+issues - With Docker, we create a Docker file that creates an image and
+runs the same way anywhere - Docker contributes to the DevOps
+culture</p>
+<h2 id="docker-commands">Docker Commands</h2>
 <ul>
 <li><code>docker run nginx</code> - run container
 <ul>
 <li>-d run in the background</li>
-</ul>
-</li>
+</ul></li>
 <li><code>docker ps</code> - list containers</li>
 <li><code>docker ps -a</code> - show all containers</li>
 <li><code>docker stop image</code> - stop a given container</li>
@@ -88,6 +74,6 @@
 
 </main>
 <footer><hr />
-<span style='float:right'>Edited on 2023-10-29</span><b>Mente</b> © 2023 — 
+<span style='float:right'>Edited on 2023-10-31</span><b>Mente</b> © 2023 — 
 </footer>
 </body></html>

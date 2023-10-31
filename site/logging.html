@@ -6,6 +6,8 @@
 
             <link rel='stylesheet' type='text/css' href='../links/main.css'>
 
+            <link rel='stylesheet' href='tufte.css'>
+
             <title>Mente &mdash; logging.htm</title>
 </head>
 <body>
@@ -34,27 +36,22 @@
 <!-- Generated file, do not edit -->
 
 <h1>logging.htm</h1>
-<h2>Application Logging</h2>
-<p>Logs should be greppable. It should be focused entirely on a single line of log. NEVER over multiple lines.</p>
-<p>We want to answer questions such as:</p>
-<ul>
-<li>When did user 55 last log in?</li>
-<li>Is our incoming connection receiving messages?</li>
-<li>How many times did our web server go dead?</li>
-<li>Did any transaction fail to complete?</li>
-</ul>
-<p>Problems to avoid:</p>
-<ol>
-<li>Log is missing necessary information</li>
-<li>Log unsuitable for grep because of redundant information (if it mentions a website on every linge we can't find those that were activated by the website)</li>
-<li>Information is split across more than one line</li>
-<li>Error reported to user but not logged</li>
-</ol>
-<p>e.g., </p>
+<h2 id="application-logging">Application Logging</h2>
+<p>Logs should be greppable. It should be focused entirely on a single
+line of log. NEVER over multiple lines.</p>
+<p>We want to answer questions such as: - When did user 55 last log in?
+- Is our incoming connection receiving messages? - How many times did
+our web server go dead? - Did any transaction fail to complete?</p>
+<p>Problems to avoid: 1. Log is missing necessary information 2. Log
+unsuitable for grep because of redundant information (if it mentions a
+website on every linge we can’t find those that were activated by the
+website) 3. Information is split across more than one line 4. Error
+reported to user but not logged</p>
+<p>e.g.,</p>
 <p>try 
 
 </main>
 <footer><hr />
-<span style='float:right'>Edited on 2023-10-29</span><b>Mente</b> © 2023 — 
+<span style='float:right'>Edited on 2023-10-31</span><b>Mente</b> © 2023 — 
 </footer>
 </body></html>

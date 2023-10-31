@@ -37,3 +37,9 @@ And as the authors of “Crucial Conversations” observe, in any conversation, 
 “Practical men, who believe themselves to be quite exempt from any intellectual influences, are usually the slaves of some defunct economist." - John Maynard Keynes
 
 Hard work is a competitive advantage. Even the belief that hard work is a competitive advantage is itself now a competitive advantage. - Balaji Srinivasan
+
+When you take the time to sit alone with your thoughts, you can find who you want to be; not who your parents want you to be, not who your friends want you to be, and definitely not who some shyster on Instagram or TikTok wants you to be. - Arnold S.
+
+Choosing to be nice is strength. Feeling compelled to always be nice is weakness.
+Choosing when to be disagreeable, when required, is strength. Always being disagreeable is weakness. - Mark Manson
+

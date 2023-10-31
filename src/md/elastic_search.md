@@ -209,4 +209,3 @@ POST /products/_update/100
 - GET /cluster/health
 - GET /_cat/indices
 
-

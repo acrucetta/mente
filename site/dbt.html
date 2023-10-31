@@ -6,6 +6,8 @@
 
             <link rel='stylesheet' type='text/css' href='../links/main.css'>
 
+            <link rel='stylesheet' href='tufte.css'>
+
             <title>Mente &mdash; dbt.htm</title>
 </head>
 <body>
@@ -34,22 +36,22 @@
 <!-- Generated file, do not edit -->
 
 <h1>dbt.htm</h1>
-<h2>Dbt Notes</h2>
-<h3>Incremental models:</h3>
-<p>They need:</p>
-<ul>
-<li>a <strong>filter</strong> to select just the new or updated records</li>
-<li>a <strong>conditional</strong> block that wraps our filter and only applies it when we want it</li>
-<li><strong>configuration</strong> that tells dbt we want to build incrementally and helps apply the conditional filter when needed</li>
-</ul>
-<pre><code class="language-sql">
-select * from orders
-
-where
-  updated_at &gt; (select max(updated_at) from 
+<h2 id="dbt-notes">Dbt Notes</h2>
+<h3 id="incremental-models">Incremental models:</h3>
+<p>They need: - a <strong>filter</strong> to select just the new or
+updated records - a <strong>conditional</strong> block that wraps our
+filter and only applies it when we want it -
+<strong>configuration</strong> that tells dbt we want to build
+incrementally and helps apply the conditional filter when needed</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> <span class="op">*</span> <span class="kw">from</span> orders</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">where</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  updated_at <span class="op">&gt;</span> (<span class="kw">select</span> <span class="fu">max</span>(updated_at) <span class="kw">from</span> 
 
 </main>
 <footer><hr />
-<span style='float:right'>Edited on 2023-10-29</span><b>Mente</b> © 2023 — 
+<span style='float:right'>Edited on 2023-10-31</span><b>Mente</b> © 2023 — 
 </footer>
 </body></html>

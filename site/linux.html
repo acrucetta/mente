@@ -6,6 +6,8 @@
 
             <link rel='stylesheet' type='text/css' href='../links/main.css'>
 
+            <link rel='stylesheet' href='tufte.css'>
+
             <title>Mente &mdash; linux.htm</title>
 </head>
 <body>
@@ -34,190 +36,150 @@
 <!-- Generated file, do not edit -->
 
 <h1>linux.htm</h1>
-<h2>Linux</h2>
+<h2 id="linux">Linux</h2>
 <p><em>Everything is a file in Unix</em></p>
-<h2>Survey of Linux Fundamentals</h2>
-<h3>Linux Kernel</h3>
-<p><strong>The kernel takes care of:</strong></p>
-<ul>
-<li>Process scheduling - run multiple processes simultaneously in memory. </li>
-<li>Memory management - share memory across processes using virtual memory management (processes are isolated in the kernel)</li>
-<li>Provision of a file system</li>
-<li>Creation and termination of processes - kernels can load a new program into memory and provide it with resources</li>
-<li>Access to devices - monitors, keyboards etc...</li>
-<li>Networking - receives and transmits network messages</li>
-<li>Provision of a system call API - processes can request the kernel to do tasks with the system calls</li>
-</ul>
-<p><img src="https://learn.microsoft.com/en-us/windows-hardware/drivers/gettingstarted/images/userandkernelmode01.png" alt="https://learn.microsoft.com/en-us/windows-hardware/drivers/gettingstarted/images/userandkernelmode01.png" /></p>
-<p>We have a kernel mode and user mode. Certain operations can only be performed in Kernel mode. E.g., halting instruction for the system, accessing the memory-management hardware, initiating I/O operations.</p>
-<p>It can be useful to see programming from the kernel's POV.</p>
-<p>Processes can't talk to each other, they're completely isolated and doesn't know where its files are held. It is not &quot;self-aware&quot;.</p>
-<p>By contrast the kernel knows and controls everything. It facilitates the running of all the processes. A process can't create another process but it can request that the kernel create it.</p>
-<h3>Files and Directories</h3>
-<p>Each file is marked with a type. Some file types can be devices, pipes, sockets, directories and symbolic links. It doesn't need to be a regular file.</p>
-<p>Directories contain links to themselves (.) and to their parent directory (..)</p>
-<p>Symbolic links provide alternative names for a file. A normal link is a filename plus pointer entry in a directory list. Symbolic links point to target files.</p>
-<p>Absolute path names being with a slash (/). E.g., /home/mtk/.bashrc</p>
-<p>Relative paths, begin with &quot;../mtk/.bashrc&quot;</p>
+<h2 id="survey-of-linux-fundamentals">Survey of Linux Fundamentals</h2>
+<h3 id="linux-kernel">Linux Kernel</h3>
+<p><strong>The kernel takes care of:</strong> - Process scheduling - run
+multiple processes simultaneously in memory. - Memory management - share
+memory across processes using virtual memory management (processes are
+isolated in the kernel) - Provision of a file system - Creation and
+termination of processes - kernels can load a new program into memory
+and provide it with resources - Access to devices - monitors, keyboards
+etc… - Networking - receives and transmits network messages - Provision
+of a system call API - processes can request the kernel to do tasks with
+the system calls</p>
+<figure>
+<img
+src="https://learn.microsoft.com/en-us/windows-hardware/drivers/gettingstarted/images/userandkernelmode01.png"
+alt="https://learn.microsoft.com/en-us/windows-hardware/drivers/gettingstarted/images/userandkernelmode01.png" />
+<figcaption
+aria-hidden="true">https://learn.microsoft.com/en-us/windows-hardware/drivers/gettingstarted/images/userandkernelmode01.png</figcaption>
+</figure>
+<p>We have a kernel mode and user mode. Certain operations can only be
+performed in Kernel mode. E.g., halting instruction for the system,
+accessing the memory-management hardware, initiating I/O operations.</p>
+<p>It can be useful to see programming from the kernel’s POV.</p>
+<p>Processes can’t talk to each other, they’re completely isolated and
+doesn’t know where its files are held. It is not “self-aware”.</p>
+<p>By contrast the kernel knows and controls everything. It facilitates
+the running of all the processes. A process can’t create another process
+but it can request that the kernel create it.</p>
+<h3 id="files-and-directories">Files and Directories</h3>
+<p>Each file is marked with a type. Some file types can be devices,
+pipes, sockets, directories and symbolic links. It doesn’t need to be a
+regular file.</p>
+<p>Directories contain links to themselves (.) and to their parent
+directory (..)</p>
+<p>Symbolic links provide alternative names for a file. A normal link is
+a filename plus pointer entry in a directory list. Symbolic links point
+to target files.</p>
+<p>Absolute path names being with a slash (/). E.g.,
+/home/mtk/.bashrc</p>
+<p>Relative paths, begin with “../mtk/.bashrc”</p>
 <p>The system divides ownership into: owner, group, and others.</p>
-<h3>File I/O</h3>
-<p>The Kernel provides one file type: a sequential stream of bytes. It uses the universal operations: open, read, write, close.</p>
-<p>A process inherits 3 file descriptors: 0 std input, 1 std output, 2 std error. C uses these methods with its stdio library (e.g., open, fclose, scan, printf, fgets, fputs)</p>
-<h3>Programs</h3>
-<p>Programs come in two forms: source code (readable text) and binary machine language instructions.</p>
-<p>You can apply filters to them e.g., grep, tr, sort, wc, sed and awk.</p>
-<h3>Processes</h3>
-<p>A process is an instance of an executing program. The kernel loads the code of the program into virtual memory, allocates space for the variables and sets up the data structures.</p>
-<p>A process contains segments:</p>
-<ul>
-<li>Text - instructions </li>
-<li>Data - static variables used</li>
-<li>Heap - area from which programs can allocate extra memory</li>
-<li>Stack - area of memory that grows and shrinks as functions are called </li>
-</ul>
-<p>We can create a new process with the fork() sys call. The child node created inherits copies of the parent's data, stack, and heap segments. The child uses the execve() sys call to load and execute a new program. (C uses this exec to build additional libraries)</p>
-<p>Each process has a unique identifier (PID) and a parent identifier (PPID). </p>
-<p>A process can be terminated with: _exit() or by being killed with a signal. 0 normally means the process succeeded and nonzero indicates some error.</p>
-<p>When we boot a system Linux starts a process called init (parent of all processes). Everything derives from it.</p>
-<p>A daemon is a special-purpose process. It is long-lived and runs in the background. E.g., syslogd, for system logs, and htpd, to serve web pages.</p>
-<p>All processes have soft and hard memory limits that can be adjusted with the given privileges.</p>
-<h3>Interprocess Communication and Synchronization</h3>
-<p>Most Linux processes run on their own, but some need to communicated with each other through IPC (interprocess communication)</p>
-<p>It includes:</p>
-<ul>
-<li>signals</li>
-<li>pipes (|)</li>
-<li>sockets (transfer data to other hosts)</li>
-<li>file locking - protecting file</li>
-<li>message queues - exchange packets of data</li>
-<li>semaphores - sync processes</li>
-<li>shared memory </li>
-</ul>
-<h4>Signals</h4>
-<p>They are often called software interrupts. They are defined as SIGxxxx.</p>
-<p>Some examples are:</p>
-<ul>
-<li>interrupt character (CTRL+c)</li>
-<li>a process terminated</li>
-<li>a timer is over</li>
-<li>invalid memory address</li>
-</ul>
-<p>The kill command can send a signal. The process can ignore it, be killed or suspended.</p>
-<p>Each program executed by the shell starts in a new process. E.g., <code>ls -l | sort -k5n | less</code> includes 3 processes.</p>
-<h2>Commands</h2>
-<h3>File Systems</h3>
-<p>File System Commands:</p>
-<ul>
-<li><code>ls</code>
-<ul>
-<li>-a all files</li>
-<li>-d directory</li>
-<li>-c classify</li>
-<li>-h human readable</li>
-<li>-r reverse</li>
-<li>-S sort by file size</li>
-</ul>
-</li>
-<li><code>file</code></li>
-<li><code>less</code></li>
-</ul>
-<p>Directories</p>
-<ul>
-<li>bin - binaries must be present for the system to boot and run</li>
-<li>boot - contains the kernel</li>
-<li>dev - device nodes</li>
-<li>etc - system wide config files</li>
-<li>home - normal config</li>
-<li>lib - shared libraries</li>
-<li>media - mount points for removable media</li>
-<li>mnt - removable storage devices</li>
-<li>opt - optional software</li>
-<li>root - home</li>
-<li>tmp - temp files</li>
-<li>user - directory tree by user</li>
-</ul>
-<p>Symbolic Links: </p>
-<ul>
-<li>soft link: a file can be reference by multiple names
-<ul>
-<li>e.g., a program needs access to a shared resource</li>
-</ul>
-</li>
-<li>hard links: allow files to have multiple names</li>
-</ul>
-<h3>Manipulating Files and Directories</h3>
-<p>Commands:</p>
-<ul>
-<li>cp - copy files
-<ul>
-<li><code>cp file 1 file 2</code> - simple</li>
-<li><code>cp -I file1 file2</code> - interactive mode</li>
-<li><code>cp file1 file2 dir1</code> - copy file 1 and 2 to dir1</li>
-<li><code>cp dir1/* dir2</code> - all files in dir1 copied to dir2</li>
-</ul>
-</li>
-<li>mv - move and rename files
-<ul>
-<li><code>mv file1 file2</code> - moves file 1 to file 2; if file 2 exists it is overwritten. If not, it's created</li>
-<li><code>mv file1 file2 dir1</code> - moves file 1 and 2 into dir 1</li>
-</ul>
-</li>
-<li>mkdir - create dirs</li>
-<li>rm - remove and dirs files
-<ul>
-<li><code>rm -r dir</code> - deletes all contents in directory</li>
-<li><code>rm *.html</code> - removes all files with the extension *.html</li>
-</ul>
-</li>
-<li>ln - create hard and symbolic links
-<ul>
-<li><code>ln file link</code> - link file to link</li>
-<li><code>ln -s file link</code> - hard link file to link
-<ul>
-<li><em>A hard link is indistinguishable from the file itself. Unlike a directory list containing a symbolic link, a directory list containing a hard link shows no special indication of the link.</em></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h3>Working with Commands</h3>
-<p>Commands:</p>
-<ul>
-<li>type - how a command name is interpreted</li>
-<li>which - show the executable program</li>
-<li>man - display man page</li>
-<li>apropos - list of appropriate commands</li>
-<li>info - command info entry</li>
-<li>whatis - brief description of command</li>
-<li>alias - alias for command
-<ul>
-<li><code>alias foo='cd /usr ; ls ; cd -'</code></li>
-</ul>
-</li>
-</ul>
-<h3>Redirection commands</h3>
-<p>Commands:</p>
-<ul>
-<li>cat - concatenate files</li>
-<li>sort - sort text</li>
-<li>uniq - report or omit repeated lines</li>
-<li>wc - print newline word and bytecounts</li>
-<li>grep - print lines matching a pattern</li>
-<li>head - first part of file</li>
-<li>tail - lass part of file</li>
-<li>tee - read from stdin and write to stdout</li>
-</ul>
-<p>Piping command example</p>
-<ul>
-<li><code>ls /bin /usr/bin | sort | uniq | grep zip</code></li>
-</ul>
-<h3>Echo Command</h3>
+<h3 id="file-io">File I/O</h3>
+<p>The Kernel provides one file type: a sequential stream of bytes. It
+uses the universal operations: open, read, write, close.</p>
+<p>A process inherits 3 file descriptors: 0 std input, 1 std output, 2
+std error. C uses these methods with its stdio library (e.g., open,
+fclose, scan, printf, fgets, fputs)</p>
+<h3 id="programs">Programs</h3>
+<p>Programs come in two forms: source code (readable text) and binary
+machine language instructions.</p>
+<p>You can apply filters to them e.g., grep, tr, sort, wc, sed and
+awk.</p>
+<h3 id="processes">Processes</h3>
+<p>A process is an instance of an executing program. The kernel loads
+the code of the program into virtual memory, allocates space for the
+variables and sets up the data structures.</p>
+<p>A process contains segments: - Text - instructions - Data - static
+variables used - Heap - area from which programs can allocate extra
+memory - Stack - area of memory that grows and shrinks as functions are
+called</p>
+<p>We can create a new process with the fork() sys call. The child node
+created inherits copies of the parent’s data, stack, and heap segments.
+The child uses the execve() sys call to load and execute a new program.
+(C uses this exec to build additional libraries)</p>
+<p>Each process has a unique identifier (PID) and a parent identifier
+(PPID).</p>
+<p>A process can be terminated with: _exit() or by being killed with a
+signal. 0 normally means the process succeeded and nonzero indicates
+some error.</p>
+<p>When we boot a system Linux starts a process called init (parent of
+all processes). Everything derives from it.</p>
+<p>A daemon is a special-purpose process. It is long-lived and runs in
+the background. E.g., syslogd, for system logs, and htpd, to serve web
+pages.</p>
+<p>All processes have soft and hard memory limits that can be adjusted
+with the given privileges.</p>
+<h3 id="interprocess-communication-and-synchronization">Interprocess
+Communication and Synchronization</h3>
+<p>Most Linux processes run on their own, but some need to communicated
+with each other through IPC (interprocess communication)</p>
+<p>It includes: - signals - pipes (|) - sockets (transfer data to other
+hosts) - file locking - protecting file - message queues - exchange
+packets of data - semaphores - sync processes - shared memory</p>
+<h4 id="signals">Signals</h4>
+<p>They are often called software interrupts. They are defined as
+SIGxxxx.</p>
+<p>Some examples are: - interrupt character (CTRL+c) - a process
+terminated - a timer is over - invalid memory address</p>
+<p>The kill command can send a signal. The process can ignore it, be
+killed or suspended.</p>
+<p>Each program executed by the shell starts in a new process. E.g.,
+<code>ls -l | sort -k5n | less</code> includes 3 processes.</p>
+<h2 id="commands">Commands</h2>
+<h3 id="file-systems">File Systems</h3>
+<p>File System Commands: - <code>ls</code> - -a all files - -d directory
+- -c classify - -h human readable - -r reverse - -S sort by file size -
+<code>file</code> - <code>less</code></p>
+<p>Directories - bin - binaries must be present for the system to boot
+and run - boot - contains the kernel - dev - device nodes - etc - system
+wide config files - home - normal config - lib - shared libraries -
+media - mount points for removable media - mnt - removable storage
+devices - opt - optional software - root - home - tmp - temp files -
+user - directory tree by user</p>
+<p>Symbolic Links: - soft link: a file can be reference by multiple
+names - e.g., a program needs access to a shared resource - hard links:
+allow files to have multiple names</p>
+<h3 id="manipulating-files-and-directories">Manipulating Files and
+Directories</h3>
+<p>Commands: - cp - copy files - <code>cp file 1 file 2</code> - simple
+- <code>cp -I file1 file2</code> - interactive mode -
+<code>cp file1 file2 dir1</code> - copy file 1 and 2 to dir1 -
+<code>cp dir1/* dir2</code> - all files in dir1 copied to dir2 - mv -
+move and rename files - <code>mv file1 file2</code> - moves file 1 to
+file 2; if file 2 exists it is overwritten. If not, it’s created -
+<code>mv file1 file2 dir1</code> - moves file 1 and 2 into dir 1 - mkdir
+- create dirs - rm - remove and dirs files - <code>rm -r dir</code> -
+deletes all contents in directory - <code>rm *.html</code> - removes all
+files with the extension <em>.html - ln - create hard and symbolic links
+- <code>ln file link</code> - link file to link -
+<code>ln -s file link</code> - hard link file to link - </em>A hard link
+is indistinguishable from the file itself. Unlike a directory list
+containing a symbolic link, a directory list containing a hard link
+shows no special indication of the link.*</p>
+<h3 id="working-with-commands">Working with Commands</h3>
+<p>Commands: - type - how a command name is interpreted - which - show
+the executable program - man - display man page - apropos - list of
+appropriate commands - info - command info entry - whatis - brief
+description of command - alias - alias for command -
+<code>alias foo='cd /usr ; ls ; cd -'</code></p>
+<h3 id="redirection-commands">Redirection commands</h3>
+<p>Commands: - cat - concatenate files - sort - sort text - uniq -
+report or omit repeated lines - wc - print newline word and bytecounts -
+grep - print lines matching a pattern - head - first part of file - tail
+- lass part of file - tee - read from stdin and write to stdout</p>
+<p>Piping command example -
+<code>ls /bin /usr/bin | sort | uniq | grep zip</code></p>
+<h3 id="echo-command">Echo Command</h3>
 <ul>
 <li>Arithmetic Expansion: <code>echo $((2+2))</code></li>
 <li>Brace Expansion: <code>echo Front-
 
 </main>
 <footer><hr />
-<span style='float:right'>Edited on 2023-10-29</span><b>Mente</b> © 2023 — 
+<span style='float:right'>Edited on 2023-10-31</span><b>Mente</b> © 2023 — 
 </footer>
 </body></html>

@@ -1,33 +1,50 @@
-<h2>Virtual Machines</h2>
-<p>A virtual machine is a program that acts like a computer. It simulates a CPU along with a few other hardware components.</p>
-<p>VMs allow us to port programs into several CPUs. </p>
-<p><img src="https://www.jmeiners.com/lc3-vm/img/vm.gif" alt="https://www.jmeiners.com/lc3-vm/img/vm.gif" /></p>
-<p>The only cost is the overhead of the VM itself and the further abstraction from the machine. This is a trade-off that's taken.</p>
-<p>Ethereum smart contracts are examples of virtual machines. They are run inside of a VM that has no access to the file system, network, disc, etc...</p>
+<h2 id="virtual-machines">Virtual Machines</h2>
+<p>A virtual machine is a program that acts like a computer. It
+simulates a CPU along with a few other hardware components.</p>
+<p>VMs allow us to port programs into several CPUs.</p>
+<figure>
+<img src="https://www.jmeiners.com/lc3-vm/img/vm.gif"
+alt="https://www.jmeiners.com/lc3-vm/img/vm.gif" />
+<figcaption
+aria-hidden="true">https://www.jmeiners.com/lc3-vm/img/vm.gif</figcaption>
+</figure>
+<p>The only cost is the overhead of the VM itself and the further
+abstraction from the machine. This is a trade-off that’s taken.</p>
+<p>Ethereum smart contracts are examples of virtual machines. They are
+run inside of a VM that has no access to the file system, network, disc,
+etc…</p>
 <p><strong>Instruction Set</strong></p>
 <p>Instructions have both an opcode and a set of parameters.</p>
-<p>Each opcode represents tasks the CPU &quot;knows&quot; how to do. </p>
+<p>Each opcode represents tasks the CPU “knows” how to do.</p>
 <p>Examples:</p>
-<pre><code class="language-c">enum
-{
-    OP_BR = 0, /* branch */
-    OP_ADD,    /* add  */
-    OP_LD,     /* load */
-    OP_ST,     /* store */
-    OP_JSR,    /* jump register */
-    OP_AND,    /* bitwise and */
-    OP_LDR,    /* load register */
-    OP_STR,    /* store register */
-    OP_RTI,    /* unused */
-    OP_NOT,    /* bitwise not */
-    OP_LDI,    /* load indirect */
-    OP_STI,    /* store indirect */
-    OP_JMP,    /* jump */
-    OP_RES,    /* reserved (unused) */
-    OP_LEA,    /* load effective address */
-    OP_TRAP    /* execute trap */
-};
-</code></pre>
-<p>Assembly language is a readable and writable form encoded in plain text. A tool called an {assembler} transforms each line of text into a 16-bit binary.</p>
-<p><img src="https://www.jmeiners.com/lc3-vm/img/assembler.gif" alt="https://www.jmeiners.com/lc3-vm/img/assembler.gif" /></p>
-<p>An assembler convers assembly language (already low level) into machine code. The compiler translates high-level source code into lower level languages like assembly code or machine code.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    OP_BR <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> <span class="co">/* branch */</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    OP_ADD<span class="op">,</span>    <span class="co">/* add  */</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    OP_LD<span class="op">,</span>     <span class="co">/* load */</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    OP_ST<span class="op">,</span>     <span class="co">/* store */</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    OP_JSR<span class="op">,</span>    <span class="co">/* jump register */</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    OP_AND<span class="op">,</span>    <span class="co">/* bitwise and */</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    OP_LDR<span class="op">,</span>    <span class="co">/* load register */</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    OP_STR<span class="op">,</span>    <span class="co">/* store register */</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    OP_RTI<span class="op">,</span>    <span class="co">/* unused */</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    OP_NOT<span class="op">,</span>    <span class="co">/* bitwise not */</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    OP_LDI<span class="op">,</span>    <span class="co">/* load indirect */</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    OP_STI<span class="op">,</span>    <span class="co">/* store indirect */</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    OP_JMP<span class="op">,</span>    <span class="co">/* jump */</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    OP_RES<span class="op">,</span>    <span class="co">/* reserved (unused) */</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    OP_LEA<span class="op">,</span>    <span class="co">/* load effective address */</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    OP_TRAP    <span class="co">/* execute trap */</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
+<p>Assembly language is a readable and writable form encoded in plain
+text. A tool called an {assembler} transforms each line of text into a
+16-bit binary.</p>
+<figure>
+<img src="https://www.jmeiners.com/lc3-vm/img/assembler.gif"
+alt="https://www.jmeiners.com/lc3-vm/img/assembler.gif" />
+<figcaption
+aria-hidden="true">https://www.jmeiners.com/lc3-vm/img/assembler.gif</figcaption>
+</figure>
+<p>An assembler convers assembly language (already low level) into
+machine code. The compiler translates high-level source code into lower
+level languages like assembly code or machine code.</p>

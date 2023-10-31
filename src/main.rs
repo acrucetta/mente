@@ -183,6 +183,7 @@ fn build_page(
                 "<meta charset='utf-8'>\n
             <meta name='viewport' content='width=device-width,initial-scale=1'>\n
             <link rel='stylesheet' type='text/css' href='../links/main.css'>\n
+            <link rel='stylesheet' href='tufte.css'>\n
             <title>{NAME} &mdash; {filename}</title>\n"
             )
         );
@@ -226,22 +227,32 @@ fn fpedited(file: &mut File) -> Result<(), std::io::Error> {
 }
 
 fn generate_html_from_markdown(path: &str) -> Result<(), std::io::Error> {
+    use std::process::Command;
+
     let entries = fs::read_dir(Path::new(path))?;
 
     for entry in entries {
         let entry = entry?;
         let filename = entry.file_name().into_string().unwrap();
         if filename.ends_with(".md") {
-            let markdown_input = fs::read_to_string(format!("{}/{}", path, filename))?;
-            let mut html_output = String::new();
-            let parser = pulldown_cmark::Parser::new(&markdown_input);
-            pulldown_cmark::html::push_html(&mut html_output, parser);
+            let input_path = format!("{}/{}", path, filename);
+            let output_path = format!("src/inc/{}.htm", filename.trim_end_matches(".md"));
 
-            write!(
-                File::create(format!("src/inc/{}.htm", filename.trim_end_matches(".md")))?,
-                "{}",
-                html_output
-            )?;
+            let status = Command::new("pandoc")
+                .arg(&input_path)
+                .arg("--filter=pandoc-sidenote")
+                .arg("-t")
+                .arg("html5")
+                .arg("-o")
+                .arg(&output_path)
+                .status()?;
+
+            if !status.success() {
+                return Err(std::io::Error::new(
+                    std::io::ErrorKind::Other,
+                    "Failed to run pandoc with pandoc-sidenote",
+                ));
+            }
         }
     }
     Ok(())
