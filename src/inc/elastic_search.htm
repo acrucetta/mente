@@ -1,9 +1,9 @@
-<h2 id="elastic-search">Elastic Search</h2>
+<h2>Elastic Search</h2>
 <p>Elastic search started off as a scalable Lucene; horizontally
 scalable search engine. It has been a competitor for Hadoop, Spark, and
 Flink</p>
-<p>It’s a server that handles JSON requests.</p>
-<h3 id="elastic-stack">Elastic Stack</h3>
+<p>It's a server that handles JSON requests.</p>
+<h3>Elastic Stack</h3>
 <p><strong>Kibana</strong></p>
 <ul>
 <li>Web UI for searching and visualizing</li>
@@ -18,12 +18,20 @@ Flink</p>
 Search in near-real-time</li>
 <li>Not just log files</li>
 </ul>
-<p><strong>X-Pack</strong> - Security - Machine Learning - Graph
-Exploration</p>
-<h3 id="basic-concepts">Basic Concepts</h3>
-<p><strong>Documents</strong>: - Row in the database - Something you’re
-searching for - Any structured JSON data works - Every document has a
-unique ID and a type</p>
+<p><strong>X-Pack</strong></p>
+<ul>
+<li>Security</li>
+<li>Machine Learning</li>
+<li>Graph Exploration</li>
+</ul>
+<h3>Basic Concepts</h3>
+<p><strong>Documents</strong>:</p>
+<ul>
+<li>Row in the database</li>
+<li>Something you're searching for</li>
+<li>Any structured JSON data works</li>
+<li>Every document has a unique ID and a type</li>
+</ul>
 <p>E.g.,</p>
 <pre><code>\{
     name: &quot;baby carrots&quot;
@@ -35,18 +43,18 @@ unique ID and a type</p>
 <li>Highest level entity</li>
 <li>Can contain collection of types -&gt; collection of documents</li>
 <li>Documents that share similar traits are groupped into an index</li>
-<li>Indices are just a virtual representation; doesn’t store in
+<li>Indices are just a virtual representation; doesn't store in
 disk</li>
 </ul>
 <p><strong>Restful API</strong></p>
 <p>ES works via HTTP requests and JSON data. Any language or tool that
-can handle HTTP can use Elastic Search. You don’t need anything beyond
+can handle HTTP can use Elastic Search. You don't need anything beyond
 HTTP requests.</p>
 <p><strong>Client APIs</strong></p>
 <p>Most languages have specialized ES libraries</p>
 <p><strong>Analytic Tools</strong></p>
 <p>Web based UI to view indices and explore them without code</p>
-<h2 id="architecture">Architecture</h2>
+<h2>Architecture</h2>
 <p>Documents are hashed to a particular shard. Each shard may be on a
 different node in a cluster. Every shard is a self-contained Lucene
 index of its own.</p>
@@ -61,7 +69,7 @@ can run a search on all the shards in parallel.</p>
 clusters (cross-cluster replication). CCR provides a way to
 automatically synchronize indices from your primary cluster to a
 secondary remote cluster.</p>
-<h3 id="sharding">Sharding</h3>
+<h3>Sharding</h3>
 <p>Sharding allows us to divide indices into smaller pieces.</p>
 <p>e.g., Node A (500 gb); Node B (500 gb)</p>
 <p>Index (600 GB) gets placed into both indices.</p>
@@ -70,48 +78,91 @@ secondary remote cluster.</p>
 <li>A shard has no predefined size; it grows as documents are added</li>
 <li>A shard may store up to about 2 billion documents</li>
 </ul>
-<p>Why we shard: - Allows us to store more documents - Easier to fit
-large indices - Improved parallel performance</p>
-<p>Configuring shards: - We use to have 5 shards by default - Indices
-are now created with one shard by default - We can modify the shards
-with the split/shrink API</p>
-<p>How many shards: - If you anticipate millions of docs, consider a
-couple of shards - Otherwise, use the default shards</p>
-<h3 id="replication">Replication</h3>
+<p>Why we shard:</p>
+<ul>
+<li>Allows us to store more documents</li>
+<li>Easier to fit large indices</li>
+<li>Improved parallel performance</li>
+</ul>
+<p>Configuring shards:</p>
+<ul>
+<li>We use to have 5 shards by default</li>
+<li>Indices are now created with one shard by default</li>
+<li>We can modify the shards with the split/shrink API</li>
+</ul>
+<p>How many shards:</p>
+<ul>
+<li>If you anticipate millions of docs, consider a couple of shards</li>
+<li>Otherwise, use the default shards</li>
+</ul>
+<h3>Replication</h3>
 <p>Elastic search natively supports replication. Setting it up can be
 complicated.</p>
-<p>How does replication work? - Replication creates copies of shards
-(replica shards) - A shard that was replicated is called “Primary
-shards”</p>
+<p>How does replication work?</p>
+<ul>
+<li>Replication creates copies of shards (replica shards)</li>
+<li>A shard that was replicated is called "Primary shards"</li>
+</ul>
 <p>Node B [Primary Shard B][Replica A1][Replica A2]</p>
-<p>Choosing replicas: - How many replicas are ideal; depends on the use
-case - IS the data stored elsewhere? - We should replicate shards at
-least twice</p>
-<p>Snapshots: - Snapshots are also back-ups - Snapshots can be taken at
-the index level or for the entire cluster - We can take a snashot before
-running a query; replication can’t help with this but it can with a
-snapshot (rollback to snapshot)</p>
-<p>Increasing throughput with replication: - Replica shards can serve
-diff search requests simultaneously - Elastic can route to the best
-shared - CPU paralellization can improve performance if multiple shards
-are on the same node</p>
-<h3 id="node-roles">Node Roles</h3>
+<p>Choosing replicas:</p>
+<ul>
+<li>How many replicas are ideal; depends on the use case</li>
+<li>IS the data stored elsewhere?</li>
+<li>We should replicate shards at least twice</li>
+</ul>
+<p>Snapshots:</p>
+<ul>
+<li>Snapshots are also back-ups</li>
+<li>Snapshots can be taken at the index level or for the entire
+cluster</li>
+<li>We can take a snashot before running a query; replication can't help
+with this but it can with a snapshot (rollback to snapshot)</li>
+</ul>
+<p>Increasing throughput with replication:</p>
+<ul>
+<li>Replica shards can serve diff search requests simultaneously</li>
+<li>Elastic can route to the best shared</li>
+<li>CPU paralellization can improve performance if multiple shards are
+on the same node</li>
+</ul>
+<h3>Node Roles</h3>
 <p>Default roles: dim (data, ingest, master)</p>
-<p>Master node: - A node may be elected as the cluster’s master nodes -
-A master node is responsible for creating and deleting indices</p>
-<p>Data role: - Enables a node to store data - Storing data includes
-performing queries related to that data, such as queries</p>
-<p>Ingest role: - Node that ingests data - Ingest pipelines are a series
-of steps performed when indexing documents - A simplified version of
-Logstash, directly within Elastic search</p>
-<p>Machine Learning - Identifies node as ML node - useful for running ML
-jobs</p>
-<p>Coordination nodes - Processes request; not possible for single
-setting - Essentially a load balancer</p>
-<p>When to change node roles: - It depends; useful for large clusters -
-Typically done when optimizing the cluster to scale - Only change when
-you know what you’re doing</p>
-<h2 id="managing-documents">Managing Documents</h2>
+<p>Master node:</p>
+<ul>
+<li>A node may be elected as the cluster's master nodes</li>
+<li>A master node is responsible for creating and deleting indices</li>
+</ul>
+<p>Data role:</p>
+<ul>
+<li>Enables a node to store data</li>
+<li>Storing data includes performing queries related to that data, such
+as queries</li>
+</ul>
+<p>Ingest role:</p>
+<ul>
+<li>Node that ingests data</li>
+<li>Ingest pipelines are a series of steps performed when indexing
+documents</li>
+<li>A simplified version of Logstash, directly within Elastic
+search</li>
+</ul>
+<p>Machine Learning</p>
+<ul>
+<li>Identifies node as ML node</li>
+<li>useful for running ML jobs</li>
+</ul>
+<p>Coordination nodes</p>
+<ul>
+<li>Processes request; not possible for single setting</li>
+<li>Essentially a load balancer</li>
+</ul>
+<p>When to change node roles:</p>
+<ul>
+<li>It depends; useful for large clusters</li>
+<li>Typically done when optimizing the cluster to scale</li>
+<li>Only change when you know what you're doing</li>
+</ul>
+<h2>Managing Documents</h2>
 <ul>
 <li>Elastic search documents are immutable</li>
 <li>The existing document is replaced with a modified document</li>
@@ -119,44 +170,82 @@ you know what you’re doing</p>
 </ul>
 <p><strong>Creating and deleting indices</strong></p>
 <p>DELETE /pages</p>
-<p>PUT /products { “settings” : { … } }</p>
-<p>POST /products/_doc/100 { “name”:“Coffee Maker” “price”:64
-“in_stock”:10 }</p>
+<p>PUT /products { "settings" : { ... } }</p>
+<p>POST /products/_doc/100 { "name":"Coffee Maker" "price":64
+"in_stock":10 }</p>
 <p>GET /product/_doc/100</p>
 <p><strong>Update field</strong></p>
-<p>POST /products/_update/100 { “doc: {”in_stock”:3 } }</p>
+<p>POST /products/_update/100 { "doc: { "in_stock":3 } }</p>
 <p><strong>Add field</strong></p>
-<p>POST /products/_update/100 { “doc: {”tags”: [“electronics”] } }</p>
-<h2 id="mapping-analysis">Mapping &amp; Analysis</h2>
-<h3 id="analysis">Analysis</h3>
+<p>POST /products/_update/100 { "doc: { "tags": ["electronics"] } }</p>
+<h2>Mapping &amp; Analysis</h2>
+<h3>Analysis</h3>
 <p>Text values are analyzed when indexing documents. Text is processed
-before it’s stored.</p>
-<p>An analyzer has: - Character filters - Adds, removes or changes
-characters - Char filters are applied in the order specified - Tokenizer
-- Splitting text into tokens - Token filters - Receive tokens - Apply
-filters to the tokens - e.g., lowercase filter</p>
-<h3 id="mapping">Mapping</h3>
-<p>Defines the structure of documents and how they’re indexed and
+before it's stored.</p>
+<p>An analyzer has:</p>
+<ul>
+<li>Character filters
+<ul>
+<li>Adds, removes or changes characters</li>
+<li>Char filters are applied in the order specified</li>
+</ul></li>
+<li>Tokenizer
+<ul>
+<li>Splitting text into tokens</li>
+</ul></li>
+<li>Token filters
+<ul>
+<li>Receive tokens</li>
+<li>Apply filters to the tokens</li>
+<li>e.g., lowercase filter</li>
+</ul></li>
+</ul>
+<h3>Mapping</h3>
+<p>Defines the structure of documents and how they're indexed and
 stored. Similar to a schema in a relational database.</p>
-<p>Approaches to mapping: - Explicit mapping - defining it ourselves -
-Dynamic mapping - generating field mapping for us</p>
-<p>Data types: - object data type: used for any json object - objects
-may be nested - mapped using the properties parameter - objects are not
-stored as objects in Apache Lucene - objects are flattened - nested data
-type - maintains the relationship - we need to use a nested query to
-maintain the relationships - keyword - used for exact matching of values
-- typically used for filtering, aggregations, and sorting - e.g.,
-searching for articles with a given status</p>
-<p>How the <em>keyword</em> data type works - The keyword analyzer is a
-no-op analyzer. It outputs the text as a single token - IN: “a blue
-duck” OUT: “a blue duck”</p>
-<p>Type coercion: - Elastic search inspects data types when indexing -
-If we give 7.4, “7.4” and “7.4m” elastic search will coerce the value to
-become a floating point number - The “_source” document contains the
-original document. The search query uses indexed values, not _source
-(BKD trees, inverted indices)</p>
-<h2 id="searching-for-data">Searching for data</h2>
-<h3 id="query-dsl">Query DSL</h3>
+<p>Approaches to mapping:</p>
+<ul>
+<li>Explicit mapping - defining it ourselves</li>
+<li>Dynamic mapping - generating field mapping for us</li>
+</ul>
+<p>Data types:</p>
+<ul>
+<li>object data type: used for any json object
+<ul>
+<li>objects may be nested</li>
+<li>mapped using the properties parameter</li>
+<li>objects are not stored as objects in Apache Lucene</li>
+<li>objects are flattened</li>
+</ul></li>
+<li>nested data type
+<ul>
+<li>maintains the relationship</li>
+<li>we need to use a nested query to maintain the relationships</li>
+</ul></li>
+<li>keyword
+<ul>
+<li>used for exact matching of values</li>
+<li>typically used for filtering, aggregations, and sorting</li>
+<li>e.g., searching for articles with a given status</li>
+</ul></li>
+</ul>
+<p>How the <em>keyword</em> data type works</p>
+<ul>
+<li>The keyword analyzer is a no-op analyzer. It outputs the text as a
+single token</li>
+<li>IN: "a blue duck" OUT: "a blue duck"</li>
+</ul>
+<p>Type coercion:</p>
+<ul>
+<li>Elastic search inspects data types when indexing</li>
+<li>If we give 7.4, "7.4" and "7.4m" elastic search will coerce the
+value to become a floating point number</li>
+<li>The "_source" document contains the original document. The search
+query uses indexed values, not _source (BKD trees, inverted
+indices)</li>
+</ul>
+<h2>Searching for data</h2>
+<h3>Query DSL</h3>
 <pre><code>GET /products/_search 
 \{
     &quot;query&quot; : \{
@@ -165,8 +254,8 @@ original document. The search query uses indexed values, not _source
 \}</code></pre>
 <p><strong>Term level queries</strong></p>
 <p>Term level queries are not analyzed. They are used as is. They can be
-used with data types such as keyword, numbers, dates, etc…</p>
-<p>Don’t use them for text fields.</p>
+used with data types such as keyword, numbers, dates, etc...</p>
+<p>Don't use them for text fields.</p>
 <p>They are case sensitive.</p>
 <pre><code>GET /products/_search 
 \{

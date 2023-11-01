@@ -34,27 +34,24 @@
 <!-- Generated file, do not edit -->
 
 <h1>designing_data_intensive_apps.htm</h1>
-<h1 id="designing-data-intensive-apps">Designing Data-Intensive
-Apps</h1>
-<h2 id="chapter-1-foundations-of-data-systems">Chapter 1: Foundations of
-Data Systems</h2>
+<h1>Designing Data-Intensive Apps</h1>
+<h2>Chapter 1: Foundations of Data Systems</h2>
 <ul>
 <li>Reliability - tolerating hardware and software faults</li>
 <li>Scalability - measuring load and performance; latency; percentiles;
 throughput</li>
 <li>Maintainability - operability, simplicity, and evolvability</li>
 </ul>
-<h3 id="reliability">Reliability</h3>
+<h3>Reliability</h3>
 <ul>
-<li>Reliability implies “continuing to work correctly even when things
-go wrong”</li>
+<li>Reliability implies "continuing to work correctly even when things
+go wrong"</li>
 <li>What goes wrong are called <em>faults</em>, systems that anticipate
 faults are called <em>fault-tolerant</em> or <em>resilient</em>.</li>
 <li>Many faults are due to poor error handling; by inducing faults we
 can ensure the system works as expected (see Netflix Chaos Monkeys)</li>
 </ul>
-<h2 id="data-models-and-query-languages">Data Models and Query
-Languages</h2>
+<h2>Data Models and Query Languages</h2>
 <p><strong>Relational Model</strong></p>
 <p>The roots of relational databases lie in business data processing,
 which was performed on mainframe computers in the 1960s and ’70s. The
@@ -111,8 +108,7 @@ additional work to keep the denormalized data consistent.</p>
 misleading, as the code that reads the data usually assumes some kind of
 structure—i.e., there is an implicit schema, but it is not enforced by
 the database</p>
-<h2 id="transaction-processing-or-analytics">Transaction Processing or
-Analytics</h2>
+<h2>Transaction Processing or Analytics</h2>
 <p>Records are inserted or updated based on the user’s input. Because
 these applications are interactive, the access pattern became known as
 <em>online transaction processing</em>(OLTP)</p>
@@ -144,7 +140,7 @@ business analysts run ad hoc analytic queries on an OLTP database since
 those queries are often expensive, scanning large parts of the dataset,
 which can harm the performance of concurrently executing
 transactions.</p>
-<h2 id="data-warehouse">Data Warehouse</h2>
+<h2>Data Warehouse</h2>
 <p>A <em>data warehouse</em>, by contrast, is a separate database that
 analysts can query to their hearts’ content without affecting OLTP
 operations [48]. The data warehouse contains a read-only copy of the
@@ -161,7 +157,7 @@ warehouse can be optimized for analytic access patterns. It turns out
 that the indexing algorithms discussed in the first half of this chapter
 work well for OLTP but are not very good at answering analytic
 queries.</p>
-<h3 id="star-and-snowflake-schema">Star and Snowflake Schema</h3>
+<h3>Star and Snowflake Schema</h3>
 <p>The name “star schema” comes from the fact that when the table
 relationships are</p>
 <p>visualized, the fact table is in the middle, surrounded by dimension
@@ -174,7 +170,7 @@ brand and type as foreign keys rather than storing them as strings in
 the dim_product table. Snowflake schemas are more normalized than star
 schemas, but star schemas are often preferred because they are simpler
 for analysts to work with [55].</p>
-<h3 id="column-oriented-storage">Column Oriented Storage</h3>
+<h3>Column Oriented Storage</h3>
 <p>In most OLTP databases, storage is laid out in a
 <em>row-oriented</em> fashion: all the values from one table row are
 stored next to each other. Document databases are similar: an entire
@@ -208,7 +204,7 @@ suits your particular application. If you need to adjust a database’s
 tuning parameters, this understanding allows you to imagine what effect
 a higher or a lower value may have</p>
 <p>![[/image3.png]]</p>
-<h3 id="models-of-data-flow">Models of Data Flow</h3>
+<h3>Models of Data Flow</h3>
 <p>That’s a fairly abstract idea—there are many ways data can flow from
 one process to another. Who encodes the data, and who decodes it? In the
 rest of this chapter we will explore some of the most common ways how
@@ -251,8 +247,7 @@ servers and clients to be running at the same time, and so the data
 encoding used by servers and clients must be compatible across versions
 of the service API— precisely what we’ve been talking about in this
 chapter.</p>
-<h3 id="message-passing-dataflow"><strong>Message-Passing
-Dataflow</strong></h3>
+<h3><strong>Message-Passing Dataflow</strong></h3>
 <p>In this final section, we will briefly look at asynchronous
 message-passing systems, which are somewhere between RPC and databases.
 They are similar to RPC in that a client’s request (usually called a
@@ -283,7 +278,7 @@ decodes the response</li>
 where nodes communicate by sending each other messages that are encoded
 by the sender and decoded by the recipient</li>
 </ul>
-<h3 id="stream-processing">Stream Processing</h3>
+<h3>Stream Processing</h3>
 <p>In general, a “stream” refers to data that is incrementally made
 available over time. The concept appears in many places: in the stdin
 and stdout of Unix, programming languages (lazy lists) [2], filesystem
@@ -321,7 +316,7 @@ the log can be partitioned (in the sense of Chapter 6). Different
 partitions can then be hosted on different machines, making each
 partition a separate log that can be read and written independently from
 other partitions</p>
-<h3 id="processing-streams">Processing Streams</h3>
+<h3>Processing Streams</h3>
 <p>Broadly, there are three options:</p>
 <ol type="1">
 <li>You can take the data in the events and write it to a database,

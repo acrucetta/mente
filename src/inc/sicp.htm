@@ -1,33 +1,44 @@
-<h2 id="structure-and-interpretation-of-computer-programs">Structure and
-Interpretation of Computer Programs</h2>
-<p>Every language has: - Primitive expressions - Means of combination -
-Means of abstraction</p>
+<h2>Structure and Interpretation of Computer Programs</h2>
+<p>Every language has:</p>
+<ul>
+<li>Primitive expressions</li>
+<li>Means of combination</li>
+<li>Means of abstraction</li>
+</ul>
 <p>E.g.,</p>
 <div class="sourceCode" id="cb1"><pre
 class="sourceCode lisp"><code class="sourceCode commonlisp"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>(<span class="op">-</span> <span class="dv">136</span> <span class="dv">214</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>(define size <span class="dv">2</span>)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>(define radius <span class="dv">10</span>)</span></code></pre></div>
-<p>To evaluate combinations we: 1. Evaluate the sub-expressions 2. Apply
-the procedure that is the value of the leftmost subexpression to the
-other arguments</p>
+<p>To evaluate combinations we:</p>
+<ol type="1">
+<li>Evaluate the sub-expressions</li>
+<li>Apply the procedure that is the value of the leftmost subexpression
+to the other arguments</li>
+</ol>
 <p>This is recursive in nature.</p>
 <div class="sourceCode" id="cb2"><pre
 class="sourceCode lisp"><code class="sourceCode commonlisp"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>(* (+ <span class="dv">2</span> (* <span class="dv">4</span> <span class="dv">6</span>))</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>   (+ <span class="dv">3</span> <span class="dv">5</span> <span class="dv">7</span>))  </span></code></pre></div>
-<p>Compound procedures: - Numbers and arithmetic are primitive data and
-procedures - Nesting combinations provides a means of combining
-operations - Definitions that associate names with values provide a
-limited means of abstraction</p>
+<p>Compound procedures:</p>
+<ul>
+<li>Numbers and arithmetic are primitive data and procedures</li>
+<li>Nesting combinations provides a means of combining operations</li>
+<li>Definitions that associate names with values provide a limited means
+of abstraction</li>
+</ul>
 <div class="sourceCode" id="cb3"><pre
 class="sourceCode lisp"><code class="sourceCode commonlisp"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>(define (square x)(<span class="op">*</span> x x))</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>(square <span class="dv">21</span>)</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="dv">441</span></span></code></pre></div>
-<p>There are two ways of evaluating: - Applicative order: evaluate the
-arguments and then apply - Normal order: fully expand and then
-reduce</p>
+<p>There are two ways of evaluating:</p>
+<ul>
+<li>Applicative order: evaluate the arguments and then apply</li>
+<li>Normal order: fully expand and then reduce</li>
+</ul>
 <p>Lisp uses applicative-order evaluation.</p>
 <p>Conditionals</p>
 <div class="sourceCode" id="cb4"><pre

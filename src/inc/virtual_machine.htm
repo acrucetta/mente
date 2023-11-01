@@ -1,21 +1,17 @@
-<h2 id="virtual-machines">Virtual Machines</h2>
+<h2>Virtual Machines</h2>
 <p>A virtual machine is a program that acts like a computer. It
 simulates a CPU along with a few other hardware components.</p>
 <p>VMs allow us to port programs into several CPUs.</p>
-<figure>
-<img src="https://www.jmeiners.com/lc3-vm/img/vm.gif"
-alt="https://www.jmeiners.com/lc3-vm/img/vm.gif" />
-<figcaption
-aria-hidden="true">https://www.jmeiners.com/lc3-vm/img/vm.gif</figcaption>
-</figure>
+<p><img src="https://www.jmeiners.com/lc3-vm/img/vm.gif"
+alt="https://www.jmeiners.com/lc3-vm/img/vm.gif" /></p>
 <p>The only cost is the overhead of the VM itself and the further
-abstraction from the machine. This is a trade-off that’s taken.</p>
+abstraction from the machine. This is a trade-off that's taken.</p>
 <p>Ethereum smart contracts are examples of virtual machines. They are
 run inside of a VM that has no access to the file system, network, disc,
-etc…</p>
+etc...</p>
 <p><strong>Instruction Set</strong></p>
 <p>Instructions have both an opcode and a set of parameters.</p>
-<p>Each opcode represents tasks the CPU “knows” how to do.</p>
+<p>Each opcode represents tasks the CPU "knows" how to do.</p>
 <p>Examples:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
@@ -39,12 +35,8 @@ etc…</p>
 <p>Assembly language is a readable and writable form encoded in plain
 text. A tool called an {assembler} transforms each line of text into a
 16-bit binary.</p>
-<figure>
-<img src="https://www.jmeiners.com/lc3-vm/img/assembler.gif"
-alt="https://www.jmeiners.com/lc3-vm/img/assembler.gif" />
-<figcaption
-aria-hidden="true">https://www.jmeiners.com/lc3-vm/img/assembler.gif</figcaption>
-</figure>
+<p><img src="https://www.jmeiners.com/lc3-vm/img/assembler.gif"
+alt="https://www.jmeiners.com/lc3-vm/img/assembler.gif" /></p>
 <p>An assembler convers assembly language (already low level) into
 machine code. The compiler translates high-level source code into lower
 level languages like assembly code or machine code.</p>

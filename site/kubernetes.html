@@ -34,20 +34,35 @@
 <!-- Generated file, do not edit -->
 
 <h1>kubernetes.htm</h1>
-<h2 id="kubernetes">Kubernetes</h2>
+<h2>Kubernetes</h2>
 <p>Came with the rise of microservices; we now use dozens of containers
 across different environments</p>
-<p>Kubernetes guarantees: - high availability or no downtime -
-scalability or high performance - disaster recovery - backup and
-restore</p>
-<p>Basic architecture: - Linux Master Node (lightweight) - Worker node
-(heavy weight) with “kubelet” processes inside each of them - Each
-worker node has containers with applications running inside of them -
-The master node runs Kubernetes processes which include: - API server
-(entry point to K8S cluster). - Controller manager - keeps track of
-what’s happening in the cluster - Scheduler - ensures pod placement -
-etcd - key value storage; current state - Virtual network unified by a
-powerful machine connected to all of the nodes</p>
+<p>Kubernetes guarantees:</p>
+<ul>
+<li>high availability or no downtime</li>
+<li>scalability or high performance</li>
+<li>disaster recovery - backup and restore</li>
+</ul>
+<p>Basic architecture:</p>
+<ul>
+<li>Linux Master Node (lightweight)
+<ul>
+<li>Worker node (heavy weight) with "kubelet" processes inside each of
+them</li>
+<li>Each worker node has containers with applications running inside of
+them</li>
+</ul></li>
+<li>The master node runs Kubernetes processes which include:
+<ul>
+<li>API server (entry point to K8S cluster).</li>
+<li>Controller manager - keeps track of what's happening in the
+cluster</li>
+<li>Scheduler - ensures pod placement</li>
+<li>etcd - key value storage; current state</li>
+</ul></li>
+<li>Virtual network unified by a powerful machine connected to all of
+the nodes</li>
+</ul>
 
 
 </main>

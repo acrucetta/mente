@@ -1,10 +1,14 @@
-<h2 id="dbt-notes">Dbt Notes</h2>
-<h3 id="incremental-models">Incremental models:</h3>
-<p>They need: - a <strong>filter</strong> to select just the new or
-updated records - a <strong>conditional</strong> block that wraps our
-filter and only applies it when we want it -
-<strong>configuration</strong> that tells dbt we want to build
-incrementally and helps apply the conditional filter when needed</p>
+<h2>Dbt Notes</h2>
+<h3>Incremental models:</h3>
+<p>They need:</p>
+<ul>
+<li>a <strong>filter</strong> to select just the new or updated
+records</li>
+<li>a <strong>conditional</strong> block that wraps our filter and only
+applies it when we want it</li>
+<li><strong>configuration</strong> that tells dbt we want to build
+incrementally and helps apply the conditional filter when needed</li>
+</ul>
 <div class="sourceCode" id="cb1"><pre
 class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> <span class="op">*</span> <span class="kw">from</span> orders</span>
@@ -13,7 +17,7 @@ class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#c
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  updated_at <span class="op">&gt;</span> (<span class="kw">select</span> <span class="fu">max</span>(updated_at) <span class="kw">from</span> {{ this }})</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  </span></code></pre></div>
 <p><strong>Config for incremental models</strong></p>
-<p>Note: order_id can also be an array [“a”,“b”] or you can define a
+<p>Note: order_id can also be an array ["a","b"] or you can define a
 surrogate key.</p>
 <pre><code>{{
     config(
@@ -47,8 +51,8 @@ class="sourceCode sql"><code class="sourceCode sql"><span id="cb3-1"><a href="#c
 <span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>{% endif %}</span></code></pre></div>
 <p><strong>Strategies</strong></p>
-<p><strong>Append</strong>: only use if duplicates aren’t a problem.
-Takes records and inserts them; it can’t update or delete records.</p>
+<p><strong>Append</strong>: only use if duplicates aren't a problem.
+Takes records and inserts them; it can't update or delete records.</p>
 <p><img
 src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*f2dyZA9N_j8ox9RkOwegUg.png" /></p>
 <p><strong>Merge</strong>: Need to specify a unique key. If it exists,
@@ -58,11 +62,16 @@ src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*o59bXBWxVHQ7-8vTcQG
 <p><strong>Summary of Strategies</strong></p>
 <p><img
 src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*MTBNKDCa_csd--9qk4b9pA.png" /></p>
-<h3 id="is_incremental">is_incremental()</h3>
+<h3>is_incremental()</h3>
 <p>The is_incremental() macro will return True if all of the following
-conditions are met: 1. the destination table already exists in the
-database 2. dbt is not running in full-refresh mode 3. the running model
-is configured with materialized=‘incremental’</p>
-<p><strong>Considerations</strong> - Run full-refresh on the weekends or
-on a weekly or monthly to prevent data drift (dbt build –ful-refresh -s
-orders)</p>
+conditions are met:</p>
+<ol type="1">
+<li>the destination table already exists in the database</li>
+<li>dbt is not running in full-refresh mode</li>
+<li>the running model is configured with materialized='incremental'</li>
+</ol>
+<p><strong>Considerations</strong></p>
+<ul>
+<li>Run full-refresh on the weekends or on a weekly or monthly to
+prevent data drift (dbt build --ful-refresh -s orders)</li>
+</ul>

@@ -245,8 +245,10 @@ fn generate_html_from_markdown(path: &str) -> Result<(), std::io::Error> {
             let status = Command::new("pandoc")
                 .arg(&input_path)
                 .arg("--filter=pandoc-sidenote")
-                .arg("-r commonmark")
-                .arg("-w html5")
+                .arg("-r")
+                .arg("commonmark")
+                .arg("-w")
+                .arg("html5")
                 .arg("-o")
                 .arg(&output_path)
                 .status()?;

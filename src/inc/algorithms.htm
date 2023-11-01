@@ -1,8 +1,8 @@
-<h2 id="notes-on-algorithms">Notes on Algorithms</h2>
+<h2>Notes on Algorithms</h2>
 <p><em>Algorithms: method for solving a problem.</em></p>
 <p><em>Data structure: method to store information.</em></p>
 <p><em>Algorithms + Data Structures = Programs</em></p>
-<h2 id="week-1-quick-union">Week 1: Quick Union</h2>
+<h2>Week 1: Quick Union</h2>
 <p>Steps to develop a usable algorithm:</p>
 <ol type="1">
 <li>Model the problem</li>
@@ -12,7 +12,7 @@
 <li>Find a way to address the problem</li>
 <li>Iterate until satisfied</li>
 </ol>
-<h3 id="dynamic-connectivity">Dynamic Connectivity</h3>
+<h3>Dynamic Connectivity</h3>
 <p>Is there a path between two objects? Used in many applications. The
 union-find is a problem of maintaining a collection of disjoint sets and
 performing two operations.</p>
@@ -34,15 +34,15 @@ whose id equals id[p] to id[q].</p>
 <ul>
 <li>Data structure: integer array id[] of size N</li>
 <li>Interpretation: id[i] is parent of i</li>
-<li>Root of i is id[id[id[…id[i]…]]]</li>
+<li>Root of i is id[id[id[...id[i]...]]]</li>
 </ul>
 <p>Find: check if p and q have the same root.</p>
-<p>Union: to merge components containing p and q, set the id of p’s root
-to the id of q’s root.</p>
+<p>Union: to merge components containing p and q, set the id of p's root
+to the id of q's root.</p>
 <p>Quick-find: union too expensive. Trees are flat.</p>
 <p>Quick-union: trees can get tall. Find too expensive (could be N array
 accesses).</p>
-<h3 id="improvements">Improvements</h3>
+<h3>Improvements</h3>
 <p>Weighted quick-union</p>
 <ul>
 <li>Modify quick-union to avoid tall trees</li>
@@ -51,10 +51,7 @@ accesses).</p>
 </ul>
 <p>In sumamry, we try to avoid tall trees as we iterate through the
 array.</p>
-<figure>
-<img src="image-1.png" alt="weighted tree comparison" />
-<figcaption aria-hidden="true">weighted tree comparison</figcaption>
-</figure>
+<p><img src="image-1.png" alt="weighted tree comparison" /></p>
 <div class="sourceCode" id="cb1"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> QuickUnion:</span>
@@ -92,7 +89,7 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a hr
 <li>Union: takes constant time, given roots</li>
 </ul>
 <p>Depth of any node x is at most lg N.</p>
-<h3 id="union-find-applications">Union-Find Applications</h3>
+<h3>Union-Find Applications</h3>
 <ul>
 <li>Games</li>
 <li>Dynamic connectivity</li>
@@ -107,12 +104,11 @@ networks if we want to know whether people are connected.</p>
 <ul>
 <li>We model the problem</li>
 <li>Then we find an algorithm</li>
-<li>We check whether it’s fast or not</li>
+<li>We check whether it's fast or not</li>
 <li>We address the problem</li>
-<li>And iterate…</li>
+<li>And iterate...</li>
 </ul>
-<h2 id="week-2-analysis-of-algorithms">Week 2: Analysis of
-Algorithms</h2>
+<h2>Week 2: Analysis of Algorithms</h2>
 <p>The key is running time; we used to have a cranking machine; how many
 cranks we need to do to compute.</p>
 <p>Why analyze algorithms?</p>
@@ -122,9 +118,8 @@ cranks we need to do to compute.</p>
 <li>Provide guarantees</li>
 <li>Understand theoretical basis</li>
 </ul>
-<p>One of the most important ones is the FFT algorithm; takes only <span
-class="math inline"><em>N</em><em>l</em><em>o</em><em>g</em><em>N</em></span>
-steps. Another one is the N-body simulation.</p>
+<p>One of the most important ones is the FFT algorithm; takes only $N
+log N$ steps. Another one is the N-body simulation.</p>
 <p>We use the scientific method to analyze algorithms: Observe,
 hypothesize, predict, verify, and validate.</p>
 <p>Experiments must be <strong>reproducible</strong> and
@@ -142,10 +137,7 @@ instead of each addition.</p>
 counts.</p>
 <p><strong>Order of growth classifications</strong></p>
 <p>Small set of functions: log N, N, NlogN, N^2, N^3, 2^N</p>
-<figure>
-<img src="image-3.png" alt="Alt text" />
-<figcaption aria-hidden="true">Alt text</figcaption>
-</figure>
+<p><img src="image-3.png" alt="Alt text" /></p>
 <p>Based on binary search we can find a better algorithm for 3-Sum. We
 can use N^2 log N instead of N^3.</p>
 <p>Instructions:</p>
@@ -160,37 +152,58 @@ can use N^2 log N instead of N^3.</p>
 </ul></li>
 <li>Only count if a[i] &lt; a[j]] &lt; a[k]</li>
 </ul>
-<h3 id="types-of-analysis">Types of analysis</h3>
+<h3>Types of analysis</h3>
 <p>We have best case, worst case, and average case. Lower bound on cost,
 upper bound on cost, and expected cost.</p>
-<p>We can have different approaches: 1. Design for worst case 2.
-Randomize the input</p>
+<p>We can have different approaches:</p>
+<ol type="1">
+<li>Design for worst case</li>
+<li>Randomize the input</li>
+</ol>
 <p>The main approach is to reduce variability by focusing on the worst
 case scenario. We want to find an optimal algorithm.</p>
-<p>We have many notations - Big Theta (<span
-class="math inline"><em>B</em><em>i</em><em>g</em><em>θ</em></span>):
-asymptotic order of growth - Big Oh: to develop upper bounds - Big
-Omega: to develop lower bounds</p>
-<p>Example: - 3 Sum - Improved algorithm gives us O(<span
-class="math inline"><em>N</em><sup>2</sup><em>l</em><em>o</em><em>g</em><em>N</em></span>)
-- Lower bound (proof that no algorithm can do better): <span
-class="math inline"><em>ω</em>(<em>N</em>)</span></p>
-<p>The approach: - Develop algorithm - Prove a lower bound</p>
-<p>We can also have tilde notation. It’s used to provide an approximate
-model.</p>
-<h3 id="memory">Memory</h3>
-<p>Typical memory usage for primitive types: - Boolean (1); Char (2);
-Double (8); Int (8) - Int[][] ~4MN; int[] ~4N+24;</p>
-<p>Typical memory usage for objects in Java: - Object overhead 16 bytes
-- Ref 8 bytes - Padding multiple of 8 bytes</p>
-<h2 id="week-2-stacks-and-queues">Week 2: Stacks and Queues</h2>
-<h3 id="stacks-and-queues">Stacks and queues</h3>
+<p>We have many notations</p>
 <ul>
-<li>They’re fundamental data types</li>
+<li>Big Theta ($Big \theta$): asymptotic order of growth</li>
+<li>Big Oh: to develop upper bounds</li>
+<li>Big Omega: to develop lower bounds</li>
+</ul>
+<p>Example:</p>
+<ul>
+<li>3 Sum
+<ul>
+<li>Improved algorithm gives us O($N^2logN$)</li>
+<li>Lower bound (proof that no algorithm can do better):
+$\omega(N)$</li>
+</ul></li>
+</ul>
+<p>The approach:</p>
+<ul>
+<li>Develop algorithm</li>
+<li>Prove a lower bound</li>
+</ul>
+<p>We can also have tilde notation. It's used to provide an approximate
+model.</p>
+<h3>Memory</h3>
+<p>Typical memory usage for primitive types:</p>
+<ul>
+<li>Boolean (1); Char (2); Double (8); Int (8)</li>
+<li>Int[][] ~4MN; int[] ~4N+24;</li>
+</ul>
+<p>Typical memory usage for objects in Java:</p>
+<ul>
+<li>Object overhead 16 bytes</li>
+<li>Ref 8 bytes</li>
+<li>Padding multiple of 8 bytes</li>
+</ul>
+<h2>Week 2: Stacks and Queues</h2>
+<h3>Stacks and queues</h3>
+<ul>
+<li>They're fundamental data types</li>
 <li>Stack has push and pop (LIFO)</li>
 <li>Queue has enqueue and dequeue (FIFO)</li>
 </ul>
-<h3 id="stacks">Stacks</h3>
+<h3>Stacks</h3>
 <ul>
 <li>push(); pop(); isEmpty()</li>
 <li>We build the stack with a LinkedList
@@ -214,9 +227,13 @@ class="sourceCode java"><code class="sourceCode java"><span id="cb2-1"><a href="
 <li>A tack with N items uses ~40N bytes.</li>
 <li>Every object in Java has 16 bytes of overhead.</li>
 </ul>
-<p><strong>Alternative Implementation</strong> - Use array s[] to store
-N items on stack - push(): add new item at S[N] - pop(): remove item
-from S[N-1] - Cons: need to define the capacity ahead of time</p>
+<p><strong>Alternative Implementation</strong></p>
+<ul>
+<li>Use array s[] to store N items on stack</li>
+<li>push(): add new item at S[N]</li>
+<li>pop(): remove item from S[N-1]</li>
+<li>Cons: need to define the capacity ahead of time</li>
+</ul>
 <p>We have to worry about loitering in Java. To avoid that we need to
 set the removed item to Null so it can be reclaimed by the garbage
 collector.</p>
@@ -227,7 +244,7 @@ array of twice the size and copy the items. ~3N.</p>
 Invariant; if the array is always between 25% and 100%</p>
 <p>The worst case for push and pop will be N.</p>
 <p><strong>Memory:</strong> It uses between 8N and 32N.</p>
-<h3 id="tradeoffs">Tradeoffs</h3>
+<h3>Tradeoffs</h3>
 <ul>
 <li>Linked list:
 <ul>
@@ -240,7 +257,7 @@ Invariant; if the array is always between 25% and 100%</p>
 <li>Less wasted space</li>
 </ul></li>
 </ul>
-<h3 id="queues">Queues</h3>
+<h3>Queues</h3>
 <p><strong>LinkedList</strong></p>
 <pre><code>enqueue()
 
@@ -256,24 +273,24 @@ last.item =&quot;not&quot;;
 last.next = null;
 
 oldlast.next = last;</code></pre>
-<h3 id="generics">Generics</h3>
+<h3>Generics</h3>
 <p>We have implemented stacks of strings, but what about URLs, Ints,
-Vans…</p>
+Vans...</p>
 <p>We use the generic type name in Java <code>&lt;Item&gt;</code></p>
-<p>Java doesn’t allow generic array creation. We need to create an array
+<p>Java doesn't allow generic array creation. We need to create an array
 of Objects and pass it to a list of items.</p>
 <pre><code>s = (Item[]) new Object([Capacity])</code></pre>
 <p>Q: What to do about primitive types?</p>
 <p>Wrapper type: each primitive type has a wrapper object type. Integer
 is a wrapper type for int.</p>
-<h3 id="iteration">Iteration</h3>
+<h3>Iteration</h3>
 <p>Design challenge: How can we support iteration over stack items by
 items.</p>
 <p>An Iterable is a method that returns an Iterator. It has methods
 hasNext() and next()</p>
 <p>Why make data structures Iterable? It can helps us write elegant
 code. Allows us to use <code>for each statements</code></p>
-<h3 id="week-2-self-questions">Week 2: Self Questions</h3>
+<h3>Week 2: Self Questions</h3>
 <ul>
 <li>Why does the stack have contant push and pop time?
 <ul>
@@ -293,102 +310,107 @@ to access an item</li>
 easy for push/pop but to find items it takes a bit more time. We do have
 resizing issues.</li>
 </ul></li>
-<li>What’s the time complexity of each one?</li>
+<li>What's the time complexity of each one?</li>
 <li>How does Java deal with Generics and Iterators?</li>
 <li>Why is it better to use Iterators? What does that allows us to
 do?</li>
 <li>What is the origin of LinkedLists?
 <ul>
 <li>They were initially used by LISP in 1950s as the primary structure
-for all programs and data. IT presented challenges because they’re hard
+for all programs and data. IT presented challenges because they're hard
 to debug.</li>
 </ul></li>
-<li>Why can’t we remove an item a O(n) complexity from a Stack?
+<li>Why can't we remove an item a O(n) complexity from a Stack?
 <ul>
 <li>Because we still have to shift all the other positions next to the
 item removed. This would cost a linear amount of time.</li>
 </ul></li>
 </ul>
-<h2 id="week-2-sorting">Week 2: Sorting</h2>
+<h2>Week 2: Sorting</h2>
 <p><strong>Q:</strong> How does Sort knows how to sort Doubles, Strings,
-and files without any information? - We use callbacks: the sort()
-function calls the object’s compareTo method. - Commonly implemented in
-other programming languages.</p>
+and files without any information?</p>
+<ul>
+<li>We use callbacks: the sort() function calls the object's compareTo
+method.</li>
+<li>Commonly implemented in other programming languages.</li>
+</ul>
 <p>The sort implementation takes a Comparable[] object. Then call the
 <code>.compareTo()</code> code.</p>
-<p>Yes, you’re right. Let’s break down the definitions for each of these
-properties in the context of a binary relation ( <span
-class="math inline">≤</span> ) on a set ( S ):</p>
+<p>Yes, you're right. Let's break down the definitions for each of these
+properties in the context of a binary relation ( $\leq$ ) on a set ( S
+):</p>
 <ol type="1">
-<li><strong>Antisymmetry</strong>:
+<li><p><strong>Antisymmetry</strong>:</p>
 <ul>
-<li>This means that two distinct elements cannot both be “less than or
-equal to” each other. If they are, they must actually be the same
+<li>This means that two distinct elements cannot both be "less than or
+equal to" each other. If they are, they must actually be the same
 element.</li>
 </ul></li>
-<li><strong>Transitivity</strong>:
+<li><p><strong>Transitivity</strong>:</p>
 <ul>
-<li>This captures the intuitive idea that if ( a ) is “less than or
-equal to” ( b ) and ( b ) is “less than or equal to” ( c ), then ( a )
-should also be “less than or equal to” ( c ).</li>
+<li>This captures the intuitive idea that if ( a ) is "less than or
+equal to" ( b ) and ( b ) is "less than or equal to" ( c ), then ( a )
+should also be "less than or equal to" ( c ).</li>
 </ul></li>
-<li><strong>Totality (or Completeness)</strong>:
+<li><p><strong>Totality (or Completeness)</strong>:</p>
 <ul>
-<li>This means that given any two elements in the set, one must be “less
-than or equal to” the other or vice-versa. This ensures that there are
-no two elements which can’t be compared in the order.</li>
+<li>This means that given any two elements in the set, one must be "less
+than or equal to" the other or vice-versa. This ensures that there are
+no two elements which can't be compared in the order.</li>
 </ul></li>
 </ol>
 <p>Ex standard order for natural and real numbers, alphabetical orders,
 chronological orders.</p>
-<p><strong>Comparable API</strong> - Less than return -1 - Equal return
-0 - More than return +1</p>
-<h3 id="selection-sort">Selection Sort</h3>
+<p><strong>Comparable API</strong></p>
+<ul>
+<li>Less than return -1</li>
+<li>Equal return 0</li>
+<li>More than return +1</li>
+</ul>
+<h3>Selection Sort</h3>
 <p>In iteration I, find index min of smallest remaining entry; swap a[I]
 and a[min]</p>
 <p>Algorithm: scans from left to right.</p>
-<p>Selection sort uses <span
-class="math inline"> <em>N</em><sup>2</sup>/2</span> compares. It takes
-quadratic time, even if the input is sorted.</p>
+<p>Selection sort uses $~N^2/2$ compares. It takes quadratic time, even
+if the input is sorted.</p>
 <p><img
 src="https://www.programiz.com/sites/tutorial2program/files/Selection-sort-0.png" /></p>
-<h3 id="insertion-sort">Insertion Sort</h3>
+<h3>Insertion Sort</h3>
 <p>In iteration I we swap a[i] with each larger entry to its left.</p>
-<p>To sort a randomly ordered arra with distinct keys, it uses <span
-class="math inline"> 1/4<em>N</em><sup>2</sup></span> compares and <span
-class="math inline"> 1/4<em>N</em><sup>2</sup></span> exchanges.</p>
+<p>To sort a randomly ordered arra with distinct keys, it uses $~1/4
+N^2$ compares and $~1/4N^2$ exchanges.</p>
 <p>If the array is in reverse order, it has to go all the way back to
-the beginning; if it’s in ascending order, it takes 0 exchanges.</p>
+the beginning; if it's in ascending order, it takes 0 exchanges.</p>
 <p>For partially sorted arrays, it takes linear time. An array is
 partially sorted if the number of inversions is less than some constant
 cN.</p>
-<figure>
-<img
+<p><img
 src="https://media.geeksforgeeks.org/wp-content/uploads/insertionsort.png"
-alt="insertion sort" />
-<figcaption aria-hidden="true">insertion sort</figcaption>
-</figure>
-<h3 id="shellsort">Shellsort</h3>
+alt="insertion sort" /></p>
+<h3>Shellsort</h3>
 <p>Move entries more than one position at a time by h-sorting the array.
 An h-sorted array is h interleaved sorted subsequences. (1959 sorting
 method)</p>
-<p>H-sort is just insertion sort with stride length h. Why do this? -
-Big increments -&gt; small subarray - Small increments -&gt; nearly in
-order</p>
-<p>Which increment sequence to use? - Powers of two? Powers of two minus
-one? - 3x+1? Easy to compute - Sedgewick: 1,5,19,41…</p>
-<p>The worst case number of compares used by shell sort is <span
-class="math inline"><em>O</em>(<em>N</em><sup>(3/2)</sup>)</span></p>
+<p>H-sort is just insertion sort with stride length h. Why do this?</p>
+<ul>
+<li>Big increments -&gt; small subarray</li>
+<li>Small increments -&gt; nearly in order</li>
+</ul>
+<p>Which increment sequence to use?</p>
+<ul>
+<li>Powers of two? Powers of two minus one?</li>
+<li>3x+1? Easy to compute</li>
+<li>Sedgewick: 1,5,19,41...</li>
+</ul>
+<p>The worst case number of compares used by shell sort is
+$O(N^(3/2))$</p>
 <p>Shell sort is a simple idea leading to substantial performance gains.
 It involves very little code, used often in hardware (embedded
 systems)</p>
-<figure>
-<img
+<p><img
 src="https://static.javatpoint.com/ds/images/shell-sort-algorithm2.png"
-alt="shell sort" />
-<figcaption aria-hidden="true">shell sort</figcaption>
-</figure>
-<h3 id="shuffle-sort">Shuffle sort</h3>
+alt="shell sort" /></p>
+<h3>Shuffle sort</h3>
 <ul>
 <li>Generate a random real number for each array entry</li>
 <li>Sort using these random numbers as the key; uniformly random
@@ -396,21 +418,37 @@ permutation</li>
 </ul>
 <p>Knuth sort: in iteration I, pick integer r between 0 and I uniformly
 at random. Then we swap a[I] and a[r].</p>
-<h3 id="convex-hull">Convex Hull</h3>
+<h3>Convex Hull</h3>
 <p>The convex hull of a set of N points is the smallest perimeter fence
 enclosing the points.</p>
 <p><img
 src="https://miro.medium.com/v2/resize:fit:677/1*F4IUmOJbbLMJiTgHxpoc7Q.png" /></p>
-<p>E.g., - find shortest path in the plane from s to t avoiding a
-polygonal obstacle. - find the farthest path between two points</p>
-<p>Graham scan demo - Choose point p with smallest y-coordinate - Sort
-points by polar angle with p - Consider points in oder,, discard unless
-it creates a ccw turn</p>
-<p><strong>Week 3: Self-Questions</strong> - When should I use which
-sort? - Insertion Sort - Select Sort - Merge Sort - Shell Sort -
-Shuffling - Why are some sorts better than others in specific occasions?
-- What are the most widely used sorts?</p>
-<h2 id="week-3-merge-sort">Week 3: Merge Sort</h2>
+<p>E.g.,</p>
+<ul>
+<li>find shortest path in the plane from s to t avoiding a polygonal
+obstacle.</li>
+<li>find the farthest path between two points</li>
+</ul>
+<p>Graham scan demo</p>
+<ul>
+<li>Choose point p with smallest y-coordinate</li>
+<li>Sort points by polar angle with p</li>
+<li>Consider points in oder,, discard unless it creates a ccw turn</li>
+</ul>
+<p><strong>Week 3: Self-Questions</strong></p>
+<ul>
+<li>When should I use which sort?
+<ul>
+<li>Insertion Sort</li>
+<li>Select Sort</li>
+<li>Merge Sort</li>
+<li>Shell Sort</li>
+<li>Shuffling</li>
+</ul></li>
+<li>Why are some sorts better than others in specific occasions?</li>
+<li>What are the most widely used sorts?</li>
+</ul>
+<h2>Week 3: Merge Sort</h2>
 <ul>
 <li>Divide array into two halves</li>
 <li>Recursively sort each array</li>
@@ -422,10 +460,14 @@ alt="mergesort" /></p>
 <p>Mergesort uses at most NlgN compares and 6NlgN array accesses to sort
 any array of size N.</p>
 <p>Mergesort uses extra space proportions to N.</p>
-<p>Practical improvements: - Use insertion sort for small subarrays;
-merge sort has too much overhead for tiny arrays - The cut-off for
-mergesort is 7 items - Stop if already sorted; is the biggest item in
-first half &lt; smallest item in second half</p>
+<p>Practical improvements:</p>
+<ul>
+<li>Use insertion sort for small subarrays; merge sort has too much
+overhead for tiny arrays</li>
+<li>The cut-off for mergesort is 7 items</li>
+<li>Stop if already sorted; is the biggest item in first half &lt;
+smallest item in second half</li>
+</ul>
 <div class="sourceCode" id="cb5"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># split in half</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> n <span class="op">/</span> <span class="dv">2</span></span>
@@ -443,12 +485,14 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a hr
 <span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> i <span class="op">&lt;=</span> m,</span>
 <span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    a[k<span class="op">++</span>] <span class="op">=</span> b[i<span class="op">++</span>]</span>
 <span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    → invariant: a[<span class="fl">1.</span>.k] <span class="kw">in</span> final position</span></code></pre></div>
-<h3 id="bottom-up-merge-sort-no-recursion">Bottom-up Merge Sort (no
-recursion)</h3>
-<p>Basic plan - Pass through array merging subarrays of size 1 - Repeat
-for subarrays of size 2,4,8,16… - Uses space proportional to the
-array</p>
-<h3 id="sorting-complexity">Sorting Complexity</h3>
+<h3>Bottom-up Merge Sort (no recursion)</h3>
+<p>Basic plan</p>
+<ul>
+<li>Pass through array merging subarrays of size 1</li>
+<li>Repeat for subarrays of size 2,4,8,16...</li>
+<li>Uses space proportional to the array</li>
+</ul>
+<h3>Sorting Complexity</h3>
 <p>Computational complexity: framework to study efficiency of algorithms
 to solve problem X.</p>
 <ul>
@@ -459,57 +503,99 @@ to solve problem X.</p>
 <li>Optimal algorithm: best possible cost guarantee (lower bound - upper
 bound)</li>
 </ul>
-<p><strong>E.g. Sorting</strong> - Model of computation: decision tree -
-Cost model: # of compares - Upper bound: ~N log N - Lower bound: ~N log
-N - Optimal algorithm: mergesort - Optimal with respect to # of compares
-- Not optimal with respect to usage - We use theory as guide</p>
-<h3 id="comparators">Comparators</h3>
+<p><strong>E.g. Sorting</strong></p>
+<ul>
+<li>Model of computation: decision tree</li>
+<li>Cost model: # of compares</li>
+<li>Upper bound: ~N log N</li>
+<li>Lower bound: ~N log N</li>
+<li>Optimal algorithm: mergesort
+<ul>
+<li>Optimal with respect to # of compares</li>
+<li>Not optimal with respect to usage</li>
+<li>We use theory as guide</li>
+</ul></li>
+</ul>
+<h3>Comparators</h3>
 <p>We also have a comparator interface to sort using an alternate
 order.</p>
 <p><code>int compare(Key v, Key w)</code></p>
-<p>E.g., - Compare students by name, by section, etc…</p>
+<p>E.g.,</p>
+<ul>
+<li>Compare students by name, by section, etc...</li>
+</ul>
 <div class="sourceCode" id="cb6"><pre
 class="sourceCode java"><code class="sourceCode java"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="bu">Arrays</span><span class="op">.</span><span class="fu">sort</span><span class="op">(</span>a<span class="op">,</span> Student<span class="op">.</span><span class="fu">BY_NAME</span><span class="op">)</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">Arrays</span><span class="op">.</span><span class="fu">sort</span><span class="op">(</span>points<span class="op">,</span> p<span class="op">.</span><span class="fu">POLAR_ORDER</span><span class="op">)</span></span></code></pre></div>
-<h3 id="stability">Stability</h3>
+<h3>Stability</h3>
 <p>A typical application: first sort by name, then by section.</p>
 <p>A stable sort is one that presents the same order of items with a
 given key.</p>
 <p>Insertion sort and merge sort are stable (but not selection sort or
 shell sort)</p>
 <p>We can move items past items that are equal.</p>
-<h3 id="self-questions">Self Questions</h3>
+<h3>Self Questions</h3>
 <ul>
 <li>When do we care about stability for sorting</li>
-<li>Why are some algorithms stable and others aren’t?</li>
+<li>Why are some algorithms stable and others aren't?</li>
 </ul>
-<h3 id="week-3-quick-sort">Week 3: Quick-sort</h3>
-<p>Basic Plan: - Shuffle the array - Partition so that, for some k -
-entry a[j] is in place - no larger entry to the left of j - no smaller
-entry to the right of j - Sort each piece recursively</p>
-<p>Summary: - We keep swapping 2 pointers as long as the left is less
-than the right - Once they cross we stop and swap the lo with J</p>
-<p>Implementation details: - Partitioning is in-place: using an extra
-array can make partitioning easier - Terminating the loop: tricky to
-check if pointers cross - Shuffling is needed for the performance
-guarantee</p>
-<p>Performance: - Number of compares 1.39 N Log N (39% more than merge
-sort) - Worst case is quadratic but not likely</p>
-<p>Properties: - Quick-sort is an in-place sorting algorithm - Quick
-sort is not stable - We can improve it with median-of-3 and cutoff to
-insertion sort</p>
-<h3 id="week-3-selection-sort">Week 3: Selection Sort</h3>
+<h3>Week 3: Quick-sort</h3>
+<p>Basic Plan:</p>
+<ul>
+<li>Shuffle the array</li>
+<li>Partition so that, for some k
+<ul>
+<li>entry a[j] is in place</li>
+<li>no larger entry to the left of j</li>
+<li>no smaller entry to the right of j</li>
+</ul></li>
+<li>Sort each piece recursively</li>
+</ul>
+<p>Summary:</p>
+<ul>
+<li>We keep swapping 2 pointers as long as the left is less than the
+right</li>
+<li>Once they cross we stop and swap the lo with J</li>
+</ul>
+<p>Implementation details:</p>
+<ul>
+<li>Partitioning is in-place: using an extra array can make partitioning
+easier</li>
+<li>Terminating the loop: tricky to check if pointers cross</li>
+<li>Shuffling is needed for the performance guarantee</li>
+</ul>
+<p>Performance:</p>
+<ul>
+<li>Number of compares 1.39 N Log N (39% more than merge sort)</li>
+<li>Worst case is quadratic but not likely</li>
+</ul>
+<p>Properties:</p>
+<ul>
+<li>Quick-sort is an in-place sorting algorithm</li>
+<li>Quick sort is not stable</li>
+<li>We can improve it with median-of-3 and cutoff to insertion sort</li>
+</ul>
+<h3>Week 3: Selection Sort</h3>
 <p><strong>Goal</strong>: Given an array of N items, find the Kth
 largest. i.e., return the top K.</p>
-<p>Quick Select: - Partition array so that: entry a[j] is in place - No
-larger entry to the left of j - No smaller entry to the right of j -
-Repeat in one subarray, depending on j; finished when j equals k.</p>
-<p>3-Way Quick sort (Dijkstra Implementation) - We have 3 pointers; move
-the ones less than the value to the left - Move the ones higher than the
-value to the right - We increment the pointer if the value is equal to
-the current value - We end up with all values even the duplicates
-sorted</p>
-<h3 id="week-3-applications">Week 3: Applications</h3>
+<p>Quick Select:</p>
+<ul>
+<li>Partition array so that: entry a[j] is in place</li>
+<li>No larger entry to the left of j</li>
+<li>No smaller entry to the right of j</li>
+<li>Repeat in one subarray, depending on j; finished when j equals
+k.</li>
+</ul>
+<p>3-Way Quick sort (Dijkstra Implementation)</p>
+<ul>
+<li>We have 3 pointers; move the ones less than the value to the
+left</li>
+<li>Move the ones higher than the value to the right</li>
+<li>We increment the pointer if the value is equal to the current
+value</li>
+<li>We end up with all values even the duplicates sorted</li>
+</ul>
+<h3>Week 3: Applications</h3>
 <ul>
 <li>Sort a list of names</li>
 <li>Find the median</li>
@@ -517,12 +603,20 @@ sorted</p>
 <li>Computer graphics</li>
 <li>Load balancing on a parallel computer</li>
 </ul>
-<p><strong>Each sort type will have different attributes:</strong> -
-Stable - Parallel - Deterministic - Keys all distinct - Multiple key
-types - Linked lists or arrays - Large or small items - Is the array
-randomly ordered - Do we need a guaranteed performance</p>
+<p><strong>Each sort type will have different attributes:</strong></p>
+<ul>
+<li>Stable</li>
+<li>Parallel</li>
+<li>Deterministic</li>
+<li>Keys all distinct</li>
+<li>Multiple key types</li>
+<li>Linked lists or arrays</li>
+<li>Large or small items</li>
+<li>Is the array randomly ordered</li>
+<li>Do we need a guaranteed performance</li>
+</ul>
 <p>System sorts cannot possibly cover all possible algorithms.</p>
-<h3 id="week-3-self-questions">Week 3: Self Questions</h3>
+<h3>Week 3: Self Questions</h3>
 <ul>
 <li>Why does Arrays.sort() Arrays.sort() in Java use mergesort instead
 of quicksort when sorting reference types?
@@ -532,103 +626,194 @@ is stable and guarantees nlogn performance. Neither of these are
 properties of standard quicksort.</li>
 </ul></li>
 </ul>
-<h2 id="week-4">Week 4</h2>
-<h3 id="priority-queues-api">Priority Queues API</h3>
-<p>Collections: - Stack - Queue - Randomized queue - Priority queue -
-remove largest or smallest item</p>
-<p>Applications: - Statistics - Artificial Intelligence - Number theory
-- Graph searching - Operating systems - load balancing</p>
-<p>Implementation: - It allows us to find the largest M items in a steam
-of N items in NlogM (as compared with other data structures that have
-NM)</p>
+<h2>Week 4</h2>
+<h3>Priority Queues API</h3>
+<p>Collections:</p>
+<ul>
+<li>Stack</li>
+<li>Queue</li>
+<li>Randomized queue</li>
+<li>Priority queue - remove largest or smallest item</li>
+</ul>
+<p>Applications:</p>
+<ul>
+<li>Statistics</li>
+<li>Artificial Intelligence</li>
+<li>Number theory</li>
+<li>Graph searching</li>
+<li>Operating systems - load balancing</li>
+</ul>
+<p>Implementation:</p>
+<ul>
+<li>It allows us to find the largest M items in a steam of N items in
+NlogM (as compared with other data structures that have NM)</li>
+</ul>
 <p>The binary heap comes from a complete binary tree. Perfectly balanced
 except for the bottom level.</p>
-<p>Heap-ordered binary tree - Keys in nodes - Parent’s key no smaller
-than children’s keys</p>
-<figure>
-<img
+<p>Heap-ordered binary tree</p>
+<ul>
+<li>Keys in nodes</li>
+<li>Parent's key no smaller than children's keys</li>
+</ul>
+<p><img
 src="https://media.geeksforgeeks.org/wp-content/cdn-uploads/20221220165711/MinHeapAndMaxHeap1.png"
-alt="https://media.geeksforgeeks.org/wp-content/cdn-uploads/20221220165711/MinHeapAndMaxHeap1.png" />
-<figcaption
-aria-hidden="true">https://media.geeksforgeeks.org/wp-content/cdn-uploads/20221220165711/MinHeapAndMaxHeap1.png</figcaption>
-</figure>
+alt="https://media.geeksforgeeks.org/wp-content/cdn-uploads/20221220165711/MinHeapAndMaxHeap1.png" /></p>
 <p>If we insert a key larger than its parents we exchange them until the
 order is restored.</p>
 <p>To insert into a heap, we add a node at the end then swim it up with
 at most 1 + lg N compares. AKA Peter principle; promoted to level of
 incompetence.</p>
-<p>If the parent’s key becomes smaller than one or both, we figure out
+<p>If the parent's key becomes smaller than one or both, we figure out
 which children is higher then exchange them until the order is restored
 (recursively). AKA better subordinate promoted (power struggle)</p>
 <p>To delete the maximum, we exchange root with node at end, then sink
 it down. At most 2 Log N compares.</p>
-<p>Considerations: - Client does not change keys while they’re on the PQ
-- Best practice: use immutable keys</p>
+<p>Considerations:</p>
+<ul>
+<li>Client does not change keys while they're on the PQ</li>
+<li>Best practice: use immutable keys</li>
+</ul>
 <p>Java Note on Immutability: when we use <em>final</em> those values
-can’t change once created.</p>
-<p>Immutable: String, Integer, Double, Color, Vector, Transaction…</p>
-<p>Why use? - Simplifies debugging - Safer - Simplifies concurrent
-programming - Safe to use as key</p>
+can't change once created.</p>
+<p>Immutable: String, Integer, Double, Color, Vector, Transaction...</p>
+<p>Why use?</p>
+<ul>
+<li>Simplifies debugging</li>
+<li>Safer</li>
+<li>Simplifies concurrent programming</li>
+<li>Safe to use as key</li>
+</ul>
 <p><em>We should make classes immutable as much as possible - Creator of
 Java</em></p>
-<h3 id="week-3-heapsort">Week 3: Heapsort</h3>
+<h3>Week 3: Heapsort</h3>
 <ul>
 <li>We start with an unordered list of numbers; we transform it into a
-max heap (“heapify”)</li>
+max heap ("heapify")</li>
 <li>Then we replace the item at the root with the last item. Repeating
 until the size of the heap is greater than 1</li>
 </ul>
-<p><strong>Complexity</strong> - Best Case: O(n log n) - Average Case:
-O(n log n) - Worst Case: O(n log n)</p>
-<p>Significance: In-place sorting algorithm with NlogN worst-case. -
-Mergesort: no, linear extra space - Quicksort, no, quadratic time in
-worst case - Heapsort: yes</p>
-<h2 id="week-4-symbol-tables">Week 4: Symbol Tables</h2>
+<p><strong>Complexity</strong></p>
+<ul>
+<li>Best Case: O(n log n)</li>
+<li>Average Case: O(n log n)</li>
+<li>Worst Case: O(n log n)</li>
+</ul>
+<p>Significance: In-place sorting algorithm with NlogN worst-case.</p>
+<ul>
+<li>Mergesort: no, linear extra space</li>
+<li>Quicksort, no, quadratic time in worst case</li>
+<li>Heapsort: yes</li>
+</ul>
+<h2>Week 4: Symbol Tables</h2>
 <ul>
 <li>Insert a value with a specified key</li>
 <li>Given a key, search for the corresponding value</li>
 </ul>
-<p><strong>DNS lookup</strong> - Insert URL with specified IP address -
-Given URL, find corresponding IP address</p>
-<p>API Examples - put - get - delete - contains - isEmpty - size -
-keys</p>
+<p><strong>DNS lookup</strong></p>
+<ul>
+<li>Insert URL with specified IP address</li>
+<li>Given URL, find corresponding IP address</li>
+</ul>
+<p>API Examples</p>
+<ul>
+<li>put</li>
+<li>get</li>
+<li>delete</li>
+<li>contains</li>
+<li>isEmpty</li>
+<li>size</li>
+<li>keys</li>
+</ul>
 <p>We associate one value with each key.</p>
-<p>Conventions: - Values are not null - Method get() returns null if key
-not present - Method put() overwrites old value with new value</p>
-<p>Value type: any generic type. - Assume keys are Comparable: we use
-compareTo() - Assume keys are any generic type; use equals() to est
-equality</p>
-<p>Best practices - use immutable types for symbol table keys. -
-Immutables in Java: String ,Integer, Double, File… - Mutable in Java:
-StringBuilder, java.net, URL, arrays</p>
-<p>All Java classes inherit a method equals() - Reflexive - Symmetric -
-Transitive - Non-null</p>
-<h3 id="symbol-table-implementations">Symbol Table Implementations</h3>
-<p><strong>Sequential Search (Unordered LinkedList)</strong> -
-Performance - Search - N - Insert - N - Search Hit - N/2 - Inser - N -
-Key Interface - equals()</p>
+<p>Conventions:</p>
+<ul>
+<li>Values are not null</li>
+<li>Method get() returns null if key not present</li>
+<li>Method put() overwrites old value with new value</li>
+</ul>
+<p>Value type: any generic type.</p>
+<ul>
+<li>Assume keys are Comparable: we use compareTo()</li>
+<li>Assume keys are any generic type; use equals() to est equality</li>
+</ul>
+<p>Best practices - use immutable types for symbol table keys.</p>
+<ul>
+<li>Immutables in Java: String ,Integer, Double, File...</li>
+<li>Mutable in Java: StringBuilder, java.net, URL, arrays</li>
+</ul>
+<p>All Java classes inherit a method equals()</p>
+<ul>
+<li>Reflexive</li>
+<li>Symmetric</li>
+<li>Transitive</li>
+<li>Non-null</li>
+</ul>
+<h3>Symbol Table Implementations</h3>
+<p><strong>Sequential Search (Unordered LinkedList)</strong></p>
+<ul>
+<li>Performance
+<ul>
+<li>Search - N</li>
+<li>Insert - N</li>
+<li>Search Hit - N/2</li>
+<li>Inser - N</li>
+</ul></li>
+<li>Key Interface
+<ul>
+<li>equals()</li>
+</ul></li>
+</ul>
 <p>We use a LinkedList in this implementation.</p>
-<p><strong>Binary search in an ordered array</strong> - Data structure:
-maintain an ordered array of key-value pairs - We use a rank helper
-function to find how many keys &lt; K - Performance - Worst - Search -
-log N - Insert N - Avg Case - Search Hit - log N - Inser - N/2 - Key
-Interface: - compareTo()</p>
-<h3 id="ordered-operations">Ordered Operations</h3>
+<p><strong>Binary search in an ordered array</strong></p>
+<ul>
+<li>Data structure: maintain an ordered array of key-value pairs</li>
+<li>We use a rank helper function to find how many keys &lt; K</li>
+<li>Performance
+<ul>
+<li>Worst
+<ul>
+<li>Search - log N</li>
+<li>Insert N</li>
+</ul></li>
+<li>Avg Case
+<ul>
+<li>Search Hit - log N</li>
+<li>Inser - N/2</li>
+</ul></li>
+</ul></li>
+<li>Key Interface:
+<ul>
+<li>compareTo()</li>
+</ul></li>
+</ul>
+<h3>Ordered Operations</h3>
 <ul>
 <li>We want to be able to do min(); get(); floor(); select(7); ceiling()
-etc… on a symbol table</li>
+etc... on a symbol table</li>
 <li>These ops come natural in a binary search operation</li>
 </ul>
-<p>We can add more operations to a Symbol Table such as: - deleteMin() -
-deleteMax() - select() - rank() - min() / max() - ordered iteration</p>
+<p>We can add more operations to a Symbol Table such as:</p>
+<ul>
+<li>deleteMin()</li>
+<li>deleteMax()</li>
+<li>select()</li>
+<li>rank()</li>
+<li>min() / max()</li>
+<li>ordered iteration</li>
+</ul>
 <p>We normally argue against wide interfaces.</p>
-<h3 id="binary-search-trees">Binary Search Trees</h3>
+<h3>Binary Search Trees</h3>
 <p>A BST is a binary tree in symmetric order.</p>
-<p>It is either: - Empty - Two disjoint binary trees (left and
-right)</p>
-<p>Each node has a key and every node’s key is: - Larger than all the
-keys in its left subtree - Smaller than all the keys in its right
-subtree</p>
+<p>It is either:</p>
+<ul>
+<li>Empty</li>
+<li>Two disjoint binary trees (left and right)</li>
+</ul>
+<p>Each node has a key and every node's key is:</p>
+<ul>
+<li>Larger than all the keys in its left subtree</li>
+<li>Smaller than all the keys in its right subtree</li>
+</ul>
 <pre><code>
 private class Node
     {
@@ -655,45 +840,67 @@ public Value get(Key key)
     }
     return null;
 }</code></pre>
-<h2 id="week-5-balanced-search-trees">Week 5: Balanced Search Trees</h2>
-<h3 id="search-trees">2-3 Search Trees</h3>
+<h2>Week 5: Balanced Search Trees</h2>
+<h3>2-3 Search Trees</h3>
 <p>Allow 1 or 2 keys per node. 2 node equals one key with two children.
 3 node equals 2 keys with 3 children.</p>
 <p>Every path from root to null has same length. Inorder traversal
 yields keys in ascending order.</p>
-<p>Search: - Compare search key against keys in node - Find interval
-containing search key - Follow associated link (rec)</p>
-<p>Inserting - We want to keep the 2 key 3 node or 1 key 2 node
-strategy. Therefore we need to insert and check recursively so that the
-condition is met across the nodes we changed. - We may have some
-temporary 4 nodes; we split them and convert them to 1 key 2 nodes and
-increase the height by 1 - Splitting a 4 node is a local transformation
-with a constant number of operations</p>
-<p>Tree Height - Worst case: log N (all 2 nodes) - Best case: log3N or
-.631 log N (all 3 nodes)</p>
-<h3 id="red-black-b-trees">Red Black B-Trees</h3>
+<p>Search:</p>
+<ul>
+<li>Compare search key against keys in node</li>
+<li>Find interval containing search key</li>
+<li>Follow associated link (rec)</li>
+</ul>
+<p>Inserting</p>
+<ul>
+<li>We want to keep the 2 key 3 node or 1 key 2 node strategy. Therefore
+we need to insert and check recursively so that the condition is met
+across the nodes we changed.</li>
+<li>We may have some temporary 4 nodes; we split them and convert them
+to 1 key 2 nodes and increase the height by 1</li>
+<li>Splitting a 4 node is a local transformation with a constant number
+of operations</li>
+</ul>
+<p>Tree Height</p>
+<ul>
+<li>Worst case: log N (all 2 nodes)</li>
+<li>Best case: log3N or .631 log N (all 3 nodes)</li>
+</ul>
+<h3>Red Black B-Trees</h3>
 <p>A red-black tree is a binary search tree with one extra bit of
 storage per node: its color, which can be either RED or BLACK. By
 constraining the node colors on any simple path from the root to a leaf,
 red-black trees ensure that no such path is more than twice as long as
 any other, so that the tree is approximately balanced.</p>
 <p>A red-black tree is a binary tree that satisfies the following
-red-black properties: 1. Every node is either red or black. 2. The root
-is black. 3. Every leaf (NIL) is black. 4. If a node is red, then both
-its children are black. 5. For each node, all simple paths from the node
-to descendant leaves contain the same number of black nodes.</p>
-<p>Time Complexity: - Search - O(Log N) - Insert - O(Log N) - Remove -
-O(Log N)</p>
-<figure>
-<img
+red-black properties:</p>
+<ol type="1">
+<li>Every node is either red or black.</li>
+<li>The root is black.</li>
+<li>Every leaf (NIL) is black.</li>
+<li>If a node is red, then both its children are black.</li>
+<li>For each node, all simple paths from the node to descendant leaves
+contain the same number of black nodes.</li>
+</ol>
+<p>Time Complexity:</p>
+<ul>
+<li>Search - O(Log N)</li>
+<li>Insert - O(Log N)</li>
+<li>Remove - O(Log N)</li>
+</ul>
+<p><img
 src="https://media.cheggcdn.com/media%2F47a%2F47a9c017-f857-4c93-be2c-0a8f23194b06%2FphpDyOAKI.png"
-alt="https://media.cheggcdn.com/media%2F47a%2F47a9c017-f857-4c93-be2c-0a8f23194b06%2FphpDyOAKI.png" />
-<figcaption
-aria-hidden="true">https://media.cheggcdn.com/media%2F47a%2F47a9c017-f857-4c93-be2c-0a8f23194b06%2FphpDyOAKI.png</figcaption>
-</figure>
-<p>Properties: - No node has two red links connected to it - Every path
-from root to null link has same number of black links - Red links lean
-left</p>
+alt="https://media.cheggcdn.com/media%2F47a%2F47a9c017-f857-4c93-be2c-0a8f23194b06%2FphpDyOAKI.png" /></p>
+<p>Properties:</p>
+<ul>
+<li>No node has two red links connected to it
+<ul>
+<li>Every path from root to null link has same number of black
+links</li>
+<li>Red links lean left</li>
+</ul></li>
+</ul>
 <p><strong>Search</strong></p>
 <p>Search is the same after as for elementary BST (ignore color). Most
 other operations are also identical</p>
@@ -705,180 +912,250 @@ other operations are also identical</p>
     boolean color;
 }</code></pre>
 <p><strong>Rotations</strong></p>
-<p>Left rotation: - Check the node is red - Orient a temporarily right
-leaning red link to lean left</p>
-<p>Right rotation: - Orient a left leaning red link to temporarily lean
-right</p>
-<p>Color flip: - Recolor to split a temporary 4-node</p>
+<p>Left rotation:</p>
+<ul>
+<li>Check the node is red</li>
+<li>Orient a temporarily right leaning red link to lean left</li>
+</ul>
+<p>Right rotation:</p>
+<ul>
+<li>Orient a left leaning red link to temporarily lean right</li>
+</ul>
+<p>Color flip:</p>
+<ul>
+<li>Recolor to split a temporary 4-node</li>
+</ul>
 <p>With the operations above, we maintain 1-1 correspondence with 2-3
 trees by applying elementary red-black BST operations</p>
-<p>Balance: - The height of the tree is less than 2 Log N in the worst
-case. - Height of the tree is 1.00logN in typical applications</p>
-<h2 id="geometric-applications-of-bsts">Geometric Applications of
-BSTs</h2>
+<p>Balance:</p>
+<ul>
+<li>The height of the tree is less than 2 Log N in the worst case.</li>
+<li>Height of the tree is 1.00logN in typical applications</li>
+</ul>
+<h2>Geometric Applications of BSTs</h2>
 <p>Intersection among geometric objects. E.g., 2d orthogonal range
 search.</p>
-<p>Applications in CAD, games, movies, virtual reality, databases…</p>
-<p>Extending ordered symbol table: - Range search: adding range search
-btw k1 and k2 - Range count: how many keys between k1 and k2</p>
-<p>Geometric Interpretation: - Keys are point on a line - Find/count
-points in a given 1d interval</p>
-<h3 id="line-segment-intersection">Line Segment Intersection</h3>
+<p>Applications in CAD, games, movies, virtual reality, databases...</p>
+<p>Extending ordered symbol table:</p>
+<ul>
+<li>Range search: adding range search btw k1 and k2</li>
+<li>Range count: how many keys between k1 and k2</li>
+</ul>
+<p>Geometric Interpretation:</p>
+<ul>
+<li>Keys are point on a line</li>
+<li>Find/count points in a given 1d interval</li>
+</ul>
+<h3>Line Segment Intersection</h3>
 <p>Given N horizontal and vertical line segments, find all
 intersections.</p>
-<p>Sweep-line algorithm: - x coordinates define events - h-segment (left
-endpoint): insert your coordinates into the BST</p>
+<p>Sweep-line algorithm:</p>
+<ul>
+<li>x coordinates define events</li>
+<li>h-segment (left endpoint): insert your coordinates into the BST</li>
+</ul>
 <p>It takes time proportional to NlogN+R to find all R
 intersections.</p>
-<h3 id="kd-trees">Kd-Trees</h3>
-<p>We now have 2 dimensional keys. We want to: - insert a 2d key -
-search for a 2d key - Range search - find all keys that lie in a 2d
-range - Range count - count all keys in a 2d range</p>
+<h3>Kd-Trees</h3>
+<p>We now have 2 dimensional keys. We want to:</p>
+<ul>
+<li>insert a 2d key</li>
+<li>search for a 2d key</li>
+<li>Range search - find all keys that lie in a 2d range</li>
+<li>Range count - count all keys in a 2d range</li>
+</ul>
 <p>Keys are point in the plane. We can find and count the points in a
 given h-v rectangle.</p>
 <p><strong>Range Search</strong></p>
-<p>Space Time Tradeoff: - Space: M^2 + N - Time: 1 + N/M^2</p>
-<p>Running time: - Init N - Inser 1 - Range search 1 per point range</p>
-<p>Problem: Points are not evenly distributed - e.g., USA Map</p>
-<figure>
-<img
+<p>Space Time Tradeoff:</p>
+<ul>
+<li>Space: M^2 + N</li>
+<li>Time: 1 + N/M^2</li>
+</ul>
+<p>Running time:</p>
+<ul>
+<li>Init N</li>
+<li>Inser 1</li>
+<li>Range search 1 per point range</li>
+</ul>
+<p>Problem: Points are not evenly distributed</p>
+<ul>
+<li>e.g., USA Map</li>
+</ul>
+<p><img
 src="https://mma.prnewswire.com/media/1311215/US_Tree_Map_1200x757.jpg?p=twitter"
-alt="usa map" />
-<figcaption aria-hidden="true">usa map</figcaption>
-</figure>
+alt="usa map" /></p>
 <p>We space partition the trees to represent a recursive subdivision of
-2d space - Grid: divide space into squares - 2d tree: recursively divide
-into half-lines</p>
-<p>Applications: - Accelerate render in Doom - Flight simulators -
-Nearest neighbor search - Astronomical databases</p>
-<figure>
-<img src="https://i.stack.imgur.com/Hs9p6.png"
-alt="https://i.stack.imgur.com/Hs9p6.png" />
-<figcaption
-aria-hidden="true">https://i.stack.imgur.com/Hs9p6.png</figcaption>
-</figure>
+2d space</p>
+<ul>
+<li>Grid: divide space into squares</li>
+<li>2d tree: recursively divide into half-lines</li>
+</ul>
+<p>Applications:</p>
+<ul>
+<li>Accelerate render in Doom</li>
+<li>Flight simulators</li>
+<li>Nearest neighbor search</li>
+<li>Astronomical databases</li>
+</ul>
+<p><img src="https://i.stack.imgur.com/Hs9p6.png"
+alt="https://i.stack.imgur.com/Hs9p6.png" /></p>
 <p>We partition according to the points and their coordinates. We
 alternate which coordinates we use as the key. E.g., left child go down,
 right child go up.</p>
-<p>Range search: - Find all point in a query axis aligned rectangle -
-Check if point in node lies in given rectangle - Rec search left/bottom
-- Rec search right/top - Typical case: R+logN - Worst case scenario:
-R+sqrt(N)</p>
-<p><strong>Nearest Neighbor Search</strong> - Typical case: log N -
-Worst case: N - Algorithm - Check dist from point in node to query - Rec
-search left/bottom - Rec search right/top - Organize so we begin by
-searching for query point</p>
-<figure>
-<img src="https://i.stack.imgur.com/hhZE1.jpg"
-alt="https://i.stack.imgur.com/hhZE1.jpg" />
-<figcaption
-aria-hidden="true">https://i.stack.imgur.com/hhZE1.jpg</figcaption>
-</figure>
-<h3 id="flocking-boids">Flocking Boids</h3>
-<p>3 simple rules lead to complex emergent behavior: - collision
-avoidance: point away from k nearest boids - flock centering: point
-towards the center of mass of k nearest boids - velocity matching:
-update velocity to the avg of k nearest boids</p>
-<figure>
-<img
+<p>Range search:</p>
+<ul>
+<li>Find all point in a query axis aligned rectangle
+<ul>
+<li>Check if point in node lies in given rectangle</li>
+<li>Rec search left/bottom</li>
+<li>Rec search right/top</li>
+</ul></li>
+<li>Typical case: R+logN</li>
+<li>Worst case scenario: R+sqrt(N)</li>
+</ul>
+<p><strong>Nearest Neighbor Search</strong></p>
+<ul>
+<li>Typical case: log N</li>
+<li>Worst case: N</li>
+<li>Algorithm
+<ul>
+<li>Check dist from point in node to query</li>
+<li>Rec search left/bottom</li>
+<li>Rec search right/top</li>
+<li>Organize so we begin by searching for query point</li>
+</ul></li>
+</ul>
+<p><img src="https://i.stack.imgur.com/hhZE1.jpg"
+alt="https://i.stack.imgur.com/hhZE1.jpg" /></p>
+<h3>Flocking Boids</h3>
+<p>3 simple rules lead to complex emergent behavior:</p>
+<ul>
+<li>collision avoidance: point away from k nearest boids</li>
+<li>flock centering: point towards the center of mass of k nearest
+boids</li>
+<li>velocity matching: update velocity to the avg of k nearest
+boids</li>
+</ul>
+<p><img
 src="https://repository-images.githubusercontent.com/258305543/28971980-92d2-11ea-8a66-4d0d91c0e790"
-alt="https://repository-images.githubusercontent.com/258305543/28971980-92d2-11ea-8a66-4d0d91c0e790" />
-<figcaption
-aria-hidden="true">https://repository-images.githubusercontent.com/258305543/28971980-92d2-11ea-8a66-4d0d91c0e790</figcaption>
-</figure>
+alt="https://repository-images.githubusercontent.com/258305543/28971980-92d2-11ea-8a66-4d0d91c0e790" /></p>
 <p><strong>KD trees are a simple data structure for processing
-k-dimensional data:</strong> - widely used - adapts well to high
-dimensional and clustered data - discovered by an undergrad in an
-algorithms class</p>
-<h3 id="d-interval-search">1D Interval Search</h3>
+k-dimensional data:</strong></p>
+<ul>
+<li>widely used</li>
+<li>adapts well to high dimensional and clustered data</li>
+<li>discovered by an undergrad in an algorithms class</li>
+</ul>
+<h3>1D Interval Search</h3>
 <p>Data structure to hold a set of overlapping intervals.</p>
-<p>We want to: - Insert - Search - Delete - Check for an
-intersection</p>
+<p>We want to:</p>
+<ul>
+<li>Insert</li>
+<li>Search</li>
+<li>Delete</li>
+<li>Check for an intersection</li>
+</ul>
 <p>E.g., which intervals intersect (9,16)?</p>
-<p>Create a BST, each node contains an interval (lo, hi) - We use the
-left endpoint as BST key - Store max endpoint in subtree rooted at
-node</p>
-<p>Search: - If interval node intersects, return it - Else if left
-subtree is null, go right - Else if max endpoint in left subtree is less
-than lo, go right - Else go left</p>
-<figure>
-<img
+<p>Create a BST, each node contains an interval (lo, hi)</p>
+<ul>
+<li>We use the left endpoint as BST key</li>
+<li>Store max endpoint in subtree rooted at node</li>
+</ul>
+<p>Search:</p>
+<ul>
+<li>If interval node intersects, return it</li>
+<li>Else if left subtree is null, go right</li>
+<li>Else if max endpoint in left subtree is less than lo, go right</li>
+<li>Else go left</li>
+</ul>
+<p><img
 src="https://media.geeksforgeeks.org/wp-content/uploads/20200708073504/interval.jpg"
-alt="https://media.geeksforgeeks.org/wp-content/uploads/20200708073504/interval.jpg" />
-<figcaption
-aria-hidden="true">https://media.geeksforgeeks.org/wp-content/uploads/20200708073504/interval.jpg</figcaption>
-</figure>
+alt="https://media.geeksforgeeks.org/wp-content/uploads/20200708073504/interval.jpg" /></p>
 <p>We can use a Red Black BST to guarantee performance of the
 search.</p>
 <p>Most operations have a brute of 1/N; for interval search trees we
 have Log N for most cases.</p>
-<h3 id="rectangle-intersection-problem">Rectangle Intersection
-Problem</h3>
+<h3>Rectangle Intersection Problem</h3>
 <p>Problem: Find all intersections among a set of N orthogonal
 rectangles.</p>
 <p>Important problem when designing microprocessors. Designing a
 computer became a geometric problem.</p>
-<p>They had specific design rules: - Some wires cannot intersect -
-Certain spacing needed between diff types of wires - Debugging:
-orthogonal intersection search</p>
+<p>They had specific design rules:</p>
+<ul>
+<li>Some wires cannot intersect</li>
+<li>Certain spacing needed between diff types of wires</li>
+<li>Debugging: orthogonal intersection search</li>
+</ul>
 <p>We sweep a vertical line from left to right. IT takes proportional to
 N log N + R log N to find R intersections among a set of N
 rectangles</p>
 <p>It reduces the rectangle problem to a 1 dimensional problem.</p>
-<figure>
-<img
+<p><img
 src="https://miro.medium.com/v2/resize:fit:1400/1*4BRsVG6P-Tw-ApBgNlAyDA.png"
-alt="https://miro.medium.com/v2/resize:fit:1400/1*4BRsVG6P-Tw-ApBgNlAyDA.png" />
-<figcaption
-aria-hidden="true">https://miro.medium.com/v2/resize:fit:1400/1*4BRsVG6P-Tw-ApBgNlAyDA.png</figcaption>
-</figure>
-<h2 id="week-6-hashing">Week 6: Hashing</h2>
-<h3 id="hash-tables">Hash Tables</h3>
+alt="https://miro.medium.com/v2/resize:fit:1400/1*4BRsVG6P-Tw-ApBgNlAyDA.png" /></p>
+<h2>Week 6: Hashing</h2>
+<h3>Hash Tables</h3>
 <p>Use a hash function that takes the key and reduces it to an array
 index.</p>
-<p>It can cause some issues: - Computing the hash function - Equality
-test: need check whether two keys are equal - Collision resolution: so
-many values; we may have 2 values for the same array index</p>
-<p>Hashing is a classic space-time tradeoff - No space limitation -
-trivial hash function with key as index - No time limitation - trivial
-collusion resolution with linear probing</p>
-<p>Ideal goal: - Scramble the keys uniformly to produce a table index -
-Efficiently computable - Each table index equally likely for each
-key</p>
+<p>It can cause some issues:</p>
+<ul>
+<li>Computing the hash function</li>
+<li>Equality test: need check whether two keys are equal</li>
+<li>Collision resolution: so many values; we may have 2 values for the
+same array index</li>
+</ul>
+<p>Hashing is a classic space-time tradeoff</p>
+<ul>
+<li>No space limitation - trivial hash function with key as index</li>
+<li>No time limitation - trivial collusion resolution with linear
+probing</li>
+</ul>
+<p>Ideal goal:</p>
+<ul>
+<li>Scramble the keys uniformly to produce a table index
+<ul>
+<li>Efficiently computable</li>
+<li>Each table index equally likely for each key</li>
+</ul></li>
+</ul>
 <p>Hashing is widely used in system programming. Hash codes return a 32
 bit value.</p>
 <p>There are hash codes for each data type: integers, booleans, doubles,
 and strings.</p>
-<p>A recipe for user defined types is: - Combine each significant field
-using the 31x + y rule - If the field is a primitive type, use wrapper
-type: hashCode() - If field is null, return 0 - If field is a reference
-type, use hashCode()</p>
-<p>The hash code can be a value between <span
-class="math inline"> − 2<sup>31</sup></span> and <span
-class="math inline">2<sup>31</sup></span>. The hash function has an int
-between 0 and M-1.</p>
+<p>A recipe for user defined types is:</p>
+<ul>
+<li>Combine each significant field using the 31x + y rule</li>
+<li>If the field is a primitive type, use wrapper type: hashCode()</li>
+<li>If field is null, return 0</li>
+<li>If field is a reference type, use hashCode()</li>
+</ul>
+<p>The hash code can be a value between $-2^{31}$ and $2^{31}$. The hash
+function has an int between 0 and M-1.</p>
 <p>Our <strong>main assumption</strong> is that each key is equally
 likely to hash an int between 0 and M-1.</p>
-<h2 id="week-7-graphs">Week 7: Graphs</h2>
+<h2>Week 7: Graphs</h2>
 <p><strong>Graph</strong>: A set of vertices connected pairwise by
 edges.</p>
 <p>Why graphs? Many applications, broadly useful, challenging branch of
 computer science and discrete math.</p>
-<figure>
-<img
+<p><img
 src="https://cambridge-intelligence.com/wp-content/uploads/2015/07/enron-network-visualization-6.png"
-alt="Enron Emails" />
-<figcaption aria-hidden="true">Enron Emails</figcaption>
-</figure>
+alt="Enron Emails" /></p>
 <ul>
 <li>Path: Sequence of vertices connected by edges.</li>
 <li>Cycle: path whose first and last vertices are the same</li>
 </ul>
-<p>Two vertices are connected if there’s a path between them.</p>
-<p>Some common challenges: - Is there a path between A and B? - What is
-the shortest path? - Is there a cycle in the graph? - Is there a cycle
-that uses each edge exactly once? - How can we connect all of the
-vertices? - What is the best way to connect all the vertices?</p>
+<p>Two vertices are connected if there's a path between them.</p>
+<p>Some common challenges:</p>
+<ul>
+<li>Is there a path between A and B?</li>
+<li>What is the shortest path?</li>
+<li>Is there a cycle in the graph?</li>
+<li>Is there a cycle that uses each edge exactly once?</li>
+<li>How can we connect all of the vertices?</li>
+<li>What is the best way to connect all the vertices?</li>
+</ul>
 <p><strong>Graph API</strong></p>
 <pre><code>Graph(int V)
 Graph(In in)
@@ -889,18 +1166,15 @@ int E() - nuim of edges
 String - toString()</code></pre>
 <p>The most widely used representation of graphs is the adjacency-list
 graph representation.</p>
-<figure>
-<img
+<p><img
 src="https://media.geeksforgeeks.org/wp-content/uploads/20230727154843/Graph-Representation-of-Undirected-graph-to-Adjacency-List.png"
-alt="Adjacency List Graph" />
-<figcaption aria-hidden="true">Adjacency List Graph</figcaption>
-</figure>
+alt="Adjacency List Graph" /></p>
 <p>We use a data structure of type:
 <code>Bag&lt;Integer&gt; [] adj;</code>. To create the graph we use
 <code>adj[v]</code>.</p>
 <p>To add edges we use <code>adj[v].add(w)</code> and
 <code>adjust[w].add(v)</code></p>
-<h3 id="depth-first-search">Depth First Search</h3>
+<h3>Depth First Search</h3>
 <p>It can be visualized with a maze. We explore every intersection in
 the maze.</p>
 <p>Algorithm:</p>
@@ -912,13 +1186,21 @@ the maze.</p>
 <pre><code>DFS (to visit a vertex v)
     Mark v as visited
     Recursively visit all unmarked vertices w adjacent to v</code></pre>
-<p>Typical application: - Find all vertices connected to a given source
-vertex</p>
-<p>Design pattern for graph processing - Use a graph object - Decouple
-the graph from the graph processing - Query the graph processing routine
-for information</p>
+<p>Typical application:</p>
+<ul>
+<li>Find all vertices connected to a given source vertex</li>
+</ul>
+<p>Design pattern for graph processing</p>
+<ul>
+<li>Use a graph object</li>
+<li>Decouple the graph from the graph processing</li>
+<li>Query the graph processing routine for information</li>
+</ul>
 <pre><code>Paths(Graph G, int s)
     boolean hasPathTo(int v)
     Itrerable&lt;int&gt; pathTO (int v)</code></pre>
-<p>Data structure: - boolean[] marked - int[] edgeTo to keep track of
-paths</p>
+<p>Data structure:</p>
+<ul>
+<li>boolean[] marked</li>
+<li>int[] edgeTo to keep track of paths</li>
+</ul>

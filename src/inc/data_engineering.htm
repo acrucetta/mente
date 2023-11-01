@@ -1,59 +1,58 @@
-<h2 id="overview-of-data-engineering">Overview of Data Engineering</h2>
-<figure>
-<img
+<h2>Overview of Data Engineering</h2>
+<p><img
 src="https://www.oreilly.com/api/v2/epubs/9781098108298/files/assets/fode_0201.png"
-alt="lifecycle" />
-<figcaption aria-hidden="true">lifecycle</figcaption>
-</figure>
-<h3 id="data-engineering-teams">Data Engineering Teams</h3>
+alt="lifecycle" /></p>
+<h3>Data Engineering Teams</h3>
 <p>The data engineer is a hub between data producers, such as software
 engineers, data architects, and DevOps or site-reliability engineers
 (SREs), and data consumers, such as data analysts, data scientists, and
 ML engineers. In addition, data engineers will interact with those in
 operational roles, such as DevOps engineers.</p>
-<h3 id="ml-engineers-vs.-data-engineer">ML Engineers vs. Data
-Engineer</h3>
+<h3>ML Engineers vs. Data Engineer</h3>
 <p>The ML engineer overlaps with DE, but it develops more advanced ML
 techniques, train models, and designs and maintains infrastructure
 running ML processes. It emphasizes more MLOps and other mature
 practices such as DevOps.</p>
-<h2 id="main-components-of-data-engineering">Main components of Data
-Engineering</h2>
-<h3 id="data-generation">Data Generation</h3>
+<h2>Main components of Data Engineering</h2>
+<h3>Data Generation</h3>
 <ul>
 <li>Data is coming from a variety of sources now</li>
-<li>It’s hard to keep in the same schema. Schema evolution is now
+<li>It's hard to keep in the same schema. Schema evolution is now
 considered part of the Agile approach.</li>
 </ul>
-<h3 id="storage">Storage</h3>
+<h3>Storage</h3>
 <ul>
 <li>Cloud architectures often have several storage solutions</li>
 <li>Hot data is data commonly retrieved many times per day. It should be
 geared for fast retrieval</li>
 <li>Cold data is seldom queried and mostly for archival purposes.</li>
 </ul>
-<h3 id="ingestion">Ingestion</h3>
+<h3>Ingestion</h3>
 <ul>
 <li>A common bottleneck of the lifecycle; source systems are outside of
 your direct control and might have data of poor quality</li>
 <li>The separation of storage and compute makes streaming more
 popular</li>
-<li>Can my downstream services handle the volume of data I’m sending
+<li>Can my downstream services handle the volume of data I'm sending
 them?</li>
 <li>Batch is still widely used because of legacy systems, streaming can
 be useful but it creates increasing amounts of complexity</li>
 </ul>
-<p><strong>Key Questions:</strong> - What are the use cases for the
-data? - What is the destination? - In what volume will it arrive? - What
-format is the data in?</p>
-<h3 id="transformation">Transformation</h3>
+<p><strong>Key Questions:</strong></p>
+<ul>
+<li>What are the use cases for the data?</li>
+<li>What is the destination?</li>
+<li>In what volume will it arrive?</li>
+<li>What format is the data in?</li>
+</ul>
+<h3>Transformation</h3>
 <ul>
 <li>Change data into correct types, put records into standard formats,
 remove bad ones</li>
 <li>Large-scale aggregation for reporting or featurizing data for ML
 processes</li>
 </ul>
-<h3 id="serving">Serving</h3>
+<h3>Serving</h3>
 <ul>
 <li>Data is served for analytics, ML, and reverse ETL</li>
 <li>Before investing into ML, companies need to build a solid data
@@ -61,10 +60,10 @@ foundation</li>
 <li>This means setting up the best systems and architecttures across the
 data engineering and ML lifecycle.</li>
 <li>Analytics then ML</li>
-<li>Reverse ETLs feed bvack the data into source systems. It’s useful
+<li>Reverse ETLs feed bvack the data into source systems. It's useful
 for businesses relying on SaaS.</li>
 </ul>
-<h3 id="data-ops">Data Ops</h3>
+<h3>Data Ops</h3>
 <ul>
 <li>DataOps automation has a similar framework and workflow to DevOps,
 consisting of change management (environment, code, and data version
@@ -73,7 +72,7 @@ configuration as code.</li>
 <li>DatOps consist of automation, observability and monitoring, and
 incident response</li>
 </ul>
-<h3 id="observability-and-monitoring">Observability and Monitoring</h3>
+<h3>Observability and Monitoring</h3>
 <ul>
 <li>Data is a silent killer; bad data can linger in reports for a long
 time</li>
@@ -82,7 +81,7 @@ tracing</li>
 <li>DODD focused on making data observability a first-class
 consideration in the data engineering lifecycle</li>
 </ul>
-<h3 id="data-architecture">Data Architecture</h3>
+<h3>Data Architecture</h3>
 <p>Types of data architectures</p>
 <ul>
 <li>Data warehouse: structured, includes the compute
@@ -96,7 +95,7 @@ collection of data in support of mgmt decisions</li>
 <li>Data lake: unstructured, data can be in any format
 <ul>
 <li>Common during big data era</li>
-<li>Data can be queried with MapReduce, Spark, Presto, etc…</li>
+<li>Data can be queried with MapReduce, Spark, Presto, etc...</li>
 </ul></li>
 <li>Data lakehouse: combines benefits from both, introduced by
 Databricks
@@ -110,14 +109,14 @@ query and transformation engines</li>
 <ul>
 <li>Instead of using monolithic toolsets, use cloud-based, plug and
 play, off-the-shelf components</li>
-<li>Includes data pipelines, storage, monitoring, etc…</li>
+<li>Includes data pipelines, storage, monitoring, etc...</li>
 </ul>
-<h2 id="data-generation-1">Data Generation</h2>
-<h3 id="data-logs">Data Logs</h3>
+<h2>Data Generation</h2>
+<h3>Data Logs</h3>
 <ul>
 <li>Insert only: always retain the records, add a timestamp</li>
 </ul>
-<h3 id="messages-and-streams">Messages and Streams</h3>
+<h3>Messages and Streams</h3>
 <ul>
 <li>Message queues and streaming platforms are often used
 interchangeably</li>
@@ -133,13 +132,13 @@ to a consumer</li>
 events</li>
 </ul></li>
 </ul>
-<h3 id="types-of-time">Types of time</h3>
+<h3>Types of time</h3>
 <ul>
 <li>Event time; event is generated</li>
 <li>Ingestion time; event is ingested</li>
 <li>Process time; event is processed</li>
 </ul>
-<h3 id="ways-of-ingesting-data">Ways of ingesting data</h3>
+<h3>Ways of ingesting data</h3>
 <ul>
 <li>APIs
 <ul>
@@ -175,30 +174,30 @@ it multiple times</li>
 <li>Topics - collection of related events</li>
 <li>Stream partitions</li>
 </ul></li>
-<li>Tend to be more fault tolerant because they’re distributed</li>
+<li>Tend to be more fault tolerant because they're distributed</li>
 </ul></li>
 </ul>
-<h3 id="ingestion-undercurrents">Ingestion undercurrents</h3>
+<h3>Ingestion undercurrents</h3>
 <ul>
 <li>Security: how is the data secured and encrypted; do we have a VPN,
 or an SSO?</li>
-<li>Data management: who manages the data, what’s the quality, what if
+<li>Data management: who manages the data, what's the quality, what if
 the schema changes, is the data HIPAA?</li>
-<li>DataOps: how will we know when there’s an issue, how are we
+<li>DataOps: how will we know when there's an issue, how are we
 monitoring, is the schema conformant, what do we do if something bad
 happens</li>
 <li>Architecture: what if the system fails, what do we do if we lose
-data, how available are the sources, who’s in charge of them</li>
+data, how available are the sources, who's in charge of them</li>
 <li>Orchestration: how often do we recieve the data, can we integrate
 with the upstream application team</li>
 <li>SWE: Can the code access with the right credentials, how do we
 authenticate, how do we access (API, REST), can we parallelize the work,
 how do we deploy code changes?</li>
 </ul>
-<h2 id="storage-1">Storage</h2>
+<h2>Storage</h2>
 <p>The raw ingredients are: disk drives, memory, networking and CUPU,
 serialization, compression and caching</p>
-<h3 id="raw-ingredients">Raw Ingredients</h3>
+<h3>Raw Ingredients</h3>
 <ul>
 <li>Magnetic Disk Drives
 <ul>
@@ -213,7 +212,7 @@ latency</li>
 <li>Solid State Drives
 <ul>
 <li>Stores data in flash memory cells</li>
-<li>They’re really fast (0.1 ms)</li>
+<li>They're really fast (0.1 ms)</li>
 <li>Used for OLTP Systems; allow Postgres</li>
 <li>Cost 20-30 cents per GB (10x magnetic drives)</li>
 <li>SSD can be used in some OLAP for caching</li>
@@ -221,7 +220,7 @@ latency</li>
 <li>RAM
 <ul>
 <li>Attached to CPU; stores code</li>
-<li>It’s volatile, if it fails it gets reset</li>
+<li>It's volatile, if it fails it gets reset</li>
 <li>1000 times faster than SSD</li>
 <li>$10/GB</li>
 <li>Stores data in capacitors, needs to be refreshed over time</li>
@@ -229,7 +228,7 @@ latency</li>
 <li>Networking and CPU
 <ul>
 <li>Availability zones impact the storage access</li>
-<li>Trade off in spreading data vs. keeping it under on zone</li>
+<li>Trade off in spreading data vs. keeping it under on zone</li>
 </ul></li>
 <li>Serialization
 <ul>
@@ -243,122 +242,228 @@ able to decode</li>
 </ul></li>
 <li>Caching</li>
 </ul>
-<figure>
-<img
+<p><img
 src="https://assets-global.website-files.com/60d9fbbfcd9fcb40bad8aac3/63a4c83b39bde30ffb8aeec9_Screenshot2022-12-22at11.22.43AM_A1aXhW1Nn.png"
-alt="caching" />
-<figcaption aria-hidden="true">caching</figcaption>
-</figure>
-<h3 id="data-storage-systems">Data Storage Systems</h3>
-<p>BASIC - Basis of eventual consistency - Basically available;
-consistency is not guaranteed - Soft state - state of transaction is
-fuzzy - Eventual consistency - at some point, reading data will return
-consistent values</p>
+alt="caching" /></p>
+<h3>Data Storage Systems</h3>
+<p>BASIC</p>
+<ul>
+<li>Basis of eventual consistency</li>
+<li>Basically available; consistency is not guaranteed</li>
+<li>Soft state - state of transaction is fuzzy</li>
+<li>Eventual consistency - at some point, reading data will return
+consistent values</li>
+</ul>
 <p>Why do BASIC? It allows us to use large-scale distributed systems.
 i.e., scale horizontally.</p>
 <p>When do we do strong consistency? When we can tolerate longer query
 times but want the correct data every time.</p>
-<p>Types of file storage - Cloud filesystem services: e.g., Amazon
-Elastic File System; exposed through the NFS4 protocol - Block storage:
-type of raw storage provided by SSDs and magnetic disks; standard for
-VMs - RAID: redundant array of independent disks. Controls multiple
-disks to improve data durability, enhance performance, and combine
-capacity - Cloud virtualized block storage: similar to storage area
-network (block storage over a network). They separate data from the host
-server. Can persist the data when an EC2 instance shuts down. Highly
-scalable. - Object storage - contains objects of all shapes and sizes.
-Amazon S3, Azure Blob Storage. We lose a lot of the writing flexibility
-with file storage on a local disk. Objects are written once as a stream
-of bytes. To change data or append you must rewrite the full object. -
-Object stores are the gold standard for data lakes. - Object stores are
-key value stores. - We have bucket names and item values - Cache and
-Memory Storage systems: e.g., memcached, a key-value store desgined for
-caching db query results, api call repsonses and more. Redis, a
-key-value store, supports more complex data types. Can tolerate a small
-amount of data loss. - Streaming storage: stored data is temporal. Kafka
-now allows long data retention.</p>
-<p>Data abstractions - Data warehouse: standard olap architecture. -
-Data lake: massive store where data was retained raw and unprocessed.
-Originally built on Hadoop systems. Now we’re separating compute and
-storage. - Data lakehouse: combines aspects of the data warehouse and
-data lake. Stores data in object storage. Adds robust table and schema
+<p>Types of file storage</p>
+<ul>
+<li>Cloud filesystem services: e.g., Amazon Elastic File System; exposed
+through the NFS4 protocol</li>
+<li>Block storage: type of raw storage provided by SSDs and magnetic
+disks; standard for VMs</li>
+<li>RAID: redundant array of independent disks. Controls multiple disks
+to improve data durability, enhance performance, and combine
+capacity</li>
+<li>Cloud virtualized block storage: similar to storage area network
+(block storage over a network). They separate data from the host server.
+Can persist the data when an EC2 instance shuts down. Highly
+scalable.</li>
+<li>Object storage - contains objects of all shapes and sizes. Amazon
+S3, Azure Blob Storage. We lose a lot of the writing flexibility with
+file storage on a local disk. Objects are written once as a stream of
+bytes. To change data or append you must rewrite the full object.
+<ul>
+<li>Object stores are the gold standard for data lakes.</li>
+<li>Object stores are key value stores.</li>
+<li>We have bucket names and item values</li>
+</ul></li>
+<li>Cache and Memory Storage systems: e.g., memcached, a key-value store
+desgined for caching db query results, api call repsonses and more.
+Redis, a key-value store, supports more complex data types. Can tolerate
+a small amount of data loss.</li>
+<li>Streaming storage: stored data is temporal. Kafka now allows long
+data retention.</li>
+</ul>
+<p>Data abstractions</p>
+<ul>
+<li>Data warehouse: standard olap architecture.</li>
+<li>Data lake: massive store where data was retained raw and
+unprocessed. Originally built on Hadoop systems. Now we're separating
+compute and storage.</li>
+<li>Data lakehouse: combines aspects of the data warehouse and data
+lake. Stores data in object storage. Adds robust table and schema
 support for incremental updates and deletes. Has file management layer
 with data mgmt and transf tools. Easier to send data when other tools
-can directly read from the object</p>
-<h2 id="data-ingestion">Data Ingestion</h2>
-<p>It’s the process of moving data from one place to the other. A data
+can directly read from the object</li>
+</ul>
+<h2>Data Ingestion</h2>
+<p>It's the process of moving data from one place to the other. A data
 pipeline is the combination of architecture, systems, and processed that
 move data through the stages of the DE lifecycle.</p>
-<p>Considerations: - Bounded vs. unbounded - Discrete batches or stream
-of consciousness (stream of data) - Frequency - Batch, micro batch or
-real time (or streaming) - Sync or async - With sync, the source,
-ingestion, and destination have complex dependencies and are tightly
-coupled - With async, dependencies can operate at the level of
-individual events; like microservices. - Serialization or
-deserialization - Encoding the data from the source and preparing data
-structures for transmission - Throughput and scalability - Will your
-ingestion be able to keep up with a sudden influx of backlogged data -
-Reliability and durability - Reliability entails high uptime and proper
-failover for ingestion systems - Durability entails making sure data
-isn’t lost or corrupted - Need to build redundancy and self healing
-based on the impact and cost of losing data - Payload - Data type - Data
-shape (json, tabular, unstructured) - Schema - Push vs. pull vs. poll
-patterns - If there’s a change, pull (polling) - Push from source to
-destination - Destination pulls from source</p>
-<p><strong>Ways to ingest data</strong> - Direct DB connection - OBDC or
-JBDC via API - Change Data Capture - Ingesting changes from a source
-system - Batch oriented CDC; every 24 hours update changes in records -
-Continuous CDC; capture all table history and support near real time
-data ingestion - CDC can consume database resoures, CPU time, network
-bandwitdth, disk bandwidth - APIs - Increasingly popular - Common with
-SaaS platforms - Message Queues and Event-Streaming - Managed data
-connectors - Managed by vendor - SFTP and SCP; run over SSH connection -
-Webhooks; aka reverse APIs - The data provider defines an API request
-spec; iit makes the API calls rather than receiving them - The consumer
-needs to provide an endpoint for the provider to call - Can be brittle,
-difficult to maintain and inefficient - Web scraping</p>
-<p><strong>Undercurrent of data ingestion</strong> - DataOps - Need to
-monitor uptime, latency, and data volumes - How will you respond if
-ingestion job fails - Monitoring should be there from the beginning - Is
-there proper testing and deployment automation? Can you roll it back? -
-Data quality - Data can regress whenever and without warning - Need to
-monitor statistics, spikes, etc… - Implement logs to capture history,
-checks, exception handling - Can you do some statistical data testing?
-averages, nulls, outliers?</p>
-<h2 id="data-transformation">Data Transformation</h2>
-<p>The lifetime of a SQL query is: - Query issued - Parsing and
-conversion to bytecode - Query planning and optimization - Query
-execution - Return results</p>
+<p>Considerations:</p>
+<ul>
+<li>Bounded vs. unbounded
+<ul>
+<li>Discrete batches or stream of consciousness (stream of data)</li>
+</ul></li>
+<li>Frequency
+<ul>
+<li>Batch, micro batch or real time (or streaming)</li>
+</ul></li>
+<li>Sync or async
+<ul>
+<li>With sync, the source, ingestion, and destination have complex
+dependencies and are tightly coupled</li>
+<li>With async, dependencies can operate at the level of individual
+events; like microservices.</li>
+</ul></li>
+<li>Serialization or deserialization
+<ul>
+<li>Encoding the data from the source and preparing data structures for
+transmission</li>
+</ul></li>
+<li>Throughput and scalability
+<ul>
+<li>Will your ingestion be able to keep up with a sudden influx of
+backlogged data</li>
+</ul></li>
+<li>Reliability and durability
+<ul>
+<li>Reliability entails high uptime and proper failover for ingestion
+systems</li>
+<li>Durability entails making sure data isn't lost or corrupted</li>
+<li>Need to build redundancy and self healing based on the impact and
+cost of losing data</li>
+</ul></li>
+<li>Payload
+<ul>
+<li>Data type</li>
+<li>Data shape (json, tabular, unstructured)</li>
+<li>Schema</li>
+</ul></li>
+<li>Push vs. pull vs. poll patterns
+<ul>
+<li>If there's a change, pull (polling)</li>
+<li>Push from source to destination</li>
+<li>Destination pulls from source</li>
+</ul></li>
+</ul>
+<p><strong>Ways to ingest data</strong></p>
+<ul>
+<li>Direct DB connection
+<ul>
+<li>OBDC or JBDC via API</li>
+</ul></li>
+<li>Change Data Capture
+<ul>
+<li>Ingesting changes from a source system</li>
+<li>Batch oriented CDC; every 24 hours update changes in records</li>
+<li>Continuous CDC; capture all table history and support near real time
+data ingestion</li>
+<li>CDC can consume database resoures, CPU time, network bandwitdth,
+disk bandwidth</li>
+</ul></li>
+<li>APIs
+<ul>
+<li>Increasingly popular</li>
+<li>Common with SaaS platforms</li>
+</ul></li>
+<li>Message Queues and Event-Streaming</li>
+<li>Managed data connectors
+<ul>
+<li>Managed by vendor</li>
+</ul></li>
+<li>SFTP and SCP; run over SSH connection</li>
+<li>Webhooks; aka reverse APIs
+<ul>
+<li>The data provider defines an API request spec; iit makes the API
+calls rather than receiving them</li>
+<li>The consumer needs to provide an endpoint for the provider to
+call</li>
+<li>Can be brittle, difficult to maintain and inefficient</li>
+</ul></li>
+<li>Web scraping</li>
+</ul>
+<p><strong>Undercurrent of data ingestion</strong></p>
+<ul>
+<li>DataOps
+<ul>
+<li>Need to monitor uptime, latency, and data volumes</li>
+<li>How will you respond if ingestion job fails</li>
+<li>Monitoring should be there from the beginning</li>
+<li>Is there proper testing and deployment automation? Can you roll it
+back?</li>
+</ul></li>
+<li>Data quality
+<ul>
+<li>Data can regress whenever and without warning</li>
+<li>Need to monitor statistics, spikes, etc...</li>
+<li>Implement logs to capture history, checks, exception handling</li>
+<li>Can you do some statistical data testing? averages, nulls,
+outliers?</li>
+</ul></li>
+</ul>
+<h2>Data Transformation</h2>
+<p>The lifetime of a SQL query is:</p>
+<ul>
+<li>Query issued</li>
+<li>Parsing and conversion to bytecode</li>
+<li>Query planning and optimization</li>
+<li>Query execution</li>
+<li>Return results</li>
+</ul>
 <p>A data model represents the way data relates to the real world. How
-it must be organized to reflect the organization’s processes,
+it must be organized to reflect the organization's processes,
 definitions, workflow and logic.</p>
-<p>Types of normalization (Codd normal forms) - Denormalized - no
-normalization, nested and redundant data allowed - First normal form -
-each column is unique and has a single value; table has a unitque
-primary key - Second normal form - 1NF plus partial dependencies are
-removed - Third normal form - 2NF plus each table contains only relevant
-fields related to its primary key and has no dependencies</p>
-<p>Data modeling - Star schema: data is modeled with two general types
-of tables: facts and dimentions - Facts is a table of numbers. e.g.,
-order ID, customer key, date key, gross sale amount - Dimension tables
-as qualitative data referencing a fact; smaller than fact tables. e.g.,
-datekey, year, quarter, month, day of week.</p>
-<p>Update patterns - Truncate and reload; wipe old data and reload -
-Insert only; insert new records without changing or deleting old
-records. - Delete; deletes are more expensive than inserts in columnar
-system. Insert deletion inserts a new record with a deleted flag.
-Queries can get more complicated - Upsert/merge; upserting takes a set
-of source records and looks for matches using a primary key. When it
-matches, it updates the record, otherwise it inserts the new record.</p>
-<h2 id="serving-data">Serving data</h2>
-<p>What a data engineer should know about ML: - When to use which
-models? - How to wrangle data for unstructured and structured data? -
-How to encode data for various types - Batch vs. online learning? - When
-to use AutoML vs. handcrafting an ML model? - Classification
-vs. regression - When to train locally, on a cluster, or at the edge -
-What are data cascades?</p>
-<h2 id="new-trends-in-data-engineering">New trends in data
-engineering</h2>
+<p>Types of normalization (Codd normal forms)</p>
+<ul>
+<li>Denormalized - no normalization, nested and redundant data
+allowed</li>
+<li>First normal form - each column is unique and has a single value;
+table has a unitque primary key</li>
+<li>Second normal form - 1NF plus partial dependencies are removed</li>
+<li>Third normal form - 2NF plus each table contains only relevant
+fields related to its primary key and has no dependencies</li>
+</ul>
+<p>Data modeling</p>
+<ul>
+<li>Star schema: data is modeled with two general types of tables: facts
+and dimentions
+<ul>
+<li>Facts is a table of numbers. e.g., order ID, customer key, date key,
+gross sale amount</li>
+<li>Dimension tables as qualitative data referencing a fact; smaller
+than fact tables. e.g., datekey, year, quarter, month, day of week.</li>
+</ul></li>
+</ul>
+<p>Update patterns</p>
+<ul>
+<li>Truncate and reload; wipe old data and reload</li>
+<li>Insert only; insert new records without changing or deleting old
+records.</li>
+<li>Delete; deletes are more expensive than inserts in columnar system.
+Insert deletion inserts a new record with a deleted flag. Queries can
+get more complicated</li>
+<li>Upsert/merge; upserting takes a set of source records and looks for
+matches using a primary key. When it matches, it updates the record,
+otherwise it inserts the new record.</li>
+</ul>
+<h2>Serving data</h2>
+<p>What a data engineer should know about ML:</p>
+<ul>
+<li>When to use which models?</li>
+<li>How to wrangle data for unstructured and structured data?</li>
+<li>How to encode data for various types</li>
+<li>Batch vs. online learning?</li>
+<li>When to use AutoML vs. handcrafting an ML model?</li>
+<li>Classification vs. regression</li>
+<li>When to train locally, on a cluster, or at the edge</li>
+<li>What are data cascades?</li>
+</ul>
+<h2>New trends in data engineering</h2>
 <ul>
 <li>Application stacks will be data stacks. Applications will integrate
 real time automation and decision making powered by streaming pipelines
