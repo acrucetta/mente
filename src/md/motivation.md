@@ -1,6 +1,7 @@
 
 
 On emotional management of goals:
+
 - Your goals should be integrated to your long-term vision or values
   - Why is this task important?
   - Why am I doing it?
