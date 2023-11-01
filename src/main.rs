@@ -132,7 +132,12 @@ fn create_index_page(lex: &Lexicon) -> Result<(), std::io::Error> {
     let mut index = String::new();
     index.push_str("<html><head><title>Index</title></head><body>");
     index.push_str("<ul class='col2 capital'>");
-    for (filename, _) in &lex.files {
+
+    // We want to index the files in alphabetical order
+    let mut filenames = lex.files.keys().cloned().collect::<Vec<String>>();
+    filenames.sort();
+
+    for filename in filenames {
         // If the file is an index.htm file, skip it
         if filename == "index.htm" || filename == "meta.nav.htm" {
             continue;
