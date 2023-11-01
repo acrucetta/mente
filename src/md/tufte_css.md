@@ -155,8 +155,6 @@ users.
 >
 > <footer>George Orwell, "Politics and the English Language"</footer>
 
-<!-- break blockquote -->
-
 > For a successful technology, reality must take precedence over public
 > relations, for Nature cannot be fooled.
 >
