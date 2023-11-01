@@ -211,7 +211,7 @@ fn build_page(
         write!(file, "\n\n</main>\n");
 
         // Footer
-        writeln!(file, "<footer><hr />");
+        writeln!(file, "<footer id='end_footer'><hr />");
         fpedited(&mut file);
         writeln!(file, "<b>Mente</b> © 2023 — ")?;
         writeln!(file, "</footer>");
