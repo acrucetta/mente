@@ -750,10 +750,10 @@ Each node has a key and every node's key is:
 - Larger than all the keys in its left subtree
 - Smaller than all the keys in its right subtree
 
-```java
+```
 
 private class Node
-{
+	{
 	private Key key;
 	private Value val;
 	private Node left, right;
@@ -763,7 +763,7 @@ private class Node
 		this.key = key;
 		this.val = val;
 	}
-}
+	}
 
 public Value get(Key key)
 {
@@ -777,7 +777,6 @@ public Value get(Key key)
 	}
 	return null;
 }
-
 ```
 
 
@@ -1079,3 +1078,36 @@ We use a data structure of type: `Bag<Integer> [] adj;`. To create the graph we 
 
 To add edges we use `adj[v].add(w)` and `adjust[w].add(v)`
 
+### Depth First Search
+
+It can be visualized with a maze. We explore every intersection in the maze.
+
+Algorithm:
+
+- Unroll a ball of string behind you
+- Mark each visited intersection and passage
+- Retrace steps when no unvisited options
+
+```
+DFS (to visit a vertex v)
+	Mark v as visited
+	Recursively visit all unmarked vertices w adjacent to v
+```
+
+Typical application:
+- Find all vertices connected to a given source vertex
+
+Design pattern for graph processing
+- Use a graph object
+- Decouple the graph from the graph processing
+- Query the graph processing routine for information
+
+```
+Paths(Graph G, int s)
+	boolean hasPathTo(int v)
+	Itrerable<int> pathTO (int v)
+```
+
+Data structure:
+- boolean[] marked
+- int[] edgeTo to keep track of paths

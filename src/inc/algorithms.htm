@@ -629,33 +629,32 @@ right)</p>
 <p>Each node has a key and every node’s key is: - Larger than all the
 keys in its left subtree - Smaller than all the keys in its right
 subtree</p>
-<div class="sourceCode" id="cb7"><pre
-class="sourceCode java"><code class="sourceCode java"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">private</span> <span class="kw">class</span> <span class="bu">Node</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="bu">Key</span> key<span class="op">;</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> Value val<span class="op">;</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="bu">Node</span> left<span class="op">,</span> right<span class="op">;</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="bu">Node</span><span class="op">(</span><span class="bu">Key</span> key<span class="op">,</span> Value val<span class="op">)</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>        <span class="kw">this</span><span class="op">.</span><span class="fu">key</span> <span class="op">=</span> key<span class="op">;</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>        <span class="kw">this</span><span class="op">.</span><span class="fu">val</span> <span class="op">=</span> val<span class="op">;</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> Value <span class="fu">get</span><span class="op">(</span><span class="bu">Key</span> key<span class="op">)</span></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">Node</span> x <span class="op">=</span> root<span class="op">;</span></span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="op">(</span>x <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span></span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>        <span class="dt">int</span> cmp <span class="op">=</span> key<span class="op">.</span><span class="fu">compareTo</span><span class="op">(</span>x<span class="op">.</span><span class="fu">key</span><span class="op">)</span></span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>cmp <span class="op">&lt;</span> <span class="dv">0</span><span class="op">)</span> x <span class="op">=</span> x<span class="op">.</span><span class="fu">left</span><span class="op">;</span></span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span>cmp <span class="op">&gt;</span> <span class="dv">0</span><span class="op">)</span> x <span class="op">=</span> x<span class="op">.</span><span class="fu">right</span><span class="op">;</span></span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span>cmp <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="cf">return</span> x<span class="op">.</span><span class="fu">val</span><span class="op">;</span></span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="kw">null</span><span class="op">;</span></span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<pre><code>
+private class Node
+    {
+    private Key key;
+    private Value val;
+    private Node left, right;
+    
+    public Node(Key key, Value val)
+    {
+        this.key = key;
+        this.val = val;
+    }
+    }
+
+public Value get(Key key)
+{
+    Node x = root;
+    while (x != null)
+    {
+        int cmp = key.compareTo(x.key)
+        if (cmp &lt; 0) x = x.left;
+        else if (cmp &gt; 0) x = x.right;
+        else if (cmp == 0) return x.val;
+    }
+    return null;
+}</code></pre>
 <h2 id="week-5-balanced-search-trees">Week 5: Balanced Search Trees</h2>
 <h3 id="search-trees">2-3 Search Trees</h3>
 <p>Allow 1 or 2 keys per node. 2 node equals one key with two children.
@@ -901,3 +900,25 @@ alt="Adjacency List Graph" />
 <code>adj[v]</code>.</p>
 <p>To add edges we use <code>adj[v].add(w)</code> and
 <code>adjust[w].add(v)</code></p>
+<h3 id="depth-first-search">Depth First Search</h3>
+<p>It can be visualized with a maze. We explore every intersection in
+the maze.</p>
+<p>Algorithm:</p>
+<ul>
+<li>Unroll a ball of string behind you</li>
+<li>Mark each visited intersection and passage</li>
+<li>Retrace steps when no unvisited options</li>
+</ul>
+<pre><code>DFS (to visit a vertex v)
+    Mark v as visited
+    Recursively visit all unmarked vertices w adjacent to v</code></pre>
+<p>Typical application: - Find all vertices connected to a given source
+vertex</p>
+<p>Design pattern for graph processing - Use a graph object - Decouple
+the graph from the graph processing - Query the graph processing routine
+for information</p>
+<pre><code>Paths(Graph G, int s)
+    boolean hasPathTo(int v)
+    Itrerable&lt;int&gt; pathTO (int v)</code></pre>
+<p>Data structure: - boolean[] marked - int[] edgeTo to keep track of
+paths</p>
