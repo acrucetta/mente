@@ -183,7 +183,6 @@ fn build_page(
                 "<meta charset='utf-8'>\n
             <meta name='viewport' content='width=device-width,initial-scale=1'>\n
             <link rel='stylesheet' type='text/css' href='../links/main.css'>\n
-            <link rel='stylesheet' href='../links/tufte.css'>\n
             <title>{NAME} &mdash; {filename}</title>\n"
             )
         );
