@@ -4,12 +4,20 @@ scalable search engine. It has been a competitor for Hadoop, Spark, and
 Flink</p>
 <p>It’s a server that handles JSON requests.</p>
 <h3 id="elastic-stack">Elastic Stack</h3>
-<p><strong>Kibana</strong> - Web UI for searching and visualizing -
-Complex aggregations, graphs, charts - Often used for log analysis</p>
+<p><strong>Kibana</strong></p>
+<ul>
+<li>Web UI for searching and visualizing</li>
+<li>Complex aggregations, graphs, charts</li>
+<li>Often used for log analysis</li>
+</ul>
 <p>ES is not only for searching text anymore.</p>
-<p><strong>Logstash / Beats</strong> - Ways to feed data into Elastic
-Search - FileBeat can monitor log files, parse them, and import into
-Elastic Search in near-real-time - Not just log files</p>
+<p><strong>Logstash / Beats</strong></p>
+<ul>
+<li>Ways to feed data into Elastic Search</li>
+<li>FileBeat can monitor log files, parse them, and import into Elastic
+Search in near-real-time</li>
+<li>Not just log files</li>
+</ul>
 <p><strong>X-Pack</strong> - Security - Machine Learning - Graph
 Exploration</p>
 <h3 id="basic-concepts">Basic Concepts</h3>
@@ -17,11 +25,19 @@ Exploration</p>
 searching for - Any structured JSON data works - Every document has a
 unique ID and a type</p>
 <p>E.g.,</p>
-<p>{ name: “baby carrots” category: “vegetables” brand: “365” }</p>
-<p><strong>Indices</strong> - Highest level entity - Can contain
-collection of types -&gt; collection of documents - Documents that share
-similar traits are groupped into an index - Indices are just a virtual
-representation; doesn’t store in disk</p>
+<pre><code>{
+    name: &quot;baby carrots&quot;
+    category: &quot;vegetables&quot;
+    brand: &quot;365&quot;
+}</code></pre>
+<p><strong>Indices</strong></p>
+<ul>
+<li>Highest level entity</li>
+<li>Can contain collection of types -&gt; collection of documents</li>
+<li>Documents that share similar traits are groupped into an index</li>
+<li>Indices are just a virtual representation; doesn’t store in
+disk</li>
+</ul>
 <p><strong>Restful API</strong></p>
 <p>ES works via HTTP requests and JSON data. Any language or tool that
 can handle HTTP can use Elastic Search. You don’t need anything beyond
@@ -143,5 +159,20 @@ original document. The search query uses indexed values, not _source
 <h3 id="query-dsl">Query DSL</h3>
 <pre><code>GET /products/_search 
 {
-    &quot;query
+    &quot;query&quot; : {
+        &quot;match_all&quot; : {}
+    }
+}</code></pre>
+<p><strong>Term level queries</strong></p>
+<p>Term level queries are not analyzed. They are used as is. They can be
+used with data types such as keyword, numbers, dates, etc…</p>
+<p>Don’t use them for text fields.</p>
+<p>They are case sensitive.</p>
+<pre><code>GET /products/_search 
+{
+    &quot;query&quot; : {
+        &quot;term&quot; : {
+            &quot;brand.keyword&quot; : &quot;nike&quot; -- looks for specific term
+        }
+    }
 }</code></pre>

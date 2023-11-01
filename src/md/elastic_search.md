@@ -7,6 +7,7 @@ It's a server that handles JSON requests.
 ### Elastic Stack
 
 **Kibana**
+
 - Web UI for searching and visualizing
 - Complex aggregations, graphs, charts
 - Often used for log analysis
@@ -14,6 +15,7 @@ It's a server that handles JSON requests.
 ES is not only for searching text anymore. 
 
 **Logstash / Beats**
+
 - Ways to feed data into Elastic Search
 - FileBeat can monitor log files, parse them, and import into Elastic Search in near-real-time
 - Not just log files
@@ -33,15 +35,17 @@ ES is not only for searching text anymore.
 
 E.g.,
 
-
+```
 {
     name: "baby carrots"
     category: "vegetables"
     brand: "365"
 }
+```
 
 
 **Indices**
+
 - Highest level entity
 - Can contain collection of types -> collection of documents
 - Documents that share similar traits are groupped into an index
@@ -257,6 +261,28 @@ How the *keyword* data type works
 ```
 GET /products/_search 
 {
-	"query
+	"query" : {
+		"match_all" : {}
+	}
 }
 ```
+
+**Term level queries**
+
+Term level queries are not analyzed. They are used as is. They can be used with data types such as keyword, numbers, dates, etc...
+
+Don't use them for text fields. 
+
+They are case sensitive.
+
+```
+GET /products/_search 
+{
+	"query" : {
+		"term" : {
+			"brand.keyword" : "nike" -- looks for specific term
+		}
+	}
+}
+```
+
