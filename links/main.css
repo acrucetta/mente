@@ -353,14 +353,3 @@ ol ol ol {
     width: 100%;
   }
 }
-
-/* Footer */
-footer {
-  clear: both;
-  line-height: 30px;
-  padding: 25px;
-}
-
-footer hr {
-  margin-bottom: 15px;
-}
