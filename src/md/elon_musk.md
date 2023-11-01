@@ -13,6 +13,7 @@ At an engineering level; I think it's worth diving deeper into his algorithm:
 5. **Automate**. That comes last. The big mistake in Nevada and at Fremont was that I began by trying to automate every step. We should have waited until all the requirements had been questioned, parts and processes deleted, and the bugs were shaken out.
 
 Additional rules he has applied in his career:
+
 - Skip-level meetings, don't meet with you direct reports, meet with one level below
 - Managers should be technical, they should spend 20% of their time doing engineering work
 - Go direct to the source for information

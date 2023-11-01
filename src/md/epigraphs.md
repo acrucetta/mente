@@ -45,6 +45,7 @@
 > <footer>Danny Meyer</footer>
 
 > And as the authors of “Crucial Conversations” observe, in any conversation, respect is like air. When it’s present nobody notices it, and when it’s absent it’s all anybody can think about.
+> 
 > <footer>Crucial Conversations</footer>
 
 

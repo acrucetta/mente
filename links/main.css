@@ -188,6 +188,58 @@ main>h4 {
   font-size: 35px;
 }
 
+/* Lists */
+
+ul,
+ol {
+  margin-left: 20px;
+  /* Indent the list */
+  line-height: 1.7;
+  /* Increased line height for better readability */
+  padding-left: 5px;
+  /* Space between bullet/number and text */
+}
+
+ul ul,
+ul ol,
+ol ul,
+ol ol {
+  /* Nested lists */
+  margin-left: 20px;
+  /* Additional indentation for nested lists */
+}
+
+ul {
+  list-style-type: disc;
+}
+
+ul ul {
+  /* Nested unordered lists */
+  list-style-type: circle;
+}
+
+ul ul ul {
+  /* 3rd Level unordered lists */
+  list-style-type: square;
+}
+
+ol {
+  list-style-type: decimal;
+}
+
+ol ol {
+  /* Nested ordered lists */
+  list-style-type: lower-alpha;
+  /* Will use letters instead of numbers */
+}
+
+ol ol ol {
+  /* 3rd Level ordered lists */
+  list-style-type: lower-roman;
+  /* Will use roman numerals */
+}
+
+
 /* Modular Styles */
 .col2 {
   columns: 2;
