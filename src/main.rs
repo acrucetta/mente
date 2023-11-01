@@ -243,6 +243,7 @@ fn generate_html_from_markdown(path: &str) -> Result<(), std::io::Error> {
             let output_path = format!("src/inc/{}.htm", filename.trim_end_matches(".md"));
 
             let status = Command::new("pandoc")
+                .arg("-f commonmark")
                 .arg(&input_path)
                 .arg("--filter=pandoc-sidenote")
                 .arg("-t")
