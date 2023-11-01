@@ -111,8 +111,37 @@ you know what you’re doing</p>
 <p>POST /products/_update/100 { “doc: {”in_stock”:3 } }</p>
 <p><strong>Add field</strong></p>
 <p>POST /products/_update/100 { “doc: {”tags”: [“electronics”] } }</p>
-<h2 id="commands">Commands</h2>
-<ul>
-<li>GET /cluster/health</li>
-<li>GET /_cat/indices</li>
-</ul>
+<h2 id="mapping-analysis">Mapping &amp; Analysis</h2>
+<h3 id="analysis">Analysis</h3>
+<p>Text values are analyzed when indexing documents. Text is processed
+before it’s stored.</p>
+<p>An analyzer has: - Character filters - Adds, removes or changes
+characters - Char filters are applied in the order specified - Tokenizer
+- Splitting text into tokens - Token filters - Receive tokens - Apply
+filters to the tokens - e.g., lowercase filter</p>
+<h3 id="mapping">Mapping</h3>
+<p>Defines the structure of documents and how they’re indexed and
+stored. Similar to a schema in a relational database.</p>
+<p>Approaches to mapping: - Explicit mapping - defining it ourselves -
+Dynamic mapping - generating field mapping for us</p>
+<p>Data types: - object data type: used for any json object - objects
+may be nested - mapped using the properties parameter - objects are not
+stored as objects in Apache Lucene - objects are flattened - nested data
+type - maintains the relationship - we need to use a nested query to
+maintain the relationships - keyword - used for exact matching of values
+- typically used for filtering, aggregations, and sorting - e.g.,
+searching for articles with a given status</p>
+<p>How the <em>keyword</em> data type works - The keyword analyzer is a
+no-op analyzer. It outputs the text as a single token - IN: “a blue
+duck” OUT: “a blue duck”</p>
+<p>Type coercion: - Elastic search inspects data types when indexing -
+If we give 7.4, “7.4” and “7.4m” elastic search will coerce the value to
+become a floating point number - The “_source” document contains the
+original document. The search query uses indexed values, not _source
+(BKD trees, inverted indices)</p>
+<h2 id="searching-for-data">Searching for data</h2>
+<h3 id="query-dsl">Query DSL</h3>
+<pre><code>GET /products/_search 
+{
+    &quot;query
+}</code></pre>

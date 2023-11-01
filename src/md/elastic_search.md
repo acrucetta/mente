@@ -202,10 +202,61 @@ POST /products/_update/100
 	}
 }
 
+## Mapping & Analysis
 
+### Analysis
 
-## Commands
+Text values are analyzed when indexing documents. Text is processed before it's stored.
 
-- GET /cluster/health
-- GET /_cat/indices
+An analyzer has:
+- Character filters
+	- Adds, removes or changes characters
+	- Char filters are applied in the order specified 
+- Tokenizer
+	- Splitting text into tokens
+- Token filters
+	- Receive tokens
+	- Apply filters to the tokens
+	- e.g., lowercase filter
 
+### Mapping
+
+Defines the structure of documents and how they're indexed and stored. Similar to a schema in a relational database.
+
+Approaches to mapping:
+- Explicit mapping - defining it ourselves
+- Dynamic mapping - generating field mapping for us
+
+Data types:
+- object data type: used for any json object
+	- objects may be nested
+	- mapped using the properties parameter
+	- objects are not stored as objects in Apache Lucene
+	- objects are flattened
+- nested data type
+	- maintains the relationship 
+	- we need to use a nested query to maintain the relationships
+- keyword
+	- used for exact matching of values
+	- typically used for filtering, aggregations, and sorting
+	- e.g., searching for articles with a given status
+
+How the *keyword* data type works
+- The keyword analyzer is a no-op analyzer. It outputs the text as a single token
+- IN: "a blue duck" OUT: "a blue duck"
+ 
+ Type coercion:
+ - Elastic search inspects data types when indexing
+ - If we give 7.4, "7.4" and "7.4m" elastic search will coerce the value to become a floating point number
+ - The "_source" document contains the original document. The search query uses indexed values, not _source (BKD trees, inverted indices)
+
+## Searching for data
+
+### Query DSL
+
+```
+GET /products/_search 
+{
+	"query
+}
+```
