@@ -2,7 +2,10 @@
 
 ### Useful sayings
 
+<div class="epigraph">
+
 > I think of strength training as a form of retirement saving. Just as we want to retire with enough money saved up to sustain us for the rest of our lives, we want to reach an older age with enough of a “reserve” of muscle and bone density to protect us from injury and allow us to pursue the activities that we enjoy.
+> 
 > <footer>Arnold Schwarzenegger</footer>
 
 > Help people not because they will help you back, but because you are able to help them.
@@ -60,3 +63,5 @@
 > Choosing to be nice is strength. Feeling compelled to always be nice is weakness. Choosing when to be disagreeable, when required, is strength. Always being disagreeable is weakness.
 >
 > <footer>Mark Manson</footer>
+
+</div>
