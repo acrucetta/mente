@@ -25,11 +25,11 @@ Exploration</p>
 searching for - Any structured JSON data works - Every document has a
 unique ID and a type</p>
 <p>E.g.,</p>
-<pre><code>{
+<pre><code>\{
     name: &quot;baby carrots&quot;
     category: &quot;vegetables&quot;
     brand: &quot;365&quot;
-}</code></pre>
+\}</code></pre>
 <p><strong>Indices</strong></p>
 <ul>
 <li>Highest level entity</li>
@@ -158,21 +158,21 @@ original document. The search query uses indexed values, not _source
 <h2 id="searching-for-data">Searching for data</h2>
 <h3 id="query-dsl">Query DSL</h3>
 <pre><code>GET /products/_search 
-{
-    &quot;query&quot; : {
-        &quot;match_all&quot; : {}
-    }
-}</code></pre>
+\{
+    &quot;query&quot; : \{
+        &quot;match_all&quot; : \{\}
+    \}
+\}</code></pre>
 <p><strong>Term level queries</strong></p>
 <p>Term level queries are not analyzed. They are used as is. They can be
 used with data types such as keyword, numbers, dates, etc…</p>
 <p>Don’t use them for text fields.</p>
 <p>They are case sensitive.</p>
 <pre><code>GET /products/_search 
-{
-    &quot;query&quot; : {
-        &quot;term&quot; : {
+\{
+    &quot;query&quot; : \{
+        &quot;term&quot; : \{
             &quot;brand.keyword&quot; : &quot;nike&quot; -- looks for specific term
-        }
-    }
-}</code></pre>
+        \}
+    \}
+\}</code></pre>

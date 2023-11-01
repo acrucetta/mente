@@ -36,11 +36,11 @@ ES is not only for searching text anymore.
 E.g.,
 
 ```
-{
+\{
     name: "baby carrots"
     category: "vegetables"
     brand: "365"
-}
+\}
 ```
 
 
@@ -171,19 +171,19 @@ When to change node roles:
 DELETE /pages
 
 PUT /products
-{
-	"settings" : {
+\{
+	"settings" : \{
 	...
-	}
-}
+	\}
+\}
 
 
 POST /products/_doc/100
-{
+\{
 "name":"Coffee Maker"
 "price":64
 "in_stock":10
-}
+\}
 
 GET /product/_doc/100
 
@@ -191,20 +191,20 @@ GET /product/_doc/100
 **Update field**
 
 POST /products/_update/100
-{
-	"doc: {
+\{
+	"doc: \{
 		"in_stock":3
-	}
-}
+	\}
+\}
 
 **Add field**
 
 POST /products/_update/100
-{
-	"doc: {
+\{
+	"doc: \{
 		"tags": ["electronics"]
-	}
-}
+	\}
+\}
 
 ## Mapping & Analysis
 
@@ -260,11 +260,11 @@ How the *keyword* data type works
 
 ```
 GET /products/_search 
-{
-	"query" : {
-		"match_all" : {}
-	}
-}
+\{
+	"query" : \{
+		"match_all" : \{\}
+	\}
+\}
 ```
 
 **Term level queries**
@@ -277,12 +277,12 @@ They are case sensitive.
 
 ```
 GET /products/_search 
-{
-	"query" : {
-		"term" : {
+\{
+	"query" : \{
+		"term" : \{
 			"brand.keyword" : "nike" -- looks for specific term
-		}
-	}
-}
+		\}
+	\}
+\}
 ```
 
