@@ -45,3 +45,11 @@
 - Work is going to fill a large part of your life, and the only way to be truly satisfied is to do what you believe is great work. And the only way to do great work is to love what you do. (Steve Jobs)
 
 - Hard work is a competitive advantage. Even the belief that hard work is a competitive advantage is itself now a competitive advantage. (Balaji Srinivasan)
+
+- I’m not a consumption person; I’m a production person. I’m not burning capital on stuff. Everything is going into the next compounding outcome—not just compounding money, though money is an important tool. Knowledge compounds on other knowledge. Impact, same thing. (Balaji Srinivasan)
+
+### On Financial Advice
+
+- “One of the great defenses—if you’re worried about inflation—is not to have a lot of silly needs in your life—if you don’t need a lot of material goods.” (Charlie Munger)
+
+- "The less money you need, the less dependent you are." (Balaji Srinivasan)

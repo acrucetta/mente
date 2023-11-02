@@ -46,16 +46,18 @@ html {
 }
 
 body {
-  width: 87.5%;
+  width: auto;
   margin: 0 auto;
-  padding-left: 12.5%;
+  padding-left: 2%;
   font-family: et-book, Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, Baskerville, "Baskerville Old Face", "Goudy Old Style", Garamond, "Times New Roman", serif;
   background-color: #fffff8;
   color: #111;
+  line-height: 1.5;
   max-width: 1400px;
   counter-reset: sidenote-counter;
   overflow-x: hidden;
 }
+
 
 /* Tufte CSS Styles */
 
@@ -101,7 +103,7 @@ blockquote footer {
 
 /* Reset and Defaults */
 :focus {
-  outline: none;
+  outline: 2px solid #333;
 }
 
 ::selection {
@@ -113,6 +115,8 @@ blockquote footer {
 
 a {
   color: black;
+  padding: 0.5rem;
+  display: inline-block;
 }
 
 ul {
@@ -164,8 +168,8 @@ main {
 
 main img {
   margin-bottom: 15px;
-  max-width: 700px;
-  width: 100%;
+  max-width: 100%;
+  height: auto;
 }
 
 main>* {
@@ -213,11 +217,8 @@ main>h4 {
 ul,
 ol {
   margin-left: 20px;
-  /* Indent the list */
   line-height: 1.7;
-  /* Increased line height for better readability */
   padding-left: 5px;
-  /* Space between bullet/number and text */
 }
 
 ul ul,
@@ -271,7 +272,9 @@ ol ol ol {
 
 .notice {
   padding: 20px;
-  border: 2px solid black;
+  border: 1px solid #eaeaea;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
 /* Theme (Dark Mode) */
@@ -307,50 +310,78 @@ ol ol ol {
 
 /* Mobile */
 
+/* Theme (Dark Mode) */
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #000;
+    color: white;
+  }
+
+  body a,
+  main>code,
+  main>pre {
+    background: white;
+    color: #000;
+  }
+
+  main .project {
+    border-left: 2px solid white;
+  }
+
+  .notice {
+    border-color: white;
+    box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
+    /* Added shadow for visibility */
+  }
+
+  main .progress>div {
+    background-color: white;
+  }
+
+  main .progress>div>span {
+    color: black;
+  }
+}
+
+/* Mobile */
+
 @media (max-width: 1100px) {
+
+  body {
+    font-size: calc(1rem + 1vw);
+  }
+
   nav {
     width: 100%;
   }
 
   nav .site-nav section {
-    float: left;
+    float: none;
+    /* Using flexbox instead of float */
+    display: inline-block;
     margin: 0 10px 10px 0;
   }
-}
 
-@media (max-width: 1100px) and (min-width: 651px) {
   nav .site-nav section {
     width: calc(25% - 10px);
   }
 
-  nav .site-nav section:nth-child(4n + 1) {
-    clear: left;
-  }
-}
-
-@media (max-width: 650px) and (min-width: 501px) {
-  nav .site-nav section {
-    width: calc(33% - 10px);
+  @media (max-width: 650px) {
+    nav .site-nav section {
+      width: calc(33% - 10px);
+    }
   }
 
-  nav .site-nav section:nth-child(3n + 1) {
-    clear: left;
-  }
-}
-
-@media (max-width: 500px) and (min-width: 351px) {
-  nav .site-nav section {
-    width: calc(50% - 10px);
+  @media (max-width: 500px) {
+    nav .site-nav section {
+      width: calc(50% - 10px);
+    }
   }
 
-  nav .site-nav section:nth-child(2n + 1) {
-    clear: left;
-  }
-}
-
-@media (max-width: 350px) {
-  nav .site-nav section {
-    width: 100%;
+  @media (max-width: 350px) {
+    nav .site-nav section {
+      width: 100%;
+    }
   }
 }
 

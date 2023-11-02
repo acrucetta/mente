@@ -1111,3 +1111,46 @@ Paths(Graph G, int s)
 Data structure:
 - boolean[] marked
 - int[] edgeTo to keep track of paths
+
+
+### Breadth-first search
+
+Repeat until the queue is empty:
+- Remove vertex v from queue
+- Add to queue all unmarked vertices adjacent to v and mark them
+
+Differences:
+- DFS - put unvisited vertices on a stack
+- BFS - put unvisited vertices on a queue
+
+BFS can be useful to find the shortest path. Since it looks for paths from the origin in increasing form.
+
+Some applications: 
+- Fewest number of hops in a communication network
+- Kevin Bacon numbers 
+
+### Connected components
+
+Vertices v and w are connected if there's a path between them. A goal is to preprocess the graph to find this answer in constant time.
+
+We implement a data type CC
+
+```
+CC(Graph G)
+	boolean connected (int v, int w)
+	int count()
+	int id(int v)
+```
+
+Similar to the union find problem. But that one is less efficient. We use DFS instead.
+
+We build a union find tree. A connected component is a maximal set of connected vertices. 
+
+Goal: Partition vertices into connected components.
+- Initialize all vertices v as unmarked
+- For each unmarked vertex, run DFS to identify all vertices discovered as part of the same component
+
+A scientific application can be study spread of STDs.
+
+Another application can be identifying "blobs" in pictures. Given a grayscale image of particles identify the blobs. We can also track these particles over time.
+

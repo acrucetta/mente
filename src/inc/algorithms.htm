@@ -1204,3 +1204,43 @@ the maze.</p>
 <li>boolean[] marked</li>
 <li>int[] edgeTo to keep track of paths</li>
 </ul>
+<h3>Breadth-first search</h3>
+<p>Repeat until the queue is empty:</p>
+<ul>
+<li>Remove vertex v from queue</li>
+<li>Add to queue all unmarked vertices adjacent to v and mark them</li>
+</ul>
+<p>Differences:</p>
+<ul>
+<li>DFS - put unvisited vertices on a stack</li>
+<li>BFS - put unvisited vertices on a queue</li>
+</ul>
+<p>BFS can be useful to find the shortest path. Since it looks for paths
+from the origin in increasing form.</p>
+<p>Some applications:</p>
+<ul>
+<li>Fewest number of hops in a communication network</li>
+<li>Kevin Bacon numbers</li>
+</ul>
+<h3>Connected components</h3>
+<p>Vertices v and w are connected if there's a path between them. A goal
+is to preprocess the graph to find this answer in constant time.</p>
+<p>We implement a data type CC</p>
+<pre><code>CC(Graph G)
+    boolean connected (int v, int w)
+    int count()
+    int id(int v)</code></pre>
+<p>Similar to the union find problem. But that one is less efficient. We
+use DFS instead.</p>
+<p>We build a union find tree. A connected component is a maximal set of
+connected vertices.</p>
+<p>Goal: Partition vertices into connected components.</p>
+<ul>
+<li>Initialize all vertices v as unmarked</li>
+<li>For each unmarked vertex, run DFS to identify all vertices
+discovered as part of the same component</li>
+</ul>
+<p>A scientific application can be study spread of STDs.</p>
+<p>Another application can be identifying "blobs" in pictures. Given a
+grayscale image of particles identify the blobs. We can also track these
+particles over time.</p>
