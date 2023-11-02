@@ -297,39 +297,6 @@ ol ol ol {
 
   .notice {
     border-color: white;
-  }
-
-  main .progress>div {
-    background-color: white;
-  }
-
-  main .progress>div>span {
-    color: black;
-  }
-}
-
-/* Mobile */
-
-/* Theme (Dark Mode) */
-@media (prefers-color-scheme: dark) {
-  body {
-    background: #000;
-    color: white;
-  }
-
-  body a,
-  main>code,
-  main>pre {
-    background: white;
-    color: #000;
-  }
-
-  main .project {
-    border-left: 2px solid white;
-  }
-
-  .notice {
-    border-color: white;
     box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
     /* Added shadow for visibility */
   }
@@ -349,6 +316,15 @@ ol ol ol {
 
   body {
     font-size: calc(1rem + 1vw);
+    /* This adjusts the base font-size */
+  }
+
+  /* Ensuring paragraph and list items inherit the same font-size */
+  main p,
+  main ul,
+  main ol {
+    font-size: inherit;
+    line-height: inherit;
   }
 
   nav {
@@ -384,6 +360,7 @@ ol ol ol {
     }
   }
 }
+
 
 /* Footer */
 #end_footer {
