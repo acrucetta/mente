@@ -1,0 +1,21 @@
+## Notes on Meditations by Marcus Aurelius
+
+### Glossary
+- **Daimon**: The daimon is then equivalent to the Reason, to the self, to the intellect (nous), to the power of reflection (dianoia), and to the guiding principle (hegemonikon). [[1](https://medium.com/stoicism-philosophy-as-a-way-of-life/the-stoic-daimon-there-is-a-god-inside-yourself-7e39fccce40d)]
+- **Ruling power**: when Marcus Aurelius says "our ruling power," he is referring to the human mind, and he is reminding us that we have the power to choose how we live our lives
+
+### Book 3
+
+Marcus Aurelius starts with a reflection on the shortness of life and the importance of a sense of urgency and a zest to cultivate knowledge and live according to nature
+
+> We ought to consider not only that our life is daily wasting away, but also that if a man should live longer, it is quite uncertain whether the understanding will still continue sufficient for the comprehension of things
+
+> ... we must make hast then, not only because we are daily near to death, but also because the conception of things and the understanding of them cease first
+
+He also encourages us to *observe that even the things which follow after the things that are produced according to nature contain something pleasing and attractive*
+
+In his life, he seemed to have to remind himself how if we appreciate the nature in everything, we will see with no less pleasure the *real gaping jaws of wild beasts* than those that painters and sculptors show by imitation. We are able to look at the comeliness of old men and to look at young beauty with chaste eyes.
+
+He continued with emphasizing to not *waste the remainder of your life in thoughts about others*. When we care too much about what a person is doing, why, and what is he saying, and what he thinks of us, we steer away from our ruling power.
+
+He says our activity should concentrate in our own lot, making your own actions fair and being persuaded that your portion is good. 

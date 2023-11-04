@@ -53,3 +53,7 @@
 - “One of the great defenses—if you’re worried about inflation—is not to have a lot of silly needs in your life—if you don’t need a lot of material goods.” (Charlie Munger)
 
 - "The less money you need, the less dependent you are." (Balaji Srinivasan)
+
+### On Philosophy
+
+- “In the human life time is but an instant, and the substance of it a flux, and the perception dull, and the composition of the whole body subject to putrefaction, and the soul a whirl, and fortune hard to divine, and fame a thing devoid of certainty. And, to say all in a word, everything that belongs to the body is a stream, and what belongs to the soul is a dream and vapor, and life is a warfare and a stranger's sojourn, and after- fame is oblivion. What then can guide a man? One thing and only one, philosophy.” (Marcus Aurelius)
