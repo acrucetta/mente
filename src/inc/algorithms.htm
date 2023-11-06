@@ -1186,6 +1186,19 @@ the maze.</p>
 <pre><code>DFS (to visit a vertex v)
     Mark v as visited
     Recursively visit all unmarked vertices w adjacent to v</code></pre>
+<pre><code>def dfs(graph, start):
+    visited = set()
+
+    def dfs_recursive(current):
+        if current in visited:
+            return
+
+        visited.add(current)
+
+        for neighbor in graph[current]:
+            dfs_recursive(neighbor)
+
+    dfs_recursive(start)</code></pre>
 <p>Typical application:</p>
 <ul>
 <li>Find all vertices connected to a given source vertex</li>
@@ -1222,6 +1235,20 @@ from the origin in increasing form.</p>
 <li>Fewest number of hops in a communication network</li>
 <li>Kevin Bacon numbers</li>
 </ul>
+<pre><code>def bfs(graph, start):
+    visited = set()
+    queue = [start]
+
+    while queue:
+        current = queue.pop(0)
+        if current in visited:
+            continue
+
+        visited.add(current)
+
+        for neighbor in graph[current]:
+            if neighbor not in visited:
+                queue.append(neighbor)</code></pre>
 <h3>Connected components</h3>
 <p>Vertices v and w are connected if there's a path between them. A goal
 is to preprocess the graph to find this answer in constant time.</p>
@@ -1244,3 +1271,48 @@ discovered as part of the same component</li>
 <p>Another application can be identifying "blobs" in pictures. Given a
 grayscale image of particles identify the blobs. We can also track these
 particles over time.</p>
+<h3>Graph Challenges</h3>
+<ul>
+<li><p>Is a graph bipartite? i.e. divide the vertices into two subsets.
+Every node is connected o one edge.</p>
+<ul>
+<li>Solvable</li>
+</ul></li>
+<li><p>Find a cycle</p>
+<ul>
+<li>Solvable</li>
+</ul></li>
+<li><p>Seven Bridges of Konigsberg; i.e., is there a cycle that uses
+each edge exactly once. Only iff all edges have one degree (i.e.,
+Eulerian tour)</p>
+<ul>
+<li>Solvable</li>
+</ul></li>
+<li><p>Find a cycle that visits every vertex exactly once</p>
+<ul>
+<li>Intractable (classical NP-complete problem)</li>
+</ul></li>
+<li><p>Are two graphs identical except for vertex names; graph
+isomorphism</p>
+<ul>
+<li>No one knows</li>
+</ul></li>
+</ul>
+<h3>Directed Graphs</h3>
+<p>Digraph: set of vertices connected pairwise by directed edges.</p>
+<p>E.g., road network; vertex = intersections; edges one-way streets</p>
+<p><img
+src="https://allthingsgraphed.com/public/images/political-blogs-2004/left-right.svg"
+alt="political blogosphere" /></p>
+<p>Some digraph problems are:</p>
+<ul>
+<li>Is there a directed path from s to t?</li>
+<li>What is the shorted directed path from s to t?</li>
+<li>Can you draw a digraph so that all edges point upwards?</li>
+<li>Is there a directed path between all pairs of vertices?</li>
+<li>What is the importance of a web page?</li>
+</ul>
+<p>Digraph API</p>
+<p><img
+src="https://algs4.cs.princeton.edu/42digraph/images/digraph-api.png"
+alt="Digraph API" /></p>

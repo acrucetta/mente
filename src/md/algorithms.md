@@ -1094,6 +1094,22 @@ DFS (to visit a vertex v)
 	Recursively visit all unmarked vertices w adjacent to v
 ```
 
+```
+def dfs(graph, start):
+    visited = set()
+
+    def dfs_recursive(current):
+        if current in visited:
+            return
+
+        visited.add(current)
+
+        for neighbor in graph[current]:
+            dfs_recursive(neighbor)
+
+    dfs_recursive(start)
+```
+
 Typical application:
 - Find all vertices connected to a given source vertex
 
@@ -1129,6 +1145,23 @@ Some applications:
 - Fewest number of hops in a communication network
 - Kevin Bacon numbers 
 
+```
+def bfs(graph, start):
+    visited = set()
+    queue = [start]
+
+    while queue:
+        current = queue.pop(0)
+        if current in visited:
+            continue
+
+        visited.add(current)
+
+        for neighbor in graph[current]:
+            if neighbor not in visited:
+                queue.append(neighbor)
+```
+
 ### Connected components
 
 Vertices v and w are connected if there's a path between them. A goal is to preprocess the graph to find this answer in constant time.
@@ -1154,3 +1187,38 @@ A scientific application can be study spread of STDs.
 
 Another application can be identifying "blobs" in pictures. Given a grayscale image of particles identify the blobs. We can also track these particles over time.
 
+### Graph Challenges
+
+- Is a graph bipartite? i.e. divide the vertices into two subsets.  Every node is connected o one edge.
+	- Solvable
+
+- Find a cycle
+	- Solvable
+
+- Seven Bridges of Konigsberg; i.e., is there a cycle that uses each edge exactly once. Only iff all edges have one degree (i.e., Eulerian tour)
+	- Solvable
+
+- Find a cycle that visits every vertex exactly once
+	- Intractable (classical NP-complete problem)
+
+- Are two graphs identical except for vertex names; graph isomorphism
+	- No one knows 
+
+### Directed Graphs
+
+Digraph: set of vertices connected pairwise by directed edges.
+
+E.g., road network; vertex = intersections; edges one-way streets
+
+![political blogosphere](https://allthingsgraphed.com/public/images/political-blogs-2004/left-right.svg)
+
+Some digraph problems are:
+- Is there a directed path from s to t?
+- What is the shorted directed path from s to t?
+- Can you draw a digraph so that all edges point upwards?
+- Is there a directed path between all pairs of vertices?
+- What is the importance of a web page?
+
+Digraph API
+
+![Digraph API](https://algs4.cs.princeton.edu/42digraph/images/digraph-api.png)
