@@ -35,11 +35,56 @@
 
 <h1>debugging.htm</h1>
 <h2>Notes on Debugging</h2>
-<p>...</p>
+<h3>4 Defenses Against Bugs by Rob Miller</h3>
+<ol type="1">
+<li>The first defense against bugs is to make them impossible.</li>
+</ol>
+<p>Entire classes of bugs can be eradicated by choosing to program in
+languages that guarantee memory safety (that no part of memory can be
+accessed except through a pointer (or reference) that is valid for that
+region of memory) and type safety (that no value can be used in a way
+inconsistent with its type). The OCaml type system, for example,
+prevents programs from buffer overflows and meaningless operations (like
+adding a boolean to a float), whereas the C type system does not.</p>
+<ol start="2" type="1">
+<li>The second defense against bugs is to use tools that find them.</li>
+</ol>
+<p>There are automated source-code analysis tools, like FindBugs, which
+can find many common kinds of bugs in Java programs, and SLAM, which is
+used to find bugs in device drivers. The subfield of CS known as formal
+methods studies how to use mathematics to specify and verify programs,
+that is, how to prove that programs have no bugs. We’ll study
+verification later in this course. Social methods such as code reviews
+and pair programming are also useful tools for finding bugs. Studies at
+IBM in the 1970s-1990s suggested that code reviews can be remarkably
+effective. In one study (Jones, 1991), code inspection found 65% of the
+known coding errors and 25% of the known documentation errors, whereas
+testing found only 20% of the coding errors and none of the
+documentation errors.</p>
+<ol start="3" type="1">
+<li>The third defense against bugs is to make them immediately
+visible.</li>
+</ol>
+<p>The earlier a bug appears, the easier it is to diagnose and fix. If
+computation instead proceeds past the point of the bug, then that
+further computation might obscure where the failure really occurred.
+Assertions in the source code make programs “fail fast” and “fail
+loudly”, so that bugs appear immediately, and the programmer knows
+exactly where in the source code to look.</p>
+<ol start="4" type="1">
+<li>The fourth defense against bugs is extensive testing.</li>
+</ol>
+<p>How can you know whether a piece of code has a particular bug? Write
+tests that would expose the bug, then confirm that your code doesn’t
+fail those tests. Unit tests for a relatively small piece of code, such
+as an individual function or module, are especially important to write
+at the same time as you develop that code. Running of those tests should
+be automated, so that if you ever break the code, you find out as soon
+as possible. (That’s really Defense 3 again.)</p>
 
 
 </main>
 <footer id='end_footer'><hr />
-<span style='float:right'>Edited on 2023-11-06</span><b>Mente</b> © 2023 — 
+<span style='float:right'>Edited on 2023-12-03</span><b>Mente</b> © 2023 — 
 </footer>
 </body></html>

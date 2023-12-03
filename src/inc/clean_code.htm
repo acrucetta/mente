@@ -1,5 +1,28 @@
 <h2>Notes on Clean Code</h2>
-<h3>From blogs</h3>
+<h3>Subjects</h3>
+<h4>Function Length</h4>
+<p>...</p>
+<h4>Single Responsibility Principle</h4>
+<p>...</p>
+<h3>Compendium</h3>
+<p><strong>Source:</strong> Testing Google Blog</p>
+<p><strong>Reduce cognitive load by making your code
+simpler.</strong></p>
+<ul>
+<li>Limit the amount of code in a function or file. Keep functions small
+and limit each class to a single responsibility.</li>
+<li>Simplify control flow. Functions with too many if statements or
+loops can be hard to understand since it is difficult to keep the entire
+control flow in your head. Hide complex logic in helper functions, and
+reduce nesting by using early returns to handle special cases.</li>
+<li>Minimize mutable state. Stateless code is simpler to understand. For
+example, avoid mutable class fields when possible, and make types
+immutable.</li>
+<li>Include only relevant details in test. Don't use boilerplate test
+data that is irrelevant</li>
+<li>Don't overuse mocks in tests. Too many mocks can clutter calls and
+expose implementation details of the system under test.</li>
+</ul>
 <p><strong>Source</strong>: <a
 href="https://blog.plover.com/prog/katara-advice.html">Advice to a
 novice programmer</a></p>
@@ -32,5 +55,10 @@ you trying to answer. Before you debug think <em>What do I think will
 happen in this breakpoint?</em></p>
 <p>Use the finger of blame. What part of the code is really responsible
 for the problem. Until you find the smoking gun.</p>
-<h3>From Philosopy of Software Design</h3>
+<h3>From Philosophy of Software Design</h3>
 <p>...</p>
+<h3>References</h3>
+<ul>
+<li>[1] <a
+href="https://martinfowler.com/bliki/FunctionLength.html">https://martinfowler.com/bliki/FunctionLength.html</a></li>
+</ul>

@@ -38,6 +38,14 @@
 
 - Choosing to be nice is strength. Feeling compelled to always be nice is weakness. Choosing when to be disagreeable, when required, is strength. Always being disagreeable is weakness. (Mark Manson)
 
+### On Opinions
+
+- “If your opinions on one subject can be predicted from your opinions on another, you may be in the grip of an ideology. When you truly think for yourself, your conclusions will not be predictable.” (Kevin Kelly)
+
+### On Writing
+
+- Nassim Taleb once wrote about how publishers always try to push authors to write about topics specific to recent news events. “No, no; it’s the exact opposite,” he wrote. “If you want to be read in the future, make sure you would have been read in the past. We have no idea of what’s in the future, but we have some knowledge of what was in the past … I speculated that books that would have been relevant twenty years in the past (conditional of course of being relevant today) would be interesting twenty years in the future.”
+
 ### On Work
 
 - “Look at this generation, with all of its electronic devices and multitasking. I will confidently predict less success than Warren, who just focused on reading. If you want wisdom, you’ll get it sitting on your ass. That’s the way it comes.” (Charlie Munger)

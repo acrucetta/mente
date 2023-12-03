@@ -753,7 +753,7 @@ Each node has a key and every node's key is:
 ```
 
 private class Node
-	{
+	/{
 	private Key key;
 	private Value val;
 	private Node left, right;
@@ -1222,3 +1222,135 @@ Some digraph problems are:
 Digraph API
 
 ![Digraph API](https://algs4.cs.princeton.edu/42digraph/images/digraph-api.png)
+
+#### Digraph Search
+
+We use similar methods as for undirected graphs
+- Every undirected graph is a digraph
+- DFS is a digraph algorithm
+
+**DFS in Digraphs**
+
+To visit a vertex with DFS:
+- Mark vertex V as visited
+- Recursively visit all unmarked vertices pointing from v
+	- We only visits the one that have an edge pointing to the node (->)
+
+Used in program control-flow analysis; every program is a digraph.
+- Data structure
+	- Vertex = basic block of instructions
+	- Edge = jump
+- Dead-code elimination -> remove unreachable pieces of code
+
+Another use can be a mark-sweep garbage collector:
+- Every data structure is a digraph
+	- Vertex = object
+	- Edge = reference
+- Roots - objects accessible by program
+- Algorithm dates back to 1960
+	- Marks all reachable object
+	- Sweeps unreachable ones
+
+**BFS in Digraphs**
+
+BFS computers shortest paths in time proportional to E+V.
+
+Applications:
+- Web Crawler
+	- Starting from some root web page
+		- Maintain queue of sites to explore
+		- Maintain a set of discovered websites
+		- Dequeue the next site and enqueue websites to which it links (provided you haven't seen it)
+	- Why not DFS?
+		- We can get stuck in a path too deep and not explore as much the remaining sites
+
+
+### Topological Sorting
+
+Given a set of tasks to be completed with precedence constraints. In which order should we schedule the tasks
+
+Data structure:
+- Vertex = task
+- Edge = precedence constraint
+
+Topological sort works on DAGs. We solve using DFS. 
+
+The code uses DFS with a stack. 
+
+There are many applications to detect cycles (i.e. circular references)
+- Java Compiler
+- Microsoft Excel
+
+### Strongly-connected components
+
+Vertices v and w are strongly connected if there is a directed path from v to w and a directed path from w to v.
+
+Strong connectivity is an equivalence relation. 
+
+Strongly connected components means not only from v to w. But from v to w and then from w to v.
+
+E.g., ecological food webs, software modules.
+
+It is a core operations research problem. It was solved in linear-time with a DFS algorithm.
+
+**Kosaraju-Shahir algorithm**
+
+- Phase 1: DFS in reverse graph (topological sort)
+	- i.e., compute reverse postorder
+- Phase 2: DFS in original graph, visiting unmarked vertices in reverse postorder (calculated in Phase 1)
+
+The computation gives us a strong-component array. i.e, the index of each node and the number assigned to all of its strong components.
+
+## Minimum Spanning Trees (MSTs)
+
+An undirected graph G with positive edge weights (connected). The goal is to find a min weight spanning tree.
+
+Example: bicycle routes in Seattle or the arrangement of nuclei in cancer research.
+
+### Self-Questions
+- Where are they used?
+- How do they differ from Dijkstra's algorithm?
+- Can we use DFS or BFS to solve them?
+
+**Greedy Algorithm**
+
+A cut in a graph is a partition of its vertices into two nonempty sets. A crossing edge connects a vertex in one set to the other.
+
+Given any cut, the crossing edge of min weight is in the MST.
+
+1. Start with all edges colored gray
+2. Find cut with no black crossing edges; color its min weight edge black
+3. Repeat until V-1 edges are black
+
+What if edge weights are not all distinct? It will still work.
+
+What if graph is not connected? Compute min spanning forest.
+
+### Weighted Edge API
+
+```java
+Edge(int v, int w, double weight)
+    int either()
+    int other(int v)
+    int compareTo(edge that)
+    weight()
+    toString()
+
+EdgeWeightedGraph(int V)
+    int V()
+    int E()
+    void addEdge(Edge e)
+    Iterable<Edge> adj(int v)
+    Iterable<Edge> edges()
+
+MST(EdgeWeightedGraph G)
+    Iterable<Edge> edges()
+    double weight()
+```
+```
+```
+(V)-----(W)
+
+
+
+

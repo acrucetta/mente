@@ -816,7 +816,7 @@ etc... on a symbol table</li>
 </ul>
 <pre><code>
 private class Node
-    {
+    /{
     private Key key;
     private Value val;
     private Node left, right;
@@ -1316,3 +1316,143 @@ alt="political blogosphere" /></p>
 <p><img
 src="https://algs4.cs.princeton.edu/42digraph/images/digraph-api.png"
 alt="Digraph API" /></p>
+<h4>Digraph Search</h4>
+<p>We use similar methods as for undirected graphs</p>
+<ul>
+<li>Every undirected graph is a digraph</li>
+<li>DFS is a digraph algorithm</li>
+</ul>
+<p><strong>DFS in Digraphs</strong></p>
+<p>To visit a vertex with DFS:</p>
+<ul>
+<li>Mark vertex V as visited</li>
+<li>Recursively visit all unmarked vertices pointing from v
+<ul>
+<li>We only visits the one that have an edge pointing to the node
+(-&gt;)</li>
+</ul></li>
+</ul>
+<p>Used in program control-flow analysis; every program is a
+digraph.</p>
+<ul>
+<li>Data structure
+<ul>
+<li>Vertex = basic block of instructions</li>
+<li>Edge = jump</li>
+</ul></li>
+<li>Dead-code elimination -&gt; remove unreachable pieces of code</li>
+</ul>
+<p>Another use can be a mark-sweep garbage collector:</p>
+<ul>
+<li>Every data structure is a digraph
+<ul>
+<li>Vertex = object</li>
+<li>Edge = reference</li>
+</ul></li>
+<li>Roots - objects accessible by program</li>
+<li>Algorithm dates back to 1960
+<ul>
+<li>Marks all reachable object</li>
+<li>Sweeps unreachable ones</li>
+</ul></li>
+</ul>
+<p><strong>BFS in Digraphs</strong></p>
+<p>BFS computers shortest paths in time proportional to E+V.</p>
+<p>Applications:</p>
+<ul>
+<li>Web Crawler
+<ul>
+<li>Starting from some root web page
+<ul>
+<li>Maintain queue of sites to explore</li>
+<li>Maintain a set of discovered websites</li>
+<li>Dequeue the next site and enqueue websites to which it links
+(provided you haven't seen it)</li>
+</ul></li>
+<li>Why not DFS?
+<ul>
+<li>We can get stuck in a path too deep and not explore as much the
+remaining sites</li>
+</ul></li>
+</ul></li>
+</ul>
+<h3>Topological Sorting</h3>
+<p>Given a set of tasks to be completed with precedence constraints. In
+which order should we schedule the tasks</p>
+<p>Data structure:</p>
+<ul>
+<li>Vertex = task</li>
+<li>Edge = precedence constraint</li>
+</ul>
+<p>Topological sort works on DAGs. We solve using DFS.</p>
+<p>The code uses DFS with a stack.</p>
+<p>There are many applications to detect cycles (i.e. circular
+references)</p>
+<ul>
+<li>Java Compiler</li>
+<li>Microsoft Excel</li>
+</ul>
+<h3>Strongly-connected components</h3>
+<p>Vertices v and w are strongly connected if there is a directed path
+from v to w and a directed path from w to v.</p>
+<p>Strong connectivity is an equivalence relation.</p>
+<p>Strongly connected components means not only from v to w. But from v
+to w and then from w to v.</p>
+<p>E.g., ecological food webs, software modules.</p>
+<p>It is a core operations research problem. It was solved in
+linear-time with a DFS algorithm.</p>
+<p><strong>Kosaraju-Shahir algorithm</strong></p>
+<ul>
+<li>Phase 1: DFS in reverse graph (topological sort)
+<ul>
+<li>i.e., compute reverse postorder</li>
+</ul></li>
+<li>Phase 2: DFS in original graph, visiting unmarked vertices in
+reverse postorder (calculated in Phase 1)</li>
+</ul>
+<p>The computation gives us a strong-component array. i.e, the index of
+each node and the number assigned to all of its strong components.</p>
+<h2>Minimum Spanning Trees (MSTs)</h2>
+<p>An undirected graph G with positive edge weights (connected). The
+goal is to find a min weight spanning tree.</p>
+<p>Example: bicycle routes in Seattle or the arrangement of nuclei in
+cancer research.</p>
+<h3>Self-Questions</h3>
+<ul>
+<li>Where are they used?</li>
+<li>How do they differ from Dijkstra's algorithm?</li>
+<li>Can we use DFS or BFS to solve them?</li>
+</ul>
+<p><strong>Greedy Algorithm</strong></p>
+<p>A cut in a graph is a partition of its vertices into two nonempty
+sets. A crossing edge connects a vertex in one set to the other.</p>
+<p>Given any cut, the crossing edge of min weight is in the MST.</p>
+<ol type="1">
+<li>Start with all edges colored gray</li>
+<li>Find cut with no black crossing edges; color its min weight edge
+black</li>
+<li>Repeat until V-1 edges are black</li>
+</ol>
+<p>What if edge weights are not all distinct? It will still work.</p>
+<p>What if graph is not connected? Compute min spanning forest.</p>
+<h3>Weighted Edge API</h3>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Edge</span><span class="op">(</span><span class="dt">int</span> v<span class="op">,</span> <span class="dt">int</span> w<span class="op">,</span> <span class="dt">double</span> weight<span class="op">)</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> <span class="fu">either</span><span class="op">()</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> <span class="fu">other</span><span class="op">(</span><span class="dt">int</span> v<span class="op">)</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> <span class="fu">compareTo</span><span class="op">(</span>edge that<span class="op">)</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">weight</span><span class="op">()</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">toString</span><span class="op">()</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="fu">EdgeWeightedGraph</span><span class="op">(</span><span class="dt">int</span> V<span class="op">)</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> <span class="fu">V</span><span class="op">()</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> <span class="fu">E</span><span class="op">()</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>    <span class="dt">void</span> <span class="fu">addEdge</span><span class="op">(</span>Edge e<span class="op">)</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">Iterable</span><span class="op">&lt;</span>Edge<span class="op">&gt;</span> <span class="fu">adj</span><span class="op">(</span><span class="dt">int</span> v<span class="op">)</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">Iterable</span><span class="op">&lt;</span>Edge<span class="op">&gt;</span> <span class="fu">edges</span><span class="op">()</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="fu">MST</span><span class="op">(</span>EdgeWeightedGraph G<span class="op">)</span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">Iterable</span><span class="op">&lt;</span>Edge<span class="op">&gt;</span> <span class="fu">edges</span><span class="op">()</span></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>    <span class="dt">double</span> <span class="fu">weight</span><span class="op">()</span></span></code></pre></div>
+<pre><code></code></pre>
+<p>(V)-----(W)</p>

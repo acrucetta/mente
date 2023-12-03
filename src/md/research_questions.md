@@ -2,8 +2,10 @@
 
 These are a list of questions I've stumbled upon while working or learning.
 
-### Culture
+### Work 
 - What makes a team develop high quality code?
+- What makes some people hard working? Is hard work a true differentiator?
+- What's the balance between hard work and leisure?
 
 ### Trends
 - With the rise of AI/ML, what are key architecture components that are being neglected in new companies?

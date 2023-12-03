@@ -32,6 +32,8 @@ These are some questions I've been compiling from different people over time:
 - what have you said yes to that you no longer really believe in?
 - what talent are you not using?
 - how do your ancestors show up in your life?
+- what seems like an opportunity today that might actually be a mistake? 
+- what seems like a mistake today that might actually be an opportunity?
 
 in difficult times:
 - What are you trying to teach me here? 

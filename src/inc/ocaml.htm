@@ -1,0 +1,185 @@
+<h2>O'Caml</h2>
+<h3>Function Associativity</h3>
+<p>Every Ocaml function takes exactly one argument.</p>
+<p>e.g. <code>let f x1 x2 ... xn = e</code></p>
+<p>is equivalent to:</p>
+<pre><code>let f = 
+    fun x 1 -&gt;
+        (fun x2 -&gt;
+            (...)
+        )</code></pre>
+<p>The type of the function would be:</p>
+<p><code>t1 -&gt; t2 -&gt; t3...</code></p>
+<p>OCaml function types are right associative. There are implicit
+parenthesis from right to left.</p>
+<pre><code>e1 e2 e3 e -&gt; ((e1 e2) e3) e4)</code></pre>
+<h3>Tail Recursion</h3>
+<p>In O'Caml we can help the compiler solve problems without getting
+into a stack overflow by using tail recursion.</p>
+<pre><code>(** [count n] is [n], computed by adding 1 to itself [n] times.  That is,
+    this function counts up from 1 to [n]. *)
+let rec count n =
+    if n = 0 then 0 else 1 + count (n - 1)</code></pre>
+<p>To prevent a stack overflow we use an accumulator (acc)</p>
+<pre><code>let rec count_aux n acc =
+    if n = 0 then acc else count_aux (n - 1) (acc + 1)
+
+let count_tr n = count_aux n 0</code></pre>
+<p>This function adds an extra parameter. The addition of 1 happens
+before the recursive call not after.</p>
+<p>A recursive call in tail position does not need a new stack frame. It
+resuses its existin one.</p>
+<p>Note: Don't fixate too much on this at the beginning.</p>
+<p>Formula for tail recursion:</p>
+<ol type="1">
+<li>Change the function into a helper function. Add an extra argument:
+the accumulator, often named acc.</li>
+<li>Write a new “main” version of the function that calls the helper. It
+passes the original base case’s return value as the initial value of the
+accumulator.</li>
+<li>Change the helper function to return the accumulator in the base
+case.</li>
+<li>Change the helper function’s recursive case. It now needs to do the
+extra work on the accumulator argument, before the recursive call. This
+is the only step that requires much ingenuity.</li>
+</ol>
+<h3>Printing</h3>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode ocaml"><code class="sourceCode ocaml"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> print_stat name num =</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">print_string</span> name;</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">print_string</span> <span class="st">&quot;: &quot;</span>;</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">print_float</span> num;</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">print_newline</span> ()</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>print_stat <span class="st">&quot;mean&quot;</span> <span class="fl">84.39</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>out: mean: <span class="fl">84.39</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> print_stat name num =</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="dt">Printf</span>.printf <span class="st">&quot;%s: %F</span><span class="ch">\n</span><span class="st">%!&quot;</span> name num</span></code></pre></div>
+<h3>Debugging in OCaml</h3>
+<p><em>Using Print Statements</em></p>
+<pre><code>let inc x =
+    let () = print_int x in x+1</code></pre>
+<p><em>Using Function Traces</em></p>
+<pre><code># let rec fib x = if x &lt;= 1 then 1 else fib (x - 1) + fib (x - 2);; 
+# #trace fib;;</code></pre>
+<p><em>Defensive Programming</em></p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode ocaml"><code class="sourceCode ocaml"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">(* possibility 1 *)</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> random_int bound =</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">assert</span> (bound &gt; <span class="dv">0</span> &amp;&amp; bound &lt; <span class="dv">1</span> <span class="kw">lsl</span> <span class="dv">30</span>);</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">(* proceed with the implementation of the function *)</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">(* possibility 2 *)</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> random_int bound =</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">if</span> <span class="dt">not</span> (bound &gt; <span class="dv">0</span> &amp;&amp; bound &lt; <span class="dv">1</span> <span class="kw">lsl</span> <span class="dv">30</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">then</span> <span class="dt">invalid_arg</span> <span class="st">&quot;bound&quot;</span>;</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">(* proceed with the implementation of the function *)</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co">(* possibility 3 *)</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> random_int bound =</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">if</span> <span class="dt">not</span> (bound &gt; <span class="dv">0</span> &amp;&amp; bound &lt; <span class="dv">1</span> <span class="kw">lsl</span> <span class="dv">30</span>)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">then</span> <span class="dt">failwith</span> <span class="st">&quot;bound&quot;</span>;</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="co">(* proceed with the implementation of the function *)</span></span></code></pre></div>
+<h2>Data Types</h2>
+<p>Forms for lists:</p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode ocaml"><code class="sourceCode ocaml"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>[]</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>e1 :: e2</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>[e1; e2; ...; en]</span></code></pre></div>
+<p>We can operate on lists with pattern matching:</p>
+<pre><code>let rec length lst =
+    match lst with
+        | [] -&gt; 0
+        | h :: t -&gt; 1 + length t</code></pre>
+<p>If we don't need some of the values we can keep them as "_"</p>
+<pre><code>let rec length lst =
+    match lst with
+        | [] -&gt; 0
+        | _ :: t -&gt; 1 + length t</code></pre>
+<p><em>Pattern matching with lists</em></p>
+<ul>
+<li>The pattern x matches any value v</li>
+<li>The pattern _ matches any value and produces no bindings</li>
+<li>The pattern [] matches the value []</li>
+</ul>
+<p>The compiler will check for unused branches and return an error if
+the pattern is not exhaustive.</p>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode ocaml"><code class="sourceCode ocaml"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> <span class="kw">rec</span> sum lst =</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">match</span> lst <span class="kw">with</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>        | h :: t -&gt; h + sum t </span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>        | [ h ] -&gt; h</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>        | [] -&gt; <span class="dv">0</span></span></code></pre></div>
+<p>The case [ h ] is unused. The first branch will match anything the
+second one matches.</p>
+<h3>Variants</h3>
+<p>A variant can represent a value with one or more possibilities.</p>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode ocaml"><code class="sourceCode ocaml"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">type</span> day = Sun | Mon | Tue</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> d = Tue</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode ocaml"><code class="sourceCode ocaml"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> int_of_day day =</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">match</span> day <span class="kw">with</span> </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>        | Sun -&gt; <span class="dv">1</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>        | Mon -&gt; <span class="dv">1</span></span></code></pre></div>
+<p>The type defined the latest will prevail in case there are
+overlaps.</p>
+<h3>Records and Variants</h3>
+<p>We can create new data types:</p>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode ocaml"><code class="sourceCode ocaml"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">type</span> point2d = {x: <span class="dt">float</span>; y:<span class="dt">float</span>}</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> p = {x=<span class="dv">3</span>. ; y=<span class="dv">-4</span>.}</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> magnitude { x = x_pos; y = y_pos} = </span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">sqrt</span> (x_pos ** <span class="dv">2</span>. +. y_pos **<span class="dv">2</span>.)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> magnitude_terse {x;y} = <span class="dt">sqrt</span>(x**<span class="dv">2</span>. +. y**<span class="dv">2</span>.)</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="co">(* Using dot notation to access fields *)</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a># <span class="kw">let</span> distance v1 v2 =</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>magnitude { x = v1.x -. v2.x; y = v1.y -. v2.y };;</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> distance : point2d -&gt; point2d -&gt; <span class="dt">float</span> = &lt;<span class="kw">fun</span>&gt;</span></code></pre></div>
+<p>We can declare some of the fields to be mutable:</p>
+<pre><code>type running_sum =
+{
+    mutable sum: float;
+    mutable sum_sq: float; (* sum of squares *)
+    mutable samples: int;
+}
+;;</code></pre>
+<h3>Testing</h3>
+<pre><code>open OUnit2
+open Sum
+
+let tests = &quot;test suite for sum&quot; &gt;::: [
+    &quot;empty&quot; &gt;:: (fun _ -&gt; assert_equal 0 (sum [])); 
+    &quot;singleton&quot; &gt;:: (fun _ -&gt; assert_equal 1 (sum [1])); 
+    &quot;two_elements&quot; &gt;:: (fun _ -&gt; assert_equal 3 (sum [1; 2]));
+]
+let _ = run_test_tt_main testees</code></pre>
+<p>We can also consolidate the tests:</p>
+<pre><code>let make_sum_test name expected_output input =
+    name &gt;:: (fun _ -&gt; assert_equal expected_output (sum input) ~printer:string_of_int)
+
+let tests = &quot;test suite for sum&quot; &gt;::: [
+    make_sum_test &quot;empty&quot; 0 []; 
+    make_sum_test &quot;singleton&quot; 1 [1]; 
+    make_sum_test &quot;two_elements&quot; 3 [1; 2];
+]</code></pre>
+<p>The ideal process when building tests is:</p>
+<ul>
+<li><strong>Write a failing unit test case</strong>. Run the test suite
+to prove that the test case fails.</li>
+<li>Implement <strong>just enough functionality</strong> to make the
+test case pass. Run the test suite to prove that the test case
+passes.</li>
+<li><strong>Improve code as needed</strong>. In the example above we
+refactored the test suite, but often we’ll need to refactor the
+functionality being implemented.</li>
+<li><strong>Repeat</strong> until you are satisfied that the test suite
+provides evidence that your implementation is correct.</li>
+</ul>

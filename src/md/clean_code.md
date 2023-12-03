@@ -1,7 +1,28 @@
 
 ## Notes on Clean Code
 
-### From blogs
+### Subjects
+
+#### Function Length
+
+...
+
+
+#### Single Responsibility Principle 
+
+...
+
+### Compendium
+
+**Source:** Testing Google Blog
+
+**Reduce cognitive load by making your code simpler.**
+
+- Limit the amount of code in a function or file. Keep functions small and limit each class to a single responsibility.
+- Simplify control flow. Functions with too many if statements or loops can be hard to understand since it is difficult to keep the entire control flow in your head. Hide complex logic in helper functions, and reduce nesting by using early returns to handle special cases.
+- Minimize mutable state. Stateless code is simpler to understand. For example, avoid mutable class fields when possible, and make types immutable.
+- Include only relevant details in test. Don't use boilerplate test data that is irrelevant
+- Don't overuse mocks in tests. Too many mocks can clutter calls and expose implementation details of the system under test.
 
 **Source**: [Advice to a novice programmer](https://blog.plover.com/prog/katara-advice.html)
 
@@ -20,6 +41,9 @@ Debugging is a science. Always have a clear mind of what question are you trying
 Use the finger of blame. What part of the code is really responsible for the problem. Until you find the smoking gun.
 
 
-### From Philosopy of Software Design
+### From Philosophy of Software Design
 
 ...
+
+### References
+- [1] [https://martinfowler.com/bliki/FunctionLength.html](https://martinfowler.com/bliki/FunctionLength.html)
