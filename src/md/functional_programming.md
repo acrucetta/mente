@@ -1,0 +1,4 @@
+
+## Notes on Functional Programming
+
+...

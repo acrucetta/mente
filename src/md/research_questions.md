@@ -2,6 +2,11 @@
 
 These are a list of questions I've stumbled upon while working or learning.
 
+### Values
+- What does it mean to take responsibility for yourself and then for others?
+- How does one cultivate "civic responsibility" and practice your civic duties?
+- What are your civic duties?
+
 ### Work 
 - What makes a team develop high quality code?
 - What makes some people hard working? Is hard work a true differentiator?
