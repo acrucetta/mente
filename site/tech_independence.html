@@ -6,7 +6,7 @@
 
             <link rel='stylesheet' type='text/css' href='../links/main.css'>
 
-            <title>Mente &mdash; computer_memory.htm</title>
+            <title>Mente &mdash; tech_independence.htm</title>
 </head>
 <body>
 <header>
@@ -33,8 +33,29 @@
 
 <!-- Generated file, do not edit -->
 
-<h1>computer_memory.htm</h1>
-<h2>Notes on Computer Memory</h2>
+<h1>tech_independence.htm</h1>
+<h2>Tech Independence Reference</h2>
+<h3>SSH into Server</h3>
+<p><code>ssh andres@andrescn.me</code></p>
+<h3>Sync Files with Server</h3>
+<p>MacOS Only:</p>
+<p><code>rsync -avz Folder andres@andrescn.me:/mnt/</code></p>
+<p>Sync with cron:</p>
+<ol type="1">
+<li><code>crontab -l</code> - list of files</li>
+<li><code>cron xxx rsync...</code> - sync on a given time period</li>
+</ol>
+<h3>Use Storage</h3>
+<ol type="1">
+<li>Type find /mnt</li>
+<li>You should see a long list of the files you uploaded.</li>
+<li>Type m-x to detach your encrypted storage.</li>
+<li>Type find /mnt again, and now you should see nothing there!
+Congratulations! You now see how this will work in the future:</li>
+<li>Log in and type “m” to attach your encrypted storage.</li>
+<li>Upload your files with rsync or FreeFileSync.</li>
+<li>Log in and type “m-x” to detach the storage, for security.</li>
+</ol>
 
 
 </main>
