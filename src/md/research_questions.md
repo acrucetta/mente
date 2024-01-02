@@ -1,16 +1,22 @@
 ## Open questions 
 
-These are a list of questions I've stumbled upon while working or learning.
+These are a list of questions I've stumbled upon while working or learning. As Paul Graham would say: *People think big ideas are answers, but often the real insight is in the question*
 
 ### Values
 - What does it mean to take responsibility for yourself and then for others?
 - How does one cultivate "civic responsibility" and practice your civic duties?
 - What are your civic duties?
 
+### Religion / Spirituality
+- How does believing in something strongly lead a human to achieving his goal?
+	- What is it in a strong dream that allow people to conquer
+	- What made Dave Chapelle a "dreamer"; why did other people with the same dream didn't get to his level of success
+
 ### Work 
 - What makes a team develop high quality code?
 - What makes some people hard working? Is hard work a true differentiator?
 - What's the balance between hard work and leisure?
+- Why are some ideas overlooked? 
 
 ### Trends
 - With the rise of AI/ML, what are key architecture components that are being neglected in new companies?
@@ -25,12 +31,20 @@ These are a list of questions I've stumbled upon while working or learning.
 - What algorithms are used most often in Machine Learning problems?
 - How did the work with algorithms influence the development of Neural Networks?
 
+### Fitness
+- How can a human being lift heavier things while having the same weight?
+	- How can muscles become "stronger" without being "bigger"?
+
+### Jiu-Jitsu
+- ...
+
 ### Operating Systems
 - How do Linux containers work? Why did Docker became such a success? 
 
 ### Interior Design
 - What makes a space feel harmonious?
 - What are the principles of Wabi Sabi design?
+- Why is Japanese design so simple? How does it relate to Zen philosophy?
 
 ### Software Design
 - Why have TUIs decreased with respect to GUIs; in what way are TUIs better than GUIs?
@@ -39,3 +53,4 @@ These are a list of questions I've stumbled upon while working or learning.
 	- Parkinson's Law; Electron; etc...
 - How can we apply Wabi Sabi to software design? i.e., decluttering, intuitive, harmonious interfaces
 - Could we do everything from the command line? What are the main tasks we'd need to do?
+

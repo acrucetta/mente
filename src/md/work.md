@@ -47,6 +47,12 @@ Main Ideas:
     - Keep the innocent boldness from childhood
     - Put things out there instead of criticizing others
     - Be informal, spend little effort seeming anything other than what you are. Basically a nerd. 
+- Originality isn't a process, but a habit of mind
+    - Original ideas come from trying to build or understand something slightly too difficult
+    - Writing about ideas helps you create a sort of vacuum that drives more ideas out of you
+    - Changing your context can help; visiting new places or going for a walk
+- Don't divide your attention too thinly; be professionaly curious about a few topics and idly curious about many more
+
 
 ### 28 Letters from John D. Rockerfeller to His Son
 
