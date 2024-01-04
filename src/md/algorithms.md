@@ -6,6 +6,23 @@
 
 *Algorithms + Data Structures = Programs*
 
+## Background: Type of Algorithms 
+
+Lazy Algorithms: 
+- These algorithms delay computation or processing until its needed. 
+- They're often efficient and perform minimal work
+- They're ideal for large datasets or streams
+
+Greedy Algorithms:
+- They make the best immediate decision without considering furhter consequences
+- E.g., Kruskal algorithm for MST o a graph; picks the next lowest-weight edge
+- They're often used in optimization problems; where making the locally optimal choice leads to a globally optimal solution
+
+Eager Algorithms:
+- They perform computation upfront; are ready with results once asked (opposite of lazy)
+- E.g., Merge Sort sorts the entire list as soon as it's provided
+- Used when the complete results are needed immediately
+
 ## Week 1: Quick Union
 
 Steps to develop a usable algorithm:
@@ -1347,9 +1364,96 @@ MST(EdgeWeightedGraph G)
     Iterable<Edge> edges()
     double weight()
 ```
+
+**Kruskal Algorithm:**
+- Take the edges of a graph
+- Sort them by weight
+- Consider them in ascending order
+- Add the next edge to the tree unless the edge creates a cycle
+    - If it does, ignore it and look to the next one
+
+Kruskal is a special case of the greedy MST algorithm.
+
+Java Code
+- Build a priority queue (min PQ)
+- Insert each edge to the queue
+- Build union find data structure for the vertices
+- Until we run out of ranges or we get to V-1 edges in the MST
+    - Add edge to MST
+    - v = e.either ; w = e. other(v)
+    - If v and w are not connected
+    - Union and add to the MST
+
+Performance:
+- Build PQ - E
+- Delete Min - Log E
+- Union - Log V
+- Connected - Log V
+
+**Prim's Algorithm**
+- Start with vertex 0 and greedily grow tree T
+- Add to T the min weight edge with exactly one endpoint in T
+- Repeat until V-1 edges
+
+Implementation:
+- Maintain a PQ of edges with at least on endpoint in T.
+  - Key = edge; priority = weight of edge
+  - Delete-min to determine next edge e = v-w to add to T
+  - Disregard if both endpoints marked
+  - Otherwise, let w be the vertex not in T:
+    - Add to PQ any edge incident to W (ignore if other endpoint already in T)
+    - Add e to T and add w to T
+
+Java Code
+
+```java
+public class LazyPrimMST
+{
+  private Queue<Edge> mst;
+  private boolean[] marked;
+  private MinPQ<Edge> pq;
+
+  public LazyPrimMST(EdgeWeightedGraph G)
+  {
+    pq = new MinPQ<Edge>();
+    marked = new boolean[G.V()];
+    mst = new Queue<Edge>();
+    visit(G, 0);
+    while (!pq.isEmpty())
+    {
+      Edge e = pq.delMin();
+      int v = e.either(), w = e.other(v);
+      if (marked[v] && marked[w]) continue;
+      mst.enqueue(e);
+      if (!marked[v]) visit(G, v);
+      if (!marked[w]) visit(G, w);
+    }
+  }
+
+  private void visit(EdgeWeightedGraph G, int v)
+  {
+    marked[v] = true;
+    for (Edge e : G.adj(v))
+      if (!marked[e.other(v)]) pq.insert(e);
+  }
+}
 ```
-```
-(V)-----(W)
+
+Running Time: E log E
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

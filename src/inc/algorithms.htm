@@ -2,6 +2,30 @@
 <p><em>Algorithms: method for solving a problem.</em></p>
 <p><em>Data structure: method to store information.</em></p>
 <p><em>Algorithms + Data Structures = Programs</em></p>
+<h2>Background: Type of Algorithms</h2>
+<p>Lazy Algorithms:</p>
+<ul>
+<li>These algorithms delay computation or processing until its
+needed.</li>
+<li>They're often efficient and perform minimal work</li>
+<li>They're ideal for large datasets or streams</li>
+</ul>
+<p>Greedy Algorithms:</p>
+<ul>
+<li>They make the best immediate decision without considering furhter
+consequences</li>
+<li>E.g., Kruskal algorithm for MST o a graph; picks the next
+lowest-weight edge</li>
+<li>They're often used in optimization problems; where making the
+locally optimal choice leads to a globally optimal solution</li>
+</ul>
+<p>Eager Algorithms:</p>
+<ul>
+<li>They perform computation upfront; are ready with results once asked
+(opposite of lazy)</li>
+<li>E.g., Merge Sort sorts the entire list as soon as it's provided</li>
+<li>Used when the complete results are needed immediately</li>
+</ul>
 <h2>Week 1: Quick Union</h2>
 <p>Steps to develop a usable algorithm:</p>
 <ol type="1">
@@ -1454,5 +1478,88 @@ class="sourceCode java"><code class="sourceCode java"><span id="cb15-1"><a href=
 <span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="fu">MST</span><span class="op">(</span>EdgeWeightedGraph G<span class="op">)</span></span>
 <span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">Iterable</span><span class="op">&lt;</span>Edge<span class="op">&gt;</span> <span class="fu">edges</span><span class="op">()</span></span>
 <span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>    <span class="dt">double</span> <span class="fu">weight</span><span class="op">()</span></span></code></pre></div>
-<pre><code></code></pre>
-<p>(V)-----(W)</p>
+<p><strong>Kruskal Algorithm:</strong></p>
+<ul>
+<li>Take the edges of a graph</li>
+<li>Sort them by weight</li>
+<li>Consider them in ascending order</li>
+<li>Add the next edge to the tree unless the edge creates a cycle
+<ul>
+<li>If it does, ignore it and look to the next one</li>
+</ul></li>
+</ul>
+<p>Kruskal is a special case of the greedy MST algorithm.</p>
+<p>Java Code</p>
+<ul>
+<li>Build a priority queue (min PQ)</li>
+<li>Insert each edge to the queue</li>
+<li>Build union find data structure for the vertices</li>
+<li>Until we run out of ranges or we get to V-1 edges in the MST
+<ul>
+<li>Add edge to MST</li>
+<li>v = e.either ; w = e. other(v)</li>
+<li>If v and w are not connected</li>
+<li>Union and add to the MST</li>
+</ul></li>
+</ul>
+<p>Performance:</p>
+<ul>
+<li>Build PQ - E</li>
+<li>Delete Min - Log E</li>
+<li>Union - Log V</li>
+<li>Connected - Log V</li>
+</ul>
+<p><strong>Prim's Algorithm</strong></p>
+<ul>
+<li>Start with vertex 0 and greedily grow tree T</li>
+<li>Add to T the min weight edge with exactly one endpoint in T</li>
+<li>Repeat until V-1 edges</li>
+</ul>
+<p>Implementation:</p>
+<ul>
+<li>Maintain a PQ of edges with at least on endpoint in T.
+<ul>
+<li>Key = edge; priority = weight of edge</li>
+<li>Delete-min to determine next edge e = v-w to add to T</li>
+<li>Disregard if both endpoints marked</li>
+<li>Otherwise, let w be the vertex not in T:
+<ul>
+<li>Add to PQ any edge incident to W (ignore if other endpoint already
+in T)</li>
+<li>Add e to T and add w to T</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>Java Code</p>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode java"><code class="sourceCode java"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> LazyPrimMST</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">private</span> <span class="bu">Queue</span><span class="op">&lt;</span>Edge<span class="op">&gt;</span> mst<span class="op">;</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">private</span> <span class="dt">boolean</span><span class="op">[]</span> marked<span class="op">;</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">private</span> MinPQ<span class="op">&lt;</span>Edge<span class="op">&gt;</span> pq<span class="op">;</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">public</span> <span class="fu">LazyPrimMST</span><span class="op">(</span>EdgeWeightedGraph G<span class="op">)</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    pq <span class="op">=</span> <span class="kw">new</span> MinPQ<span class="op">&lt;</span>Edge<span class="op">&gt;();</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>    marked <span class="op">=</span> <span class="kw">new</span> <span class="dt">boolean</span><span class="op">[</span>G<span class="op">.</span><span class="fu">V</span><span class="op">()];</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    mst <span class="op">=</span> <span class="kw">new</span> <span class="bu">Queue</span><span class="op">&lt;</span>Edge<span class="op">&gt;();</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">visit</span><span class="op">(</span>G<span class="op">,</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="op">(!</span>pq<span class="op">.</span><span class="fu">isEmpty</span><span class="op">())</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>      Edge e <span class="op">=</span> pq<span class="op">.</span><span class="fu">delMin</span><span class="op">();</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>      <span class="dt">int</span> v <span class="op">=</span> e<span class="op">.</span><span class="fu">either</span><span class="op">(),</span> w <span class="op">=</span> e<span class="op">.</span><span class="fu">other</span><span class="op">(</span>v<span class="op">);</span></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>marked<span class="op">[</span>v<span class="op">]</span> <span class="op">&amp;&amp;</span> marked<span class="op">[</span>w<span class="op">])</span> <span class="cf">continue</span><span class="op">;</span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>      mst<span class="op">.</span><span class="fu">enqueue</span><span class="op">(</span>e<span class="op">);</span></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(!</span>marked<span class="op">[</span>v<span class="op">])</span> <span class="fu">visit</span><span class="op">(</span>G<span class="op">,</span> v<span class="op">);</span></span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(!</span>marked<span class="op">[</span>w<span class="op">])</span> <span class="fu">visit</span><span class="op">(</span>G<span class="op">,</span> w<span class="op">);</span></span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>  <span class="kw">private</span> <span class="dt">void</span> <span class="fu">visit</span><span class="op">(</span>EdgeWeightedGraph G<span class="op">,</span> <span class="dt">int</span> v<span class="op">)</span></span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>  <span class="op">{</span></span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>    marked<span class="op">[</span>v<span class="op">]</span> <span class="op">=</span> <span class="kw">true</span><span class="op">;</span></span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span>Edge e <span class="op">:</span> G<span class="op">.</span><span class="fu">adj</span><span class="op">(</span>v<span class="op">))</span></span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(!</span>marked<span class="op">[</span>e<span class="op">.</span><span class="fu">other</span><span class="op">(</span>v<span class="op">)])</span> pq<span class="op">.</span><span class="fu">insert</span><span class="op">(</span>e<span class="op">);</span></span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Running Time: E log E</p>

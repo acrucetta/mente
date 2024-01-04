@@ -27,6 +27,8 @@ By contrast the kernel knows and controls everything. It facilitates the running
 
 ### Files and Directories
 
+![https://substackcdn.com/image/fetch/w_1456,c_limit,f_webp,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F9365b775-7879-478d-b8f4-3ea75a91147d_1344x1536.jpeg](https://substackcdn.com/image/fetch/w_1456,c_limit,f_webp,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F9365b775-7879-478d-b8f4-3ea75a91147d_1344x1536.jpeg)
+
 Each file is marked with a type. Some file types can be devices, pipes, sockets, directories and symbolic links. It doesn't need to be a regular file.
 
 Directories contain links to themselves (.) and to their parent directory (..)

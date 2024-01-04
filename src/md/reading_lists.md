@@ -1,7 +1,14 @@
 
-## Reading lists from people I like
+## Reading lists
 
-### Balaji Srinivasan
+## On the History of Computing
+
+- The Soul of A New Machine by Tracy Kidder
+- Katie Hafner; Where Wizards Stay Up Late (The Origins of The Internet)
+- Dealers of Lightning history of Xerox Parc, where they invented GUIs. wonderful read
+- UNIX: A Memoir
+
+## From Balaji Srinivasan
 - The Feynman Lectures on Physics by Richard Feynman
 - The Princeton Companion to Mathematics by Timothy Gowers
 - One Thousand Exercises in Probability by Geoffrey Grimmett and David Stirzaker
