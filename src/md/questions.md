@@ -4,6 +4,7 @@
 
 These are some questions I've been compiling from different people over time:
 - when was the last time you prayed
+- what have I always wanted to learn but thought I was too old or too young to do it?
 - do you feel better or worse after spending time with the person you spend the most time with?
 - why not travel to your favorite city as often as you can?
 - what have you promised to do and not done yet?

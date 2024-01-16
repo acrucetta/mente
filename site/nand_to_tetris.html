@@ -34,8 +34,33 @@
 <!-- Generated file, do not edit -->
 
 <h1>nand_to_tetris.htm</h1>
-<h2>Nand to Tetris - Coursera Notes</h2>
-<p>Machine Language: Overview</p>
+<h2>Nand to Tetris</h2>
+<h3>Logic Gates</h3>
+<p>Multiplexer: Can select and output based on a sel input</p>
+<ul>
+<li>in: A, B, sel</li>
+<li>out: A mux B</li>
+</ul>
+<p>4-Way Multiplexer: Holds two select bits</p>
+<ul>
+<li>In
+<ul>
+<li>A, B, C, D</li>
+<li>In: SEL0, SEL1</li>
+</ul></li>
+<li>Out
+<ul>
+<li>00 - A</li>
+<li>01 - B</li>
+<li>10 - C</li>
+<li>11 - D</li>
+</ul></li>
+</ul>
+<p>8-Way Mux: Similar to 4 way but holds 3 selector bits.</p>
+<ul>
+<li>We can use a Mux to select between two 4 way mux</li>
+</ul>
+<h3>Machine Language: Overview</h3>
 <p>It needs to tell the hardware what to do (operations), it needs to
 know which instruction to perform at a given space of time, and it needs
 to tell the hardware what to operate on (addressing).</p>
@@ -240,6 +265,6 @@ Whenever we access something with a pointer we need to use A=M.</p>
 
 </main>
 <footer id='end_footer'><hr />
-<span style='float:right'>Edited on 2024-01-04</span><b>Mente</b> © 2023 — 
+<span style='float:right'>Edited on 2024-01-16</span><b>Mente</b> © 2023 — 
 </footer>
 </body></html>

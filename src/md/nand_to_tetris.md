@@ -1,6 +1,25 @@
-## Nand to Tetris - Coursera Notes
+## Nand to Tetris
 
-Machine Language: Overview
+### Logic Gates
+
+Multiplexer: Can select and output based on a sel input
+- in: A, B, sel
+- out: A mux B
+
+4-Way Multiplexer: Holds two select bits
+- In
+  - A, B, C, D
+  - In: SEL0, SEL1
+- Out
+  - 00 - A
+  - 01 - B
+  - 10 - C
+  - 11 - D
+
+8-Way Mux: Similar to 4 way but holds 3 selector bits.
+- We can use a Mux to select between two 4 way mux
+
+### Machine Language: Overview
 
 It needs to tell the hardware what to do (operations), it needs to know which instruction to perform at a given space of time, and it needs to tell the hardware what to operate on (addressing).
 

@@ -17,6 +17,7 @@ Greedy Algorithms:
 - They make the best immediate decision without considering furhter consequences
 - E.g., Kruskal algorithm for MST o a graph; picks the next lowest-weight edge
 - They're often used in optimization problems; where making the locally optimal choice leads to a globally optimal solution
+- We want to use greedy algorithms when possible, but there are not that many of them
 
 Eager Algorithms:
 - They perform computation upfront; are ready with results once asked (opposite of lazy)
@@ -1441,20 +1442,39 @@ public class LazyPrimMST
 
 Running Time: E log E
 
+Eager Solution:
+- Find min weight edge with exactly one endpoint in T
+- Maintain a PQ of vertices connected by an edge to T; where the priority of vertex = weight of the shortest edge connecting v to T
+    - Delete min vertex v and its associated edge
+    - Update PQ by considering all edges incident to v
 
+In summary for each vertex, we only add the min edge at each point. We keep repeating the process until V-1 edges.
 
+To manage all of the values we use an indexed priority queue implementation:
+- Start with the same code as MinPQ
+- Maintain parallel arrays keys[], pq[], and qp[]
+- Similar to the Advent of Code Dijkstra implementation
 
+If we use a binary heap our total running time is: E log V. If we have a dense graph we can use the array implementation. The binary heap is optimal for sparse graphs.
 
+### MST Context
 
+Does a linear-time MST algorithm exist?
+- The best we have is Ea(V); in 2002 they found an optimal solution but its more complicated
+- The initial time was E log log V
 
+Euclidan Distance
+- Given N points in a graph find the MST if the distance is given by the euclidean distance
 
+Scientific application: clustering
+- k-clustering: divide a set of objects into k coherent groups
+- distance function: numeric value specifying closeness of the two objects
+- Applications: web search, document search, similarity searching in medical image datasets
 
+Single-link clustering:
+- We now find the closest distance between different clusters; we use Kruskal algorithm or we can run Prim's algorithm and delete k-1 max weight edges
 
-
-
-
-
-
+### Problems
 
 
 

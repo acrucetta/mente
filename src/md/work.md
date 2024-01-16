@@ -5,7 +5,7 @@
 
 Formulas for meaningful work:
 - Reading + People + Writing = New Ideas
-- Trying + Time = Interests
+- Trying + Time = Interests (Multiplier if you're younger)
 - Interest + Hard Work + Luck = Results
 
 Main Ideas:
@@ -22,13 +22,13 @@ Main Ideas:
 - When working, you should do the things you'd want to consume, read, or use; don't write for a seemingly abstract audience
 - Beware of pretentiousness, fashion, fear, money, politices, other people's wishes, and eminent frauds. Stick to what *you* find interesting
 - The key recipe is: work hard on excitingly ambitious projects and something good will come out of it
-    - Don't plan too much; naivete can be good, specially when you're younger
+    - Don't plan too much; naiveté can be good, specially when you're younger
     - At each stage, do whatever seems more interesting and gives you options for the future
 - Try to arrange your life so that you have contiguous blocks of time to work in; otherwise you can shy away from hard tasks
 - Work has some activation energy; when you want to get started, do the least amount of work possible and let the compounding energy drive you. Its okay to lie to get you going
 - **Try to finish what you start** ; even if it turns out to be more work than expected. The last bits of a project can include the best work
 - Ask yourself: am I working on what I most want to work on? Ok if not when young, dangerous when older
-- Great work happens by focusing consitently on something you're interested in
+- Great work happens by focusing consistently on something you're interested in
     - It compounds over time
     - You can learn more easily as you learn more about a subject
 - Cultivate your taste in work done in your field.
@@ -51,7 +51,7 @@ Main Ideas:
     - Original ideas come from trying to build or understand something slightly too difficult
     - Writing about ideas helps you create a sort of vacuum that drives more ideas out of you
     - Changing your context can help; visiting new places or going for a walk
-- Don't divide your attention too thinly; be professionaly curious about a few topics and idly curious about many more
+- Don't divide your attention too thinly; be professionally curious about a few topics and idly curious about many more
 
 
 ### 28 Letters from John D. Rockerfeller to His Son

@@ -1,0 +1,96 @@
+<!DOCTYPE html><html lang='en'>
+<head>
+<meta charset='utf-8'>
+
+            <meta name='viewport' content='width=device-width,initial-scale=1'>
+
+            <link rel='stylesheet' type='text/css' href='../links/main.css'>
+
+            <title>Mente &mdash; network_programming.htm</title>
+</head>
+<body>
+<header>
+<a href='https://andrescn.me/mente/site/about.html'><img src='../media/interface/logo.svg' alt='Mente' height='100'></a></header>
+<nav>
+<details open>
+  <summary>Menu</summary>
+  <section class="site-nav">
+    <section>
+      <ul class="nobull capital">
+        <li><a href="about.html">About</a></li>
+        <li><a href="books.html">Books</a></li>
+        <li><a href="projects.html">Projects</a></li>
+      </ul>
+    </section>
+    <section>
+      <h2><a id='meta'>Meta</a></h2>
+      <ul class='nobull capital'>
+        <li><a href="index.html">Index</a></li>
+      </ul>
+  </section>
+</details></nav>
+<main>
+
+<!-- Generated file, do not edit -->
+
+<h1>network_programming.htm</h1>
+<h2>Notes on Network Programming in C</h2>
+<h3>Chap 02: Questions</h3>
+<p>What is a socket?</p>
+<ul>
+<li>A socket is a connection between two devices through the
+internet</li>
+<li>An abstraction that represents on endpoint of a comms link</li>
+</ul>
+<p>What is a connectionless protocol? What is a connection-oriented
+protocol?</p>
+<ul>
+<li>Connectionless -&gt; sends data independently</li>
+<li>Connection-oriented -&gt; sends data in the context of a larger
+stream</li>
+</ul>
+<p>Is UDP a connectionless or connection-oriented protocol?</p>
+<ul>
+<li>Connectionless</li>
+</ul>
+<p>Is TCP a connectionless or connection-oriented protocol?</p>
+<ul>
+<li>Connection-oriented</li>
+</ul>
+<p>What types of applications generally benefit from using the UDP
+protocol?</p>
+<ul>
+<li>Videogames, video calls (better real-time performance)</li>
+</ul>
+<p>What types of applications generally benefit from using the TCP
+protocol?</p>
+<ul>
+<li>Banking applications, databases, emails</li>
+</ul>
+<p>Does TCP guarantee that data will be transmitted successfully?</p>
+<ul>
+<li>Yes</li>
+</ul>
+<p>What does the bind() function do?</p>
+<ul>
+<li>It attaches a socket to a given IP address. Its usage is required by
+the server</li>
+</ul>
+<p>What does the accept() function do?</p>
+<ul>
+<li>Accepts the connection from the client. It will block until a new
+TCP has been connected, then returns the socket for this new
+connection</li>
+</ul>
+<p>In a TCP connection, does the client or the server send application
+data first?”</p>
+<ul>
+<li>The client asks for data, the server sends it</li>
+</ul>
+
+
+</main>
+<footer id='end_footer'><hr />
+<span style='float:right'>Edited on 2024-01-16</span><b>Mente</b> © 2023 — 
+</footer>
+</body></html>

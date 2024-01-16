@@ -1,0 +1,22 @@
+<p>-- Step 1: Create a new temporary table with the desired schema
+CREATE OR REPLACE TABLE waltz_qa.claims.temp_core_audit_logs ( DATA
+VARIANT, CLIENT_ID VARCHAR(16777216), HTTP_METHOD VARCHAR(16777216),
+TRANSACTION_ID VARCHAR(16777216), USER_AGENT VARCHAR(16777216), EVENT
+VARCHAR(16777216), METHOD VARCHAR(16777216), SUCCESS BOOLEAN, TIMESTAMP
+TIMESTAMP_NTZ(9) );</p>
+<p>-- Step 2: Insert data from the old table to the new table -- This
+step is highly dependent on how the old and new schemas align. --
+Assuming the column names and types are compatible: INSERT INTO
+waltz_qa.claims.temp_core_audit_logs (SELECT * FROM
+waltz_qa.claims.core_audit_logs);</p>
+<p>-- Step 3: Rename or drop the old table ALTER TABLE
+waltz_qa.claims.core_audit_logs RENAME TO
+waltz_qa.claims.old_core_audit_logs;</p>
+<p>-- Step 4: Rename the new table to the old table's name ALTER TABLE
+waltz_qa.claims.temp_core_audit_logs RENAME TO
+waltz_qa.claims.core_audit_logs;</p>
+<p>alter pipe PIPE_CORE_API_LOGS refresh;</p>
+<p>select SYSTEM$PIPE_STATUS( 'pipe_core_api_logs' );</p>
+<p>SELECT * FROM TABLE(INFORMATION_SCHEMA.PIPE_LOAD_HISTORY('waltz_qa',
+'claims', 'pipe_core_api_logs')) ORDER BY start_time DESC;</p>
+<p>select * from waltz_qa.claims.core_audit_logs;</p>

@@ -1,0 +1,46 @@
+<h2>Building a Proxy Server in C</h2>
+<p>The general architecture for a proxy server is:</p>
+<p>You have a user, that's you. You go into a website and click on
+facebook.com. Then facebook.com sends a TCP / UDP request to the
+facebook.com server to request that information and show it in the
+browser.</p>
+<p>If you had a proxy server you would build a small program on your
+localhost that captures those requests, reads them, and forwards them to
+the server. It acts as the intermediary between the browser and the
+server requests.</p>
+<p>You can either handle HTTP requests or HTTPS requests.</p>
+<p>HTTP requests are easy, because you can read all the data sent from
+the client (e.g., websites you want to block) and decide whether you
+want to return a 403 error (forbidden) or if you want to send the
+request to the server and serve whatever content the client is asking
+for.</p>
+<p>With HTTPS requests it becomes more complicated.</p>
+<p>HTTPS servers encrypt the data so that no person in the middle can
+know who's sending what. Many browsers now default to HTTPS only
+connections.</p>
+<p>HTTPS secures HTTP by using TLS over TCP on port 443. TLS provides
+security to any TCP connection. TLS is the successor the Secure Socket
+Layer (SSL). Generally when a server and a client interact they have to
+negotiate which protocol to use (SSL or TLS).</p>
+<p>Since HTTPS is HTTP protected by some security protocols the
+information is sent as:</p>
+<p>HTTP Connection TCP -&gt; HTTP -&gt; HTML -&gt; TEXT</p>
+<p>HTTPS Connection TCP -&gt; TLS -&gt; HTTP -&gt; HTML -&gt; TEXT</p>
+<hr />
+<p>Since I'm working in C, we need to handle sockets to create the
+network connections between the client and the server.</p>
+<p>The high level steps for a proxy are:</p>
+<ol type="1">
+<li>Create a socket</li>
+<li>Bind the socket to an address</li>
+<li>Listen for connections</li>
+<li>Accept a connection</li>
+<li>Read from the connection</li>
+<li>Handle proxy logic</li>
+<li>Send the request to the server</li>
+<li>Receive the response from the server</li>
+<li>Send the response back to the client</li>
+</ol>
+<p>References [1]
+https://stackoverflow.com/questions/516323/https-connections-over-proxy-servers
+[2] Hands on Network Programming with C</p>

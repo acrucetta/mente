@@ -1,0 +1,53 @@
+<h2>Notes on Network Programming in C</h2>
+<h3>Chap 02: Questions</h3>
+<p>What is a socket?</p>
+<ul>
+<li>A socket is a connection between two devices through the
+internet</li>
+<li>An abstraction that represents on endpoint of a comms link</li>
+</ul>
+<p>What is a connectionless protocol? What is a connection-oriented
+protocol?</p>
+<ul>
+<li>Connectionless -&gt; sends data independently</li>
+<li>Connection-oriented -&gt; sends data in the context of a larger
+stream</li>
+</ul>
+<p>Is UDP a connectionless or connection-oriented protocol?</p>
+<ul>
+<li>Connectionless</li>
+</ul>
+<p>Is TCP a connectionless or connection-oriented protocol?</p>
+<ul>
+<li>Connection-oriented</li>
+</ul>
+<p>What types of applications generally benefit from using the UDP
+protocol?</p>
+<ul>
+<li>Videogames, video calls (better real-time performance)</li>
+</ul>
+<p>What types of applications generally benefit from using the TCP
+protocol?</p>
+<ul>
+<li>Banking applications, databases, emails</li>
+</ul>
+<p>Does TCP guarantee that data will be transmitted successfully?</p>
+<ul>
+<li>Yes</li>
+</ul>
+<p>What does the bind() function do?</p>
+<ul>
+<li>It attaches a socket to a given IP address. Its usage is required by
+the server</li>
+</ul>
+<p>What does the accept() function do?</p>
+<ul>
+<li>Accepts the connection from the client. It will block until a new
+TCP has been connected, then returns the socket for this new
+connection</li>
+</ul>
+<p>In a TCP connection, does the client or the server send application
+data first?”</p>
+<ul>
+<li>The client asks for data, the server sends it</li>
+</ul>

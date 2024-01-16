@@ -12,6 +12,9 @@ These are a list of questions I've stumbled upon while working or learning. As P
 	- What is it in a strong dream that allow people to conquer
 	- What made Dave Chapelle a "dreamer"; why did other people with the same dream didn't get to his level of success
 
+### Artificial Intelligence
+- What does George Hotz mean by all machine learning is data compression
+
 ### Work 
 - What makes a team develop high quality code?
 - What makes some people hard working? Is hard work a true differentiator?
@@ -37,6 +40,16 @@ These are a list of questions I've stumbled upon while working or learning. As P
 
 ### Jiu-Jitsu
 - ...
+
+### Learning
+- How does having an emotional connection with subjects help us learn faster?
+- What makes us cement the lessons from reading an article or a book?
+	- What are the different stages of learning?
+	- How to know what's worth forgetting vs. remembering?
+	- What makes us learn more effectively?
+- Is learning supposed to take time? 
+- Are tutorials actually effective or worth doing?
+	- Or what are better alternative to it?
 
 ### Operating Systems
 - How do Linux containers work? Why did Docker became such a success? 

@@ -18,6 +18,8 @@ consequences</li>
 lowest-weight edge</li>
 <li>They're often used in optimization problems; where making the
 locally optimal choice leads to a globally optimal solution</li>
+<li>We want to use greedy algorithms when possible, but there are not
+that many of them</li>
 </ul>
 <p>Eager Algorithms:</p>
 <ul>
@@ -1563,3 +1565,52 @@ class="sourceCode java"><code class="sourceCode java"><span id="cb16-1"><a href=
 <span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
 <span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>Running Time: E log E</p>
+<p>Eager Solution:</p>
+<ul>
+<li>Find min weight edge with exactly one endpoint in T</li>
+<li>Maintain a PQ of vertices connected by an edge to T; where the
+priority of vertex = weight of the shortest edge connecting v to T
+<ul>
+<li>Delete min vertex v and its associated edge</li>
+<li>Update PQ by considering all edges incident to v</li>
+</ul></li>
+</ul>
+<p>In summary for each vertex, we only add the min edge at each point.
+We keep repeating the process until V-1 edges.</p>
+<p>To manage all of the values we use an indexed priority queue
+implementation:</p>
+<ul>
+<li>Start with the same code as MinPQ</li>
+<li>Maintain parallel arrays keys[], pq[], and qp[]</li>
+<li>Similar to the Advent of Code Dijkstra implementation</li>
+</ul>
+<p>If we use a binary heap our total running time is: E log V. If we
+have a dense graph we can use the array implementation. The binary heap
+is optimal for sparse graphs.</p>
+<h3>MST Context</h3>
+<p>Does a linear-time MST algorithm exist?</p>
+<ul>
+<li>The best we have is Ea(V); in 2002 they found an optimal solution
+but its more complicated</li>
+<li>The initial time was E log log V</li>
+</ul>
+<p>Euclidan Distance</p>
+<ul>
+<li>Given N points in a graph find the MST if the distance is given by
+the euclidean distance</li>
+</ul>
+<p>Scientific application: clustering</p>
+<ul>
+<li>k-clustering: divide a set of objects into k coherent groups</li>
+<li>distance function: numeric value specifying closeness of the two
+objects</li>
+<li>Applications: web search, document search, similarity searching in
+medical image datasets</li>
+</ul>
+<p>Single-link clustering:</p>
+<ul>
+<li>We now find the closest distance between different clusters; we use
+Kruskal algorithm or we can run Prim's algorithm and delete k-1 max
+weight edges</li>
+</ul>
+<h3>Problems</h3>
