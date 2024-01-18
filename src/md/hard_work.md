@@ -56,25 +56,43 @@ Reading through the book I found my past job nailed a few of the Bullshit Job ch
 
 III. Finding your work: try out things
 
-[Multi-armed bandit problem]
-[exploring vs. exploiting trade-off]
-[importance of exploring early on in your career - Paul Graham]
-[cost of exploring later on and using your knowledge]
+Once you've decided you want to work on something that's meaningful to you, its important to try out a lot things. Specially early in your career.
 
-*The irony is not lost on me that I end up doing management consulting for 2 years after college. A profession that is often criticized for being fraught with busy work and sometimes only existing to validate management's existing plan.*
+Paul Graham in his essay "how to do great work" explained how the main way to figure out what to work on is by working. You're probably going to guess wrong multiple times and that's going to help you tune your compass on what fields you gravitate towards.
 
-[Once you start exploring, work and focus as hard as you can]
+*If you don't know what to work on; take chance meetings, make yourself a big target for luck. Try lots of things, meet people, read books, ask questions*
 
-IV. Exploiting your interest
+In order to find out I enjoyed programming I worked as a AutoCAD designer, a business development intern for an oil company, an operations analyst for a bank, and as a management consultant for healthcare companies. Each of those experiences were early in my twenties, and while some were better than others they all pointed me closer to where I felt most engaged.
 
-[Now that you've found your thing work hard at it]
-[How to work hard - Paul graham]
+I didn't know what I was looking for. Some jobs I did to seek approval from my parents, others I chased for prestige and the allure of travel. Neither fulfilled me. 
+
+The essay also warned people of *"pretentiousness, fashion, fear, money, politices, other people's wishes, and eminent frauds. Stick to what you find interesting"*
+
+I find out that to avoid these traps you need to spend the time asking yourself if you're engaged in your job. A sign that you're in the right field is that it becomes increasingly interesting to you as you learn more about it.
+
+In academic environments, specially in graduate schools (e.g., MBA) it's easy to fall into *memetic thinking* [add link], that is wishing what others want. Wanting to be in big tech, or in McKinsey, or in a hot start-up. While those are commonly good avenues for people to develop on, they can be fraught with people resenting it's not what they thought it would be.
+
+Once you tried a few things, and found out a field that's become increasingly interesting with time. The next step is to focus and do meaningful work.
+
+IV. Exploiting your interest, focus
+
+Once you've found what you're interested in, you need to learn as much as you can. Build the foundational knowledge that's going to take you to the edge of the field, notice gaps, and explore promising ones.
+
+This can't be achieved without focus. Focusing can be exponential. If you're focused on 4 things, moving to 3 can represent at 20% increase in productivity. But if you move to 1 it can represent a 400% increase.
+
+*“People think focus means saying yes to the thing you've got to focus on. But that's not what it means at all. It means saying no to the hundred other good ideas that there are. You have to pick carefully. I'm actually as proud of the things we haven't done as the things I have done. Innovation is saying no to 1,000 things. - Steve Jobs”*
+
+[How can you build foundational knowledge in a field]
+[Show graph where you can tap into layers of knowledge]
+[Build a base that doesn't change, then use that]
+[what will not change in 10 years about this field?]
+[what principles will stay true?]
+
+V. Do meaningful work
+
 [Bill Gurley's stories on following deep interest, making connections, and finding mentors]
 	[build foundational knowledge, what does it mean? - Paul graham's quotes]
 	[staying at the bottom of things quote]
-
-V. Do something meaningful
-
 [Decide what company is going to allow you to do meaningful work: aptitude, scope for greatness and hard work]
 [what does it mean to do meaningful work]
 [not all critical work is flashy - Paul graham]

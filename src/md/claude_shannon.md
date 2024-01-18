@@ -20,3 +20,15 @@ His most impressive feat is not being chained to his past accomplishments. He fo
 Claude Shannon is an inspiration for those seeking to work beyond their career. To those seeking a role model for how to follow your curiosity, think deeply, and be modest after you've been receiving acclaim for your accomplishments. He is also an inspirational family man, he would stay at home and spend a lot of time with his family. Having his colleagues visit him whenever they'd want to discuss ideas.
 
 I found this biography to reassure the power of following your curiosity every step along the way. Even as you get older to keep learning, asking questions, and reading from different fields. Claude Shannon's foundation in math allowed him to use that strong base of knowledge to dissect and analyze other fields. It emphasizes the importance of building a strong base of knowledge in your field and find connections with others.
+
+**Things important to remember from the book:**
+
+- What is information theory?
+	- How was it defined?
+- What was Bool's influence in Claude Shannon?
+- How did Claude Shannon use logic theory as inspiration for information theory?
+- What are bits as defined by Claude Shannon?
+- Why did it take long for people to come up with information theory?
+	- Where was it used first? 
+- What is the mathematical underpinning behind information theory?
+- How did curiosity help Claude Shannon solve problems in different areas?
