@@ -293,38 +293,6 @@ ol ol ol {
   box-shadow: var(--u-shadow-light);
 }
 
-/* Theme (Dark Mode) */
-@media (prefers-color-scheme: dark) {
-  body {
-    --primary-bg-color: #000;
-    --primary-text-color: white;
-  }
-
-  .notice {
-    --u-shadow-light: 0px 0px 10px rgba(255, 255, 255, 0.1);
-    /* Adjusted shadow for visibility */
-  }
-
-  body a,
-  main>code,
-  main>pre {
-    background: white;
-    color: #000;
-  }
-
-  main .project {
-    border-left: 2px solid white;
-  }
-
-  main .progress>div {
-    background-color: white;
-  }
-
-  main .progress>div>span {
-    color: black;
-  }
-}
-
 /* Mobile */
 
 @media (max-width: 1100px) {
