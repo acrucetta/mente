@@ -310,3 +310,6 @@ Keyboard: Each key is connected to a particular memory address. We just need to 
 If the register contains 0; no key. Otherwise the register contains the scan code of the pressed key.
 
 _Any program can be presented in the low level language_
+
+
+## Virtual Machines

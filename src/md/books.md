@@ -6,8 +6,9 @@
 - **C** = Not recommended
 
 ## 2024
-1. A Mind At Play, Claude Shannon {claude_shannon}
-2. 1Q84 / Infinite Jest (TBD)
+1. A Mind At Play, Claude Shannon {claude_shannon} (**A**)
+2. 1Q84 
+3. Von Neuman's Biography
 
 ## 2023
 1. The Three Body Problem (Volumes 1-3) by Cixin Liu (**S**)

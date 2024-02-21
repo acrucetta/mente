@@ -1,6 +1,9 @@
 
 ## Reading lists
 
+## Reading List of Reading Lists
+- [https://www.danschulz.net/books/#svalley](https://www.danschulz.net/books/#svalley)
+
 ## On the History of Computing
 
 - The Soul of A New Machine by Tracy Kidder
