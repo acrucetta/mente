@@ -1,0 +1,7 @@
+<h2>Notes on Azure Powershell</h2>
+<p>pwsh -&gt; to start Azure Powershell</p>
+<p>Install-Module -Name Az -Repository PSGallery -Force</p>
+<p>Connect-AzAccount</p>
+<h3>To connect with a container instance:</h3>
+<p>az container exec -g "rg-indigorx-akscluster-eastus" --name
+"adf-dbt-docker-instance-dev-eus" --exec-command "/bin/bash"</p>

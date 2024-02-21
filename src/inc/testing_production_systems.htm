@@ -1,0 +1,36 @@
+<h1>All you need is <em>love</em> (high quality data)</h1>
+<h2>I. It's hard to test what you don't know</h2>
+<p>There's things you know, things that you know that you don't know,
+and the things that you don't know that you don't know or so goes the
+famous phrase.</p>
+<p>Working in the position of data integrity at a company can be filled
+with things that you don't know you don't know. We receive many files
+from different clients. Each file has a certain format we expected, but
+if something goes wrong. We have to figure out what to do about it.</p>
+<p>I've found applying a layer of tests to your ingestion pipelines can
+be somewhat helpful. Add checks on your unique identifiers and
+<code>not null</code> tests on your most valuable columns.</p>
+<p>It's hard to know, however, what to do when you receive data that
+meets your expectations but fails in other ways. What happens when the
+schema changes halfway through. Or when the data lands in a different
+folder.</p>
+<p>You have to go back to your client and ask what went wrong. And you
+have to figure out how to keep your operations going through these
+issues.</p>
+<p>You can only test what you know and what you know you don't know. But
+you can't test what you don't know you don't know. Those are the aspects
+that can bring your service down overnight. Or result in wrong data for
+the users of your service.</p>
+<h2>II. Throwing a wrench at your systems, voluntarily</h2>
+<h2>III. Learning from the results</h2>
+<p>...</p>
+<h2>Content to add</h2>
+<p>[Add content on data reliability as a whole] [Add content on
+integration tests] [Add notes on Chaos Monkeys and why you need
+randomness in your testing] [Add content on smoke gun tests] [Add
+content on DBT tests and what some of that can help]</p>
+<hr />
+<p>https://www.montecarlodata.com/blog-data-quality-checks-in-etl/
+https://www.metaplane.dev/state-of-data-quality-monitoring-2023
+https://www.datafold.com/blog/7-dbt-testing-best-practices <em>Testing
+in production blog</em></p>
