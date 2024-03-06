@@ -8,5 +8,8 @@ People
 - Marginal Revolution - 
 - Gwern - https://gwern.net/about
 - Ben Hoyt - https://benhoyt.com
-
 - 
+
+## Notable letters
+
+- Warren Buffet Letter to Shareholders

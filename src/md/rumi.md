@@ -1,0 +1,10 @@
+
+## Poems
+
+> If you want money more than anything,
+you’ll be bought and sold.
+If you have a greed for food,
+you’ll be a loaf of bread.
+This is a subtle truth:
+whatever you love, you are.
+

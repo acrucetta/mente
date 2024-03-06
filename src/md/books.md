@@ -7,8 +7,11 @@
 
 ## 2024
 1. A Mind At Play, Claude Shannon {claude_shannon} (**A**)
-2. 1Q84 
-3. Von Neuman's Biography
+2. 1Q84 (**S**)
+3. Von Neuman's Biography (**B**)
+4. The Power Law, A Story of Venture Capital
+5. The Maniac (TBD)
+6. 100 Years of Solitude
 
 ## 2023
 1. The Three Body Problem (Volumes 1-3) by Cixin Liu (**S**)

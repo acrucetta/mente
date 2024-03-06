@@ -15,4 +15,3 @@ E.g., we write a home address on a piece of paper; and then copy it onto another
 - strstr() - match string with char
 - strtok() - split into delimiter '\n'
 - strsep() - split by delimiter '\n'
-
