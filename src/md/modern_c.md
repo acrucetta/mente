@@ -73,3 +73,57 @@ We can use functions that operate on char arrays:
 Then we have:
 - strlen(s)
 - strcpy(target,source)
+
+## Chapter 9: Coding Style
+
+> Coding style is not a question of taste but of culture. When you enter a new project, you enter a new cultural space.
+
+- Coding style is a matter of culture. Be tolerant and patient.
+- Code formatting is a matter of visual habits. It should be automatically provided
+by your environment such that you and your co-workers can read and write code
+effortlessly.
+- Naming of variables, functions, and types is an art and plays a central role in the
+comprehensiveness of your code.
+
+## Chapter 10: Program Organization
+
+> As with coding style, beginners tend to underestimate the effort that should be put into code and project organization and docu- mentation: unfortunately, many of us have to go through the experience of reading our own code some time after we wrote it, and not having any clue what it was all about.
+
+Most programmers will only read the interface of your code. Fewer the implementation. Code structure and documentation go hand in hand.
+
+This rule is reflected in the use of two different kinds of C source files: header filesC , usually ending with ".h"; and translation unitsC (TU), ending with ".c".
+
+C has no “built-in” documentation standard. But in recent years, a cross-platform public domain tool has been widely adopted in many projects: doxygen.
+
+Example Doxygen:
+
+```c
+** @brief use the Heron process to approximate @a a to the
+** power of ˋ1/kˋ **
+** Or in other words this computes the @f$k^{th}@f$ root of @a a
+As a special feature, if @a k is ˋ-1ˋ it computes the multiplicative inverse of @a a.
+@param a must be greater than ˋ0.0ˋ
+@param k should not be ˋ0ˋ and otherwise be between ˋDBL_MIN_EXP*FLT_RDXRDXˋ and ˋDBL_MAX_EXP*FLT_RDXRDXˋ.
+@see FLT_RDXRDX
+
+double heron(double a, signed k);
+```
+> Good programming only needs to explain the ideas and prerequisites that are not obvious (the difficult part). The structure of the code shows what it does and how.
+
+> Another requirement is to have an obvious flow of control through visually clearly distinctive structuring in {} blocks that are linked together with comprehensive control statements. This is the reason why the use of goto is discouraged: it can break the flow of control
+
+> Global variables are frowned upon. They make code inflexible (the object to operate on is fixed), are difficult to predict (the places of modification are scattered all over), and are difficult to maintain.
+
+Use pure functions as much as possible.
+- Pure functions are functions that have no side effects and return a value that depends only on their arguments.
+
+Examples of not pure functions:
+- The function reads part of the program’s changeable state by means other than through its arguments.
+- The function modifies a global object.
+- The function keeps a persistent internal state between calls.5
+- The function does IO
+
+Takeaways:
+- For each part of a program, we have to distinguish the object (what are we do- ing?), the purpose (what are we doing it for?), the method (how are we doing it?) and the implementation (in which manner are we doing it?).
+- The function and type interfaces are the essence of software design. Changing them later is expensive.
+- Complicated reasoning should be avoided and made explicit where necessary.

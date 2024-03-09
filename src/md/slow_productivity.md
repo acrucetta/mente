@@ -11,6 +11,7 @@ The principle of "slow productivity" is that by not being rushed, and by doing l
 - Reduce the amount of ongoing projects
   - For every mission you might have more projects; each project is going to take your time away
   - Richard Feynman cultivated an attitude of being "irresponsible" that is, creating the expectation that he wouldn't respond to people right away
+- Don't fall into the shallows of productivity. Set your mind for one main project for the day and put your focus in it.
 
 
 ### 2. Work at a natural pace
