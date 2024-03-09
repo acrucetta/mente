@@ -4,3 +4,135 @@
 represents logical true.</p>
 <p>e.g., if (i) {}</p>
 <p>We never should compare to 0, false, or true.</p>
+<h3>Chapter 5</h3>
+<ul>
+<li>Use size_t for sizes, cardinalities, or ordinal numbers</li>
+<li>Use unsigned for small quantities that can't be negative</li>
+<li>Use signed for small quantities that bear a sign</li>
+</ul>
+<p>Objects of type const are read-only.</p>
+<p>Enums.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> corvid <span class="op">{</span> magpie <span class="op">,</span> raven <span class="op">,</span> jay <span class="op">,</span> corvid_num <span class="op">,</span> <span class="op">};</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> <span class="dt">const</span><span class="op">*</span><span class="dt">const</span> bird<span class="op">[</span>corvid_num<span class="op">]</span> <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">[</span>raven<span class="op">]</span> <span class="op">=</span> <span class="st">&quot;raven&quot;</span><span class="op">,</span> <span class="op">[</span>magpie<span class="op">]</span> <span class="op">=</span> <span class="st">&quot;magpie&quot;</span><span class="op">,</span> <span class="op">[</span>jay<span class="op">]</span> <span class="op">=</span> <span class="st">&quot;jay&quot;</span><span class="op">,</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">unsigned</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> corvid_num<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  printf<span class="op">(</span><span class="st">&quot;Corvid␣</span><span class="sc">%u</span><span class="st">␣is␣the␣</span><span class="sc">%s\n</span><span class="st">&quot;</span><span class="op">,</span> i<span class="op">,</span> bird<span class="op">[</span>i<span class="op">]);</span></span></code></pre></div>
+<p>Macros:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="pp"># define M_PI </span><span class="fl">3.14159</span><span class="er">...</span></span></code></pre></div>
+<h3>Chapter 6 - Derived data types</h3>
+<p>Array length. There are two categories of arrays: fixed-length
+arraysC (FLAs) and variable-length arrays</p>
+<p>The first are a concept that has been present in C since the
+beginning; this feature is shared with many other programming languages.
+The second was introduced in C99 and is relatively unique to C</p>
+<p><strong>Array Length</strong> The length of an array A is (sizeof
+A)/(sizeof A[0]).</p>
+<p>Array parameters behave as if the array is passed by reference</p>
+<ul>
+<li>Passing by reference means that you get a pointer as part of the
+array</li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> swap_double<span class="op">(</span><span class="dt">double</span> a<span class="op">[</span><span class="dt">static</span> <span class="dv">2</span><span class="op">])</span> <span class="op">{</span> <span class="dt">double</span> tmp <span class="op">=</span> a<span class="op">[</span><span class="dv">0</span><span class="op">];</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>a<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">=</span> a<span class="op">[</span><span class="dv">1</span><span class="op">];</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>a<span class="op">[</span><span class="dv">1</span><span class="op">]</span> <span class="op">=</span> tmp<span class="op">;</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> A<span class="op">[</span><span class="dv">2</span><span class="op">]</span> <span class="op">=</span> <span class="op">{</span> <span class="fl">1.0</span><span class="op">,</span> <span class="fl">2.0</span><span class="op">,</span> <span class="op">};</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>swap_double<span class="op">(</span>A<span class="op">);</span> printf<span class="op">(</span><span class="st">&quot;A[0]␣=␣</span><span class="sc">%g</span><span class="st">,␣A[1]␣=␣</span><span class="sc">%g\n</span><span class="st">&quot;</span><span class="op">,</span> A<span class="op">[</span><span class="dv">0</span><span class="op">],</span> A<span class="op">[</span><span class="dv">1</span><span class="op">]);</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h3>Characters</h3>
+<p>Strings are basically character arrays.</p>
+<p>We can use functions that operate on char arrays:</p>
+<ul>
+<li>memcpy(target, source, len)</li>
+<li>memcmp(s0,s1,len) - compares two arrays</li>
+<li>memchr(s,c,len) - searches for the first appearance of c</li>
+</ul>
+<p>Then we have:</p>
+<ul>
+<li>strlen(s)</li>
+<li>strcpy(target,source)</li>
+</ul>
+<h2>Chapter 9: Coding Style</h2>
+<blockquote>
+<p>Coding style is not a question of taste but of culture. When you
+enter a new project, you enter a new cultural space.</p>
+</blockquote>
+<ul>
+<li>Coding style is a matter of culture. Be tolerant and patient.</li>
+<li>Code formatting is a matter of visual habits. It should be
+automatically provided by your environment such that you and your
+co-workers can read and write code effortlessly.</li>
+<li>Naming of variables, functions, and types is an art and plays a
+central role in the comprehensiveness of your code.</li>
+</ul>
+<h2>Chapter 10: Program Organization</h2>
+<blockquote>
+<p>As with coding style, beginners tend to underestimate the effort that
+should be put into code and project organization and docu- mentation:
+unfortunately, many of us have to go through the experience of reading
+our own code some time after we wrote it, and not having any clue what
+it was all about.</p>
+</blockquote>
+<p>Most programmers will only read the interface of your code. Fewer the
+implementation. Code structure and documentation go hand in hand.</p>
+<p>This rule is reflected in the use of two different kinds of C source
+files: header filesC , usually ending with ".h"; and translation unitsC
+(TU), ending with ".c".</p>
+<p>C has no “built-in” documentation standard. But in recent years, a
+cross-platform public domain tool has been widely adopted in many
+projects: doxygen.</p>
+<p>Example Doxygen:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="op">**</span> @brief use the Heron process to approximate @a a to the</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="op">**</span> power of ˋ<span class="dv">1</span><span class="op">/</span>kˋ <span class="op">**</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="op">**</span> Or in other words this computes the @f$k<span class="op">^{</span>th<span class="op">}</span>@f$ root of @a a</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>As a special feature<span class="op">,</span> <span class="cf">if</span> @a k is ˋ<span class="op">-</span><span class="dv">1</span>ˋ it computes the multiplicative inverse of @a a<span class="op">.</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>@param a must be greater than ˋ<span class="fl">0.0</span>ˋ</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>@param k should not be ˋ<span class="dv">0</span>ˋ and otherwise be between ˋDBL_MIN_EXP<span class="op">*</span>FLT_RDXRDXˋ and ˋDBL_MAX_EXP<span class="op">*</span>FLT_RDXRDXˋ<span class="op">.</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>@see FLT_RDXRDX</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> heron<span class="op">(</span><span class="dt">double</span> a<span class="op">,</span> <span class="dt">signed</span> k<span class="op">);</span></span></code></pre></div>
+<blockquote>
+<p>Good programming only needs to explain the ideas and prerequisites
+that are not obvious (the difficult part). The structure of the code
+shows what it does and how.</p>
+</blockquote>
+<blockquote>
+<p>Another requirement is to have an obvious flow of control through
+visually clearly distinctive structuring in {} blocks that are linked
+together with comprehensive control statements. This is the reason why
+the use of goto is discouraged: it can break the flow of control</p>
+</blockquote>
+<blockquote>
+<p>Global variables are frowned upon. They make code inflexible (the
+object to operate on is fixed), are difficult to predict (the places of
+modification are scattered all over), and are difficult to maintain.</p>
+</blockquote>
+<p>Use pure functions as much as possible.</p>
+<ul>
+<li>Pure functions are functions that have no side effects and return a
+value that depends only on their arguments.</li>
+</ul>
+<p>Examples of not pure functions:</p>
+<ul>
+<li>The function reads part of the program’s changeable state by means
+other than through its arguments.</li>
+<li>The function modifies a global object.</li>
+<li>The function keeps a persistent internal state between calls.5</li>
+<li>The function does IO</li>
+</ul>
+<p>Takeaways:</p>
+<ul>
+<li>For each part of a program, we have to distinguish the object (what
+are we do- ing?), the purpose (what are we doing it for?), the method
+(how are we doing it?) and the implementation (in which manner are we
+doing it?).</li>
+<li>The function and type interfaces are the essence of software design.
+Changing them later is expensive.</li>
+<li>Complicated reasoning should be avoided and made explicit where
+necessary.</li>
+</ul>
