@@ -1,17 +1,23 @@
 
 ## Reading lists
 
-## Reading List of Reading Lists
+### Great authors
+
+- Ernest Hemingway
+- Jane Austen
+- Fyodor Dostoyevsky
+
+### Reading List of Reading Lists
 - [https://www.danschulz.net/books/#svalley](https://www.danschulz.net/books/#svalley)
 
-## On the History of Computing
+### On the History of Computing
 
 - The Soul of A New Machine by Tracy Kidder
 - Katie Hafner; Where Wizards Stay Up Late (The Origins of The Internet)
 - Dealers of Lightning history of Xerox Parc, where they invented GUIs. wonderful read
 - UNIX: A Memoir
 
-## From Balaji Srinivasan
+### From Balaji Srinivasan
 - The Feynman Lectures on Physics by Richard Feynman
 - The Princeton Companion to Mathematics by Timothy Gowers
 - One Thousand Exercises in Probability by Geoffrey Grimmett and David Stirzaker

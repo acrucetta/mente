@@ -1,6 +1,16 @@
 
 ## Notes on Quality
 
+### Cal Newport on Obsessing Over Quality
+
+To make quality work you need to build a taste for great work. To do that you need to imitate great people until you build your style.
+
+You can also watch people doing the work you normally do; what makes it different. What tools they use, how do they think about the work.
+
+You should also think critically about the work and why do some designs work better than others.
+
+What makes for good writing, for good filmatography, or for good coding?
+
 ### From Google's Developer Productivity Research
 
 Developer productivity can be split into: speed, ease and quality.
