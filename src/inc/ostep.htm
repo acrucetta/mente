@@ -1,0 +1,127 @@
+<h2>Notes on Operating Systems in 3 Easy Pieces</h2>
+<h3>Anki Questions</h3>
+<p><strong>What does wait() do?</strong> The parent process calls wait()
+to delay its execution until the child finishes executing. When the
+child is done, wait() returns to the parent.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> rc <span class="op">=</span> fork<span class="op">();</span> <span class="co">// Fork a new process</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>rc <span class="op">&lt;</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Fork failed; exit</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        fprintf<span class="op">(</span>stderr<span class="op">,</span> <span class="st">&quot;fork failed</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        exit<span class="op">(</span><span class="dv">1</span><span class="op">);</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span> <span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span>rc <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Child process</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        printf<span class="op">(</span><span class="st">&quot;hello, I am child (pid:</span><span class="sc">%d</span><span class="st">)</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">(</span><span class="dt">int</span><span class="op">)</span>getpid<span class="op">());</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Parent process</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>        <span class="dt">int</span> wc <span class="op">=</span> wait<span class="op">(</span>NULL<span class="op">);</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        printf<span class="op">(</span><span class="st">&quot;hello, I am parent of </span><span class="sc">%d</span><span class="st"> (wc:</span><span class="sc">%d</span><span class="st">) (pid:</span><span class="sc">%d</span><span class="st">)</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">,</span> rc<span class="op">,</span> wc<span class="op">,</span> <span class="op">(</span><span class="dt">int</span><span class="op">)</span>getpid<span class="op">());</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><strong>What does fork() do?</strong> The fork() system call is used
+to create a new process</p>
+<p><strong>What does exec() do?</strong> This system call is useful when
+you want to run a program that is different from the calling program.
+For example, calling fork() in p2.c is only useful if you want to keep
+running copies of the same program</p>
+<pre><code>
+17 char *myargs[3];
+18 myargs[0] = strdup(&quot;wc&quot;); // program: &quot;wc&quot; (word count)
+19 myargs[1] = strdup(&quot;p3.c&quot;); // argument: file to count
+20 myargs[2] = NULL; // marks end of array
+21 execvp(myargs[0], myargs); // runs word count</code></pre>
+<p><strong>How does pipe() work? What are the main
+components?</strong></p>
+<p>Why do we need different modes of execution for a CPU? What is a
+trap, what is a trap table? How can the OS effectively switch between
+processes? What do we do when an OS process goes rogue? How does the CPU
+prevent it?</p>
+<p><strong>What is a context switch?</strong></p>
+<p>A context switch is conceptually simple: all the OS has to do is
+<strong>save a few register values for the currently-executing
+process</strong> (onto its kernel stack, for example) and
+<strong>restore a few for the soon-to-be-executing process</strong>
+(from its kernel stack).</p>
+<p>By doing so, the OS thus <strong>ensures that when the
+return-from-trap instruction is finally executed, instead of returning
+to the process that was running, the system resumes execution of another
+process.</strong></p>
+<p><strong>How does the OS "baby proof" the CPU? What are the
+equivalents?</strong></p>
+<p>By during boot time setting up the trap handlers and starting an
+interrupt timer, and then by only running processes in a restricted
+mode. By doing so, the OS can feel quite assured that processes can run
+efficiently, only requiring OS intervention to perform privileged
+operations or when they have monopolized the CPU for too long and thus
+need to be switched out.</p>
+<p><strong>What is a timer interrupt? Why do we need it?</strong></p>
+<p>The addition of a timer interrupt gives the OS the ability to run
+again on a CPU even if processes act in a non-cooperative fashion. Thus,
+this hardware feature is essential in helping the OS maintain control of
+the machine.</p>
+<h3>Lecture 1</h3>
+<p>CPUs give us the illusion of running a program.</p>
+<p>CPUs give us the abstraction of a process. A running program.</p>
+<p>Processes have a private memory and "address space"; they also have
+registers, and a stack pointer.</p>
+<p>The computer can run programs in Kernel Mode (OS) and User Mod (user
+program). Limited number of things.</p>
+<p>Special services to operate on the OS can be called system calls.</p>
+<p>Boot Time:</p>
+<ul>
+<li>OS starts in Kernel mode; it tells the hardware where to jump to
+when the user specifies a trap #</li>
+<li>We set up trap handlers in the OS; tell H/W where the trap handlers
+are in OS memory</li>
+</ul>
+<p>Key Questions</p>
+<ul>
+<li>What if OS wants to run a operation that's higher</li>
+<li>What if the OS wants to stop A, then run B</li>
+</ul>
+<h3>Scheduling: Introduction</h3>
+<p><strong>Key assumptions:</strong></p>
+<ol type="1">
+<li>Each job runs for the same amount of time.</li>
+<li>All jobs arrive at the same time.</li>
+<li>Once started, each job runs to completion.</li>
+<li>All jobs only use the CPU (i.e., they perform no I/O) 5. The
+run-time of each job is known.</li>
+</ol>
+<p>Types of scheduling:</p>
+<ul>
+<li><strong>First-in first out</strong></li>
+<li><strong>Shortest job fist (SJF) - optimizes turnaround time</strong>
+<ul>
+<li>This new scheduling discipline is known as Shortest Job First (SJF),
+and the name should be easy to remember because it describes the policy
+quite completely: it runs the shortest job first, then the next
+shortest, and so on.</li>
+</ul></li>
+<li><strong>Shortest time to completion first (STCF) - optimizes
+turnaround time</strong>
+<ul>
+<li>Any time a new job enters the system, the STCF scheduler determines
+which of the remaining jobs (including the new job) has the least time
+left, and schedules that one. Thus, in our example, STCF would preempt A
+and run B and C to completion</li>
+</ul></li>
+<li><strong>Round robin - optimizes response time</strong>
+<ul>
+<li>The basic idea is simple: instead of running jobs to completion, RR
+runs a job for a time slice (sometimes called a scheduling quantum) and
+then switches to the next job in the run queue.</li>
+<li>The shorter the time slice the better; deciding on this length is a
+trade-off</li>
+<li>Any policy (such as RR) that is fair, i.e., that evenly divides the
+CPU among active processes on a small time scale, will perform poorly on
+metrics such as turnaround time</li>
+</ul></li>
+</ul>
+<p><strong>Metrics</strong>:</p>
+<ul>
+<li>Response time: time of first run - time of arrival</li>
+<li>Turnaround time: time of completion - time of arrival</li>
+</ul>

@@ -1,0 +1,172 @@
+<h2>Notes on Parallel Programming</h2>
+<h3>Introduction</h3>
+<p>Race Condition: A race condition occurs in Go when two or more
+goroutines try to access and modify the same data at the same time. This
+can lead to data corruption , inconsistent states, or crashes.</p>
+<p>Atomicity: within the context it operates it is indivisible or
+uninterruptible. Atomicity is important because if something is atomic,
+implicitly it is safe within concurrent contexts. This allow us to run
+safe parallel programs.</p>
+<p>Deadlock: concurrent parts of the program are waiting for one
+another.</p>
+<p>Types of deadlock:</p>
+<ul>
+<li>Mutual exclusion - process p1 holds exclusive rights for p2</li>
+<li>Wait for condition - hold a resource and wait for an additional
+resource</li>
+<li>No preemption - resource is held by a concurrent process and it can
+only be released by that process</li>
+<li>Circular wait - p1 is waiting for p2 but p2 is waiting for p1</li>
+</ul>
+<p>Livelock: the program runs concurrent ops but these ops don't move
+the code forward.</p>
+<p>A common reason livelocks are written: two or more concurrent
+processes attempting to prevent a deadlock without coordination.</p>
+<p>Finding a balance between polite and greedy locking:</p>
+<ul>
+<li>If you utilize memory access synchronization, you’ll have to find a
+balance between preferring coarse-grained synchronization for
+performance, and fine-grained syn‐ chronization for fairness. When it
+comes time to performance tune your application, to start with, I highly
+recommend you constrain memory access synchronization only to critical
+sections;</li>
+</ul>
+<p>When exposing functions, methods, and variables in problem spaces
+that involve concurrency, do your colleagues and future self a favor:
+err on the side of verbose comments, and try and cover these three
+aspects.</p>
+<p>• Who is responsible for the concurrency? • How is the problem space
+mapped onto concurrency primitives? • Who is responsible for the
+synchronization?</p>
+<h3>Communicating Processes</h3>
+<blockquote>
+<p>Concurrency is a property of the code; parallelism is a property of
+the running program.</p>
+</blockquote>
+<blockquote>
+<p>The first is that we do not write parallel code, only concurrent code
+that we hope will be run in parallel. Once again, parallelism is a
+property of the runtime of our program, not the code.</p>
+</blockquote>
+<p>Go created the primitives of channels based on Hoare's research on
+input/output of a program being an underexplored part of computer
+science.</p>
+<blockquote>
+<p>One of Go’s mottos is “Share memory by communicating, don’t
+communicate by shar‐ ing memory. That said, Go does provide traditional
+locking mechanisms in the sync package. Most locking issues can be
+solved using either channels or traditional locks. So which should you
+use? Use whichever is most expressive and/or most simple.</p>
+</blockquote>
+<h3>Concurrency Primitives</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">go</span> sayHello<span class="op">()</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> sayHello<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  fmt<span class="op">.</span>PrintLn<span class="op">(</span><span class="st">&quot;hello&quot;</span><span class="op">)</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Coroutines are simply concurrent subroutines (functions, closures, or
+methods in Go) that are nonpreemptive—that is, they cannot be
+interrupted. Instead, coroutines have multiple points throughout which
+allow for suspension or reentry.</p>
+<p>To create a join point, we need to sync the main goroutine and the
+sayHello goroutine.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> wg sync<span class="op">.</span>WaitGroup </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>sayHello <span class="op">:=</span> <span class="kw">func</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="cf">defer</span> wg<span class="op">.</span>Done<span class="op">()</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        fmt<span class="op">.</span>Println<span class="op">(</span><span class="st">&quot;hello&quot;</span><span class="op">)</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>wg<span class="op">.</span>Add<span class="op">(</span><span class="dv">1</span><span class="op">)</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="cf">go</span> sayHello<span class="op">()</span> </span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>wg<span class="op">.</span>Wait<span class="op">()</span></span></code></pre></div>
+<h3>Sync Package</h3>
+<p>WaitGroup</p>
+<ul>
+<li>Good way to wait for concurrent ops to complete when you don't care
+about the result of the op or you have other means of collecting the
+result.</li>
+<li>If none are true, use channels and a select statement.</li>
+<li>You can think of a WaitGroup like a concurrent-safe counter: calls
+to Add increment the counter by the integer passed in, and calls to Done
+decrement the counter by one. Calls to Wait block until the counter is
+zero.</li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>wg<span class="op">.</span>Add<span class="op">(</span><span class="dv">1</span><span class="op">)</span> </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="cf">go</span> <span class="kw">func</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="cf">defer</span> wg<span class="op">.</span>Done<span class="op">()</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>fmt<span class="op">.</span>Println<span class="op">(</span><span class="st">&quot;1st goroutine sleeping...&quot;</span><span class="op">)</span> time<span class="op">.</span>Sleep<span class="op">(</span><span class="dv">1</span><span class="op">)</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="op">}()</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>wg<span class="op">.</span>Wait<span class="op">()</span></span></code></pre></div>
+<p>Mutex</p>
+<ul>
+<li>Used to protect a given critical area</li>
+<li>To borrow a Goism, whereas channels share memory by communicating, a
+Mutex shares mem‐ ory by creating a convention developers must follow to
+synchronize access to the memory. You are responsible for coordinating
+access to this memory by guarding access to it with a mutex.</li>
+</ul>
+<p>Cond</p>
+<ul>
+<li>...a rendezvous point for goroutines waiting for or announcing the
+occurrence of an event</li>
+<li>A way for go routines to sleep while waiting for a task to be
+done</li>
+</ul>
+<div class="sourceCode" id="cb4"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">// Not good</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> conditionTrue<span class="op">()</span> <span class="op">==</span> <span class="ot">false</span> <span class="op">{</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  time<span class="op">.</span>Sleep<span class="op">(</span><span class="dv">1</span><span class="op">*</span>time<span class="op">.</span>Millisecond<span class="op">)</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">// Better</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>c <span class="op">:=</span> sync<span class="op">.</span>NewCond<span class="op">(&amp;</span>sync<span class="op">.</span>Mutex<span class="op">{})</span> </span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>c<span class="op">.</span>L<span class="op">.</span>Lock<span class="op">()</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> conditionTrue<span class="op">()</span> <span class="op">==</span> <span class="ot">false</span> <span class="op">{</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  c<span class="op">.</span>Wait<span class="op">()</span> <span class="co">// This call suspends the go routine, it doesn&#39;t only block it; allows other routines</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="co">// to run on the OS thread</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>c<span class="op">.</span>L<span class="op">.</span>Unlock<span class="op">()</span></span></code></pre></div>
+<p>Longer example:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    c <span class="op">:=</span> sync<span class="op">.</span>NewCond<span class="op">(&amp;</span>sync<span class="op">.</span>Mutex<span class="op">{})</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    queue <span class="op">:=</span> <span class="bu">make</span><span class="op">([]</span><span class="kw">interface</span><span class="op">{},</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">10</span><span class="op">)</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    removeFromQueue <span class="op">:=</span> <span class="kw">func</span><span class="op">(</span>delay time<span class="op">.</span>Duration<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        time<span class="op">.</span>Sleep<span class="op">(</span>delay<span class="op">)</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        c<span class="op">.</span>L<span class="op">.</span>Lock<span class="op">()</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        queue <span class="op">=</span> queue<span class="op">[</span><span class="dv">1</span><span class="op">:]</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        fmt<span class="op">.</span>Println<span class="op">(</span><span class="st">&quot;Removed from queue&quot;</span><span class="op">)</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        c<span class="op">.</span>L<span class="op">.</span>Unlock<span class="op">()</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        c<span class="op">.</span>Signal<span class="op">()</span> <span class="co">// Notify waiting goroutine that an item has been removed</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="op">:=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">10</span><span class="op">;</span> i<span class="op">++</span> <span class="op">{</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>        c<span class="op">.</span>L<span class="op">.</span>Lock<span class="op">()</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Wait while the queue is full (has 2 elements)</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> <span class="bu">len</span><span class="op">(</span>queue<span class="op">)</span> <span class="op">==</span> <span class="dv">2</span> <span class="op">{</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>            c<span class="op">.</span>Wait<span class="op">()</span> <span class="co">// Wait for a signal indicating an item has been removed</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>        fmt<span class="op">.</span>Println<span class="op">(</span><span class="st">&quot;Adding to queue&quot;</span><span class="op">)</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>        queue <span class="op">=</span> <span class="bu">append</span><span class="op">(</span>queue<span class="op">,</span> <span class="kw">struct</span><span class="op">{}{})</span> <span class="co">// Add an element to the queue</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">go</span> removeFromQueue<span class="op">(</span><span class="dv">1</span> <span class="op">*</span> time<span class="op">.</span>Second<span class="op">)</span> <span class="co">// Start a goroutine to remove an element after 1 second</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>        c<span class="op">.</span>L<span class="op">.</span>Unlock<span class="op">()</span> <span class="co">// Unlock the mutex to allow other goroutines to access the queue</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Pool</p>
+<ul>
+<li>Pool is a concurrent-safe implementation of the object pool
+pattern</li>
+<li>At a high level, a the pool pattern is a way to create and make
+available a fixed num‐ ber, or pool, of things for use. It’s commonly
+used to constrain the creation of things that are expensive (e.g.,
+database connections) so that only a fixed number of them are ever
+created, but an indeterminate number of operations can still request
+access to these things</li>
+</ul>

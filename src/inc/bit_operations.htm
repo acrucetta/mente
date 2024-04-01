@@ -1,0 +1,19 @@
+<h2>Notes on Bit Operations</h2>
+<p>AND, XOR, OR, work like typical boolean operations</p>
+<p>Left Shift &lt;&lt;</p>
+<p>Shifts bit to the right and eliminates whatever extra bits we have.
+Adds N bits to the right.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">uint8_t</span> a <span class="op">=</span> <span class="bn">0x02</span><span class="bu">u</span><span class="op">;</span>   <span class="co">// 0b 0000 0010 = 0x02</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="dt">uint8_t</span> b <span class="op">=</span> a <span class="op">&lt;&lt;</span> <span class="dv">3</span><span class="op">;</span> <span class="co">// 0b 0001 0000 = 0x10 </span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;After shift: 0x</span><span class="sc">%x\n</span><span class="st">&quot;</span><span class="op">,</span> b<span class="op">);</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">// Output</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">// After shift: 0x10</span></span></code></pre></div>
+<p>Right Shift &gt;&gt;</p>
+<p>Adds N 0 bits to the left and pushes the ones in the right out.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">uint8_t</span> a <span class="op">=</span> <span class="bn">0xAA</span><span class="bu">u</span><span class="op">;</span>   <span class="co">// 1010 1010 = 0xAA</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="dt">uint8_t</span> b <span class="op">=</span> a <span class="op">&gt;&gt;</span> <span class="dv">4</span><span class="op">;</span> <span class="co">// 0000 1010 - 0x0A</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;After shift: 0x</span><span class="sc">%X\n</span><span class="st">&quot;</span><span class="op">,</span> b<span class="op">);</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">// Output</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">// After shift: 0xA</span></span></code></pre></div>
