@@ -44,11 +44,9 @@
 <li>g to be able to debug it</li>
 </ul>
 <p>To debug in macOS use lldb with the program output.</p>
-<h3>Pointers</h3>
-<p>In C every single argument gets copied into parameters and the
-function uses a copy of the argument.</p>
-<p>E.g., we write a home address on a piece of paper; and then copy it
-onto another piece of paper. We now have two points to that house.</p>
+<p>To debug sanitizing the output you can use the <code>clang</code>
+compiler.</p>
+<p><code>clang++ -O1 -g -fsanitize=address -fno-omit-frame-pointer -c example_UseAfterFree.cc</code></p>
 <h3>String Functions</h3>
 <ul>
 <li>strcpy() - copy string to buffer</li>
@@ -56,10 +54,87 @@ onto another piece of paper. We now have two points to that house.</p>
 <li>strtok() - split into delimiter '\n'</li>
 <li>strsep() - split by delimiter '\n'</li>
 </ul>
-
+<h2>Bits</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">unsigned</span> <span class="dt">char</span> x <span class="op">=</span> <span class="dv">42</span><span class="op">;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="dv">42</span> in base <span class="dv">2</span> is <span class="dv">101010</span> <span class="op">-&gt;</span> <span class="dv">2</span><span class="op">^</span><span class="dv">5</span> <span class="op">+</span> <span class="dv">2</span><span class="op">^</span><span class="dv">3</span> <span class="op">+</span> <span class="dv">2</span><span class="op">^</span><span class="dv">1</span></span></code></pre></div>
+<p>unsigned char uses eight binary digits or bits. Known as a single
+byte. It has a range of [0,255]. It is stored as: 00101010</p>
+<p><code>unsigned int y = 4</code> uses 4 bytes or 32 bits. So it is
+stored as: 00000000000000000000000000101010.</p>
+<p>Binary, Octal, and Decimal</p>
+<ul>
+<li>decimal: base 10 (0-10)</li>
+<li>binary: base 2 (0,1)</li>
+<li>octal: base 8 (0-8)</li>
+<li>hexadecimal: base 16 (0-9) and (A-F) where A is 10 and F is 15</li>
+</ul>
+<p>Values:</p>
+<ul>
+<li>Leading 0 denotes an octal int constant.</li>
+<li>Leading 0x denotes an hexadecimal int constant</li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">unsigned</span> <span class="dt">int</span> a <span class="op">=</span> <span class="bn">0736</span><span class="op">;</span> <span class="co">// octal value</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="dt">unsigned</span> <span class="dt">int</span> y <span class="op">=</span> <span class="bn">0x5E2</span><span class="op">;</span> <span class="co">// hexadecimal value</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="dt">unsigned</span> <span class="dt">int</span> p <span class="op">=</span> <span class="bn">0x12</span><span class="op">;</span> <span class="co">// hexadecimal value</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="dt">unsigned</span> <span class="dt">int</span> q <span class="op">=</span> <span class="bn">0xa8b</span><span class="op">;</span> <span class="co">// A,B,C,D,E,F can be uppercase or lowercas</span></span></code></pre></div>
+<p>Char in C is limited:</p>
+<ul>
+<li>It can be non-negative int represented by 8 bits</li>
+<li>Signed chars range from -128 to 127.</li>
+<li>Unsigned chars range from 0 to 255</li>
+<li>Or in Hex from 0x00 to 0xFF</li>
+</ul>
+<p>Other types:</p>
+<ul>
+<li>short - 2 bytes</li>
+<li>int - 4 byes</li>
+<li>long - 8 bytes</li>
+<li>float - 4 bytes</li>
+<li>double - 8 bytes</li>
+</ul>
+<p><code>sizeof(expression)</code> tells us how many bytes the type has.
+It returns a type size_t and can be specified with %zu</p>
+<h3>Operations</h3>
+<p>AND, XOR, OR, work like typical boolean operations</p>
+<p>Left Shift &lt;&lt;</p>
+<p>Shifts bit to the right and eliminates whatever extra bits we have.
+Adds N bits to the right.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dt">uint8_t</span> a <span class="op">=</span> <span class="bn">0x02</span><span class="bu">u</span><span class="op">;</span>   <span class="co">// 0b 0000 0010 = 0x02</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="dt">uint8_t</span> b <span class="op">=</span> a <span class="op">&lt;&lt;</span> <span class="dv">3</span><span class="op">;</span> <span class="co">// 0b 0001 0000 = 0x10 </span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;After shift: 0x</span><span class="sc">%x\n</span><span class="st">&quot;</span><span class="op">,</span> b<span class="op">);</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">// Output</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">// After shift: 0x10</span></span></code></pre></div>
+<p>Right Shift &gt;&gt;</p>
+<p>Adds N 0 bits to the left and pushes the ones in the right out.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="dt">uint8_t</span> a <span class="op">=</span> <span class="bn">0xAA</span><span class="bu">u</span><span class="op">;</span>   <span class="co">// 1010 1010 = 0xAA</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="dt">uint8_t</span> b <span class="op">=</span> a <span class="op">&gt;&gt;</span> <span class="dv">4</span><span class="op">;</span> <span class="co">// 0000 1010 - 0x0A</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;After shift: 0x</span><span class="sc">%X\n</span><span class="st">&quot;</span><span class="op">,</span> b<span class="op">);</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">// Output</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">// After shift: 0xA</span></span></code></pre></div>
+<h2>Pointers</h2>
+<p>In C every single argument gets copied into parameters and the
+function uses a copy of the argument.</p>
+<p>E.g., we write a home address on a piece of paper; and then copy it
+onto another piece of paper. We now have two points to that house.</p>
+<p>We use pointers because it allows us to use <em>indirection</em>.
+Allow changes to be made without changing the reference.</p>
+<p>Every byte in memory has a unique address.</p>
+<h3>Pass by value</h3>
+<ul>
+<li>Parameters are local variables that are initialized to a copy of the
+arguments.</li>
+<li>Changing a parameter does not change the independent copy in the
+calling function.</li>
+<li>There are two copies of 7 and two copies of 13 in memory.</li>
+</ul>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> swapA<span class="op">(</span><span class="dt">int</span> x<span class="op">,</span> <span class="dt">int</span> y<span class="op">)
 
 </main>
 <footer id='end_footer'><hr />
-<span style='float:right'>Edited on 2024-04-01</span><b>Mente</b> © 2023 — 
+<span style='float:right'>Edited on 2024-04-21</span><b>Mente</b> © 2023 — 
 </footer>
 </body></html>

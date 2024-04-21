@@ -9,9 +9,13 @@
 1. A Mind At Play, Claude Shannon {claude_shannon} (**A**)
 2. 1Q84 (**S**)
 3. Von Neuman's Biography (**B**)
-4. The Power Law, A Story of Venture Capital
+4. The Power Law, A Story of Venture Capital (**S**)
 5. The Maniac (TBD)
-6. 100 Years of Solitude
+6. 100 Years of Solitude (TBD)
+7. Slow Productivity by Cal Newport (**A**)
+8. The Mind Gym 
+9. Look Ahead by Cass Sunstein
+10. No Man is an Island (**B+**)
 
 ## 2023
 1. The Three Body Problem (Volumes 1-3) by Cixin Liu (**S**)

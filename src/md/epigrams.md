@@ -65,3 +65,7 @@
 ### On Philosophy
 
 - “In the human life time is but an instant, and the substance of it a flux, and the perception dull, and the composition of the whole body subject to putrefaction, and the soul a whirl, and fortune hard to divine, and fame a thing devoid of certainty. And, to say all in a word, everything that belongs to the body is a stream, and what belongs to the soul is a dream and vapor, and life is a warfare and a stranger's sojourn, and after- fame is oblivion. What then can guide a man? One thing and only one, philosophy.” (Marcus Aurelius)
+
+## On efficiency
+
+“I’ll tell you what is convenient,” he said after a moment. “To sleep until noon and have someone bring you your breakfast on a tray. To cancel an appointment at the very last minute. To keep a carriage waiting at the door of one party, so that on a moment’s notice it can whisk you away to another. To sidestep marriage in your youth and put off having children altogether. These are the greatest of conveniences, Anushka—and at one time, I had them all. But in the end, it has been the inconveniences that have mattered to me most.” - A Gentleman in Moscow

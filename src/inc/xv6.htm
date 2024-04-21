@@ -1,0 +1,39 @@
+<h2>Notes on xv6 OS</h2>
+<p>Features of xv6</p>
+<ul>
+<li>Processes</li>
+<li>Virtual address spaces, page tables</li>
+<li>Files, directories</li>
+<li>Pipes</li>
+<li>Multi-tasking, time slicing</li>
+<li>21 sys calls</li>
+</ul>
+<p>It contains the main Unix sys calls: grep, ls, grep, echo, kill,
+ln...</p>
+<p>What is missing?</p>
+<ul>
+<li>All of the complexity of a "real" OS</li>
+<li>User IDs, login, file protection, mountable filesystems</li>
+<li>Paging to disk</li>
+<li>Sockets, support for networks</li>
+<li>IPC (interprocess comms)</li>
+<li>Device drivers (only 2)</li>
+<li>User code / apps</li>
+</ul>
+<p>Anatomy os a system call</p>
+<p>User space</p>
+<ul>
+<li>user.h</li>
+<li>usys.S
+<ul>
+<li>Short sub-routine for all the sys calls</li>
+<li>Calls syscall.h -&gt; looks for the number of the syscall there</li>
+</ul></li>
+<li>syscall.C</li>
+</ul>
+<p>Process:</p>
+<ul>
+<li>User mode calls TRAP</li>
+<li>Trap operates in Kernel Mode</li>
+<li>Then we call sret to go back into user mode</li>
+</ul>

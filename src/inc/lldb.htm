@@ -1,0 +1,93 @@
+<h2>Notes on LLDB Commands</h2>
+<h3>Summary</h3>
+<p>Movement</p>
+<ul>
+<li>n - step over</li>
+<li>s - step into</li>
+<li>c - continue until next breakpoint</li>
+<li>n - next</li>
+</ul>
+<p>Backtraces</p>
+<ul>
+<li>bt - backtrace (or bt 30)</li>
+<li>r - run</li>
+<li>q - quit</li>
+</ul>
+<p>Breakpoints</p>
+<ul>
+<li>b <a href="file:line">file:line</a> breakpoint</li>
+<li>b <function name> function breakpoint</li>
+<li>br l - list breakpoints</li>
+<li>br del # - delete breakpoint #</li>
+</ul>
+<p>Printing</p>
+<ul>
+<li>p - print variable</li>
+<li>down - stack frame down</li>
+<li>f - display the code surrounding a place</li>
+</ul>
+<h3>Details</h3>
+<ul>
+<li>Print object</li>
+</ul>
+<pre><code>(lldb) po responseObject
+(lldb) po [responseObject objectForKey@&quot;state&quot;]</code></pre>
+<ul>
+<li>p - Print primitive type</li>
+</ul>
+<h3>Breakpoints</h3>
+<ul>
+<li>List breakpoints</li>
+</ul>
+<pre><code>br l</code></pre>
+<ul>
+<li>br delete - Delete breakpoint</li>
+</ul>
+<pre><code>(lldb) br delete 1</code></pre>
+<ul>
+<li>br e - Enable breakpoint</li>
+<li>br di - Disable breakpoint</li>
+<li>b - Add breakpoint</li>
+</ul>
+<pre><code>(lldb) b MyViewController.m:30</code></pre>
+<ul>
+<li>br set - Add symbolic breakpoint</li>
+</ul>
+<pre><code>(lldb) br set -n viewDidLoad</code></pre>
+<ul>
+<li>Conditional break</li>
+</ul>
+<pre class="objc"><code>for(PlayerItem *item in player.inventory) {
+    totalValue += item.value;
+}</code></pre>
+<p>Set a conditional breakpoint that triggers only when
+<code>totalValue</code> is greater than 1000:</p>
+<pre><code>(lldb) b MerchantViewController.m:32
+Breakpoint 3: where = lootcollector`-[MerchantViewController] ...
+(lldb) br mod -c &quot;totalValue &gt; 1000&quot; 3</code></pre>
+<p>Reset the condition:</p>
+<pre><code>(lldb) br mod -c &quot;&quot; 3</code></pre>
+<ul>
+<li>Run a debugger command from a breakpoint</li>
+</ul>
+<pre><code>(lldb) br com add 2
+Enter your debugger command(s). Type &#39;DONE&#39; to end.
+&gt; bt
+&gt; continue
+&gt; DONE</code></pre>
+<ul>
+<li>Resume excution</li>
+</ul>
+<pre><code>(lldb) continue</code></pre>
+<ul>
+<li>Step over</li>
+</ul>
+<pre><code>(lldb) n</code></pre>
+<ul>
+<li>Step in</li>
+</ul>
+<pre><code>(lldb) s</code></pre>
+<ul>
+<li>Print backtrace</li>
+</ul>
+<pre><code>(lldb) bt</code></pre>

@@ -8,11 +8,9 @@
 <li>g to be able to debug it</li>
 </ul>
 <p>To debug in macOS use lldb with the program output.</p>
-<h3>Pointers</h3>
-<p>In C every single argument gets copied into parameters and the
-function uses a copy of the argument.</p>
-<p>E.g., we write a home address on a piece of paper; and then copy it
-onto another piece of paper. We now have two points to that house.</p>
+<p>To debug sanitizing the output you can use the <code>clang</code>
+compiler.</p>
+<p><code>clang++ -O1 -g -fsanitize=address -fno-omit-frame-pointer -c example_UseAfterFree.cc</code></p>
 <h3>String Functions</h3>
 <ul>
 <li>strcpy() - copy string to buffer</li>
@@ -20,3 +18,165 @@ onto another piece of paper. We now have two points to that house.</p>
 <li>strtok() - split into delimiter '\n'</li>
 <li>strsep() - split by delimiter '\n'</li>
 </ul>
+<h2>Bits</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">unsigned</span> <span class="dt">char</span> x <span class="op">=</span> <span class="dv">42</span><span class="op">;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="dv">42</span> in base <span class="dv">2</span> is <span class="dv">101010</span> <span class="op">-&gt;</span> <span class="dv">2</span><span class="op">^</span><span class="dv">5</span> <span class="op">+</span> <span class="dv">2</span><span class="op">^</span><span class="dv">3</span> <span class="op">+</span> <span class="dv">2</span><span class="op">^</span><span class="dv">1</span></span></code></pre></div>
+<p>unsigned char uses eight binary digits or bits. Known as a single
+byte. It has a range of [0,255]. It is stored as: 00101010</p>
+<p><code>unsigned int y = 4</code> uses 4 bytes or 32 bits. So it is
+stored as: 00000000000000000000000000101010.</p>
+<p>Binary, Octal, and Decimal</p>
+<ul>
+<li>decimal: base 10 (0-10)</li>
+<li>binary: base 2 (0,1)</li>
+<li>octal: base 8 (0-8)</li>
+<li>hexadecimal: base 16 (0-9) and (A-F) where A is 10 and F is 15</li>
+</ul>
+<p>Values:</p>
+<ul>
+<li>Leading 0 denotes an octal int constant.</li>
+<li>Leading 0x denotes an hexadecimal int constant</li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">unsigned</span> <span class="dt">int</span> a <span class="op">=</span> <span class="bn">0736</span><span class="op">;</span> <span class="co">// octal value</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="dt">unsigned</span> <span class="dt">int</span> y <span class="op">=</span> <span class="bn">0x5E2</span><span class="op">;</span> <span class="co">// hexadecimal value</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="dt">unsigned</span> <span class="dt">int</span> p <span class="op">=</span> <span class="bn">0x12</span><span class="op">;</span> <span class="co">// hexadecimal value</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="dt">unsigned</span> <span class="dt">int</span> q <span class="op">=</span> <span class="bn">0xa8b</span><span class="op">;</span> <span class="co">// A,B,C,D,E,F can be uppercase or lowercas</span></span></code></pre></div>
+<p>Char in C is limited:</p>
+<ul>
+<li>It can be non-negative int represented by 8 bits</li>
+<li>Signed chars range from -128 to 127.</li>
+<li>Unsigned chars range from 0 to 255</li>
+<li>Or in Hex from 0x00 to 0xFF</li>
+</ul>
+<p>Other types:</p>
+<ul>
+<li>short - 2 bytes</li>
+<li>int - 4 byes</li>
+<li>long - 8 bytes</li>
+<li>float - 4 bytes</li>
+<li>double - 8 bytes</li>
+</ul>
+<p><code>sizeof(expression)</code> tells us how many bytes the type has.
+It returns a type size_t and can be specified with %zu</p>
+<h3>Operations</h3>
+<p>AND, XOR, OR, work like typical boolean operations</p>
+<p>Left Shift &lt;&lt;</p>
+<p>Shifts bit to the right and eliminates whatever extra bits we have.
+Adds N bits to the right.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dt">uint8_t</span> a <span class="op">=</span> <span class="bn">0x02</span><span class="bu">u</span><span class="op">;</span>   <span class="co">// 0b 0000 0010 = 0x02</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="dt">uint8_t</span> b <span class="op">=</span> a <span class="op">&lt;&lt;</span> <span class="dv">3</span><span class="op">;</span> <span class="co">// 0b 0001 0000 = 0x10 </span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;After shift: 0x</span><span class="sc">%x\n</span><span class="st">&quot;</span><span class="op">,</span> b<span class="op">);</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">// Output</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">// After shift: 0x10</span></span></code></pre></div>
+<p>Right Shift &gt;&gt;</p>
+<p>Adds N 0 bits to the left and pushes the ones in the right out.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="dt">uint8_t</span> a <span class="op">=</span> <span class="bn">0xAA</span><span class="bu">u</span><span class="op">;</span>   <span class="co">// 1010 1010 = 0xAA</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="dt">uint8_t</span> b <span class="op">=</span> a <span class="op">&gt;&gt;</span> <span class="dv">4</span><span class="op">;</span> <span class="co">// 0000 1010 - 0x0A</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">&quot;After shift: 0x</span><span class="sc">%X\n</span><span class="st">&quot;</span><span class="op">,</span> b<span class="op">);</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">// Output</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">// After shift: 0xA</span></span></code></pre></div>
+<h2>Pointers</h2>
+<p>In C every single argument gets copied into parameters and the
+function uses a copy of the argument.</p>
+<p>E.g., we write a home address on a piece of paper; and then copy it
+onto another piece of paper. We now have two points to that house.</p>
+<p>We use pointers because it allows us to use <em>indirection</em>.
+Allow changes to be made without changing the reference.</p>
+<p>Every byte in memory has a unique address.</p>
+<h3>Pass by value</h3>
+<ul>
+<li>Parameters are local variables that are initialized to a copy of the
+arguments.</li>
+<li>Changing a parameter does not change the independent copy in the
+calling function.</li>
+<li>There are two copies of 7 and two copies of 13 in memory.</li>
+</ul>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> swapA<span class="op">(</span><span class="dt">int</span> x<span class="op">,</span> <span class="dt">int</span> y<span class="op">){</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> tmp<span class="op">=</span>x<span class="op">;</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  x <span class="op">=</span> y<span class="op">;</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  y <span class="op">=</span> tmp<span class="op">;</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  printf<span class="op">(</span><span class="st">&quot;in swapA: x = </span><span class="sc">%d</span><span class="st">, y = </span><span class="sc">%d\n</span><span class="st">&quot;</span><span class="op">,</span> </span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    x<span class="op">,</span> y<span class="op">);</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span> </span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> a <span class="op">=</span> <span class="dv">7</span><span class="op">,</span> b <span class="op">=</span> <span class="dv">13</span><span class="op">;</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  swapA<span class="op">(</span>a<span class="op">,</span> b<span class="op">);</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  printf<span class="op">(</span><span class="st">&quot;in main: a = </span><span class="sc">%d</span><span class="st">, b = </span><span class="sc">%d\n</span><span class="st">&quot;</span><span class="op">,</span> </span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    a<span class="op">,</span> b<span class="op">);</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h3>Pass by Reference</h3>
+<ul>
+<li>Parameters are local variables that are initialized to a copy of the
+arguments.</li>
+<li>When main gives swapB the value &amp;a, it allows swapB to reach
+into main’s region of memory, and change the value of a.</li>
+<li>There is only one copy of 7 and only one copy of 13.</li>
+</ul>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> swapB<span class="op">(</span><span class="dt">int</span><span class="op">*</span> x<span class="op">,</span> <span class="dt">int</span><span class="op">*</span> y<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> tmp<span class="op">=*</span>x<span class="op">;</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">*</span>x<span class="op">=*</span>y<span class="op">;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">*</span>y <span class="op">=</span> tmp<span class="op">;</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  printf<span class="op">(</span><span class="st">&quot;in swapB: *x = </span><span class="sc">%d</span><span class="st">, *y = </span><span class="sc">%d\n</span><span class="st">&quot;</span><span class="op">,</span> </span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>x<span class="op">,</span> <span class="op">*</span>y<span class="op">);</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> a <span class="op">=</span> <span class="dv">7</span><span class="op">,</span> b <span class="op">=</span> <span class="dv">13</span><span class="op">;</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  swapB<span class="op">(&amp;</span>a<span class="op">,</span> <span class="op">&amp;</span>b<span class="op">);</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  printf<span class="op">(</span><span class="st">&quot;in main: a = </span><span class="sc">%d</span><span class="st">, b = </span><span class="sc">%d\n</span><span class="st">&quot;</span><span class="op">,</span> </span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    a<span class="op">,</span> b<span class="op">);</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Functions in C can only return a single value but we can use pointers
+as workaround. We pass the address of the value. Then the return is
+either success or failed.</p>
+<h3>Malloc, Heap and Free</h3>
+<p>Key Question: Local variables are stored on stack which will be
+recycled after function returns, how to store values visible to the
+caller function?</p>
+<p>We use: <code>malloc(sizeof(int))</code></p>
+<p>The problem below is that both z and s point to each other. When main
+dereferences s the content might be changed.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span><span class="op">*</span> sum<span class="op">(</span><span class="dt">int</span> <span class="op">*</span>x<span class="op">,</span> <span class="dt">int</span> <span class="op">*</span>y<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> z <span class="op">=</span> <span class="op">*</span>x <span class="op">+</span> <span class="op">*</span>y<span class="op">;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="op">&amp;</span>z<span class="op">;</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(){</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> a <span class="op">=</span> <span class="dv">1</span><span class="op">,</span> b <span class="op">=</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> <span class="op">*</span>s <span class="op">=</span> sum<span class="op">(&amp;</span>a<span class="op">,</span> <span class="op">&amp;</span>b<span class="op">);</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d\n</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">*</span>s<span class="op">);</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Better; now we have main pointing to the heap.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span><span class="op">*</span> sum<span class="op">(</span><span class="dt">int</span> <span class="op">*</span>x<span class="op">,</span> <span class="dt">int</span> <span class="op">*</span>y<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> <span class="op">*</span>z <span class="op">=</span> <span class="op">(</span><span class="dt">int</span><span class="op">*)</span>malloc<span class="op">(</span><span class="kw">sizeof</span><span class="op">(</span><span class="dt">int</span><span class="op">));</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">*</span>z <span class="op">=</span> <span class="op">*</span>x <span class="op">+</span> <span class="op">*</span>y<span class="op">;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> z<span class="op">;</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(){</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> a <span class="op">=</span> <span class="dv">1</span><span class="op">,</span> b <span class="op">=</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> <span class="op">*</span>s <span class="op">=</span> sum<span class="op">(&amp;</span>a<span class="op">,</span> <span class="op">&amp;</span>b<span class="op">);</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d\n</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">*</span>s<span class="op">);</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  free<span class="op">(</span>s<span class="op">);</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h3>Arrays in C</h3>
+<p>If we want an array of four doubles we'd need to allocate:
+<code>4 * sizeof(double) == 32</code></p>
+<p>To allocate an array we can do:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> a<span class="op">[</span><span class="dv">5</span><span class="op">];</span> <span class="co">// makes an array of length 5</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> b<span class="op">[]</span> <span class="op">=</span> <span class="op">{</span><span class="dv">10</span><span class="op">,</span> <span class="dv">20</span><span class="op">,</span> <span class="dv">30</span><span class="op">,</span> <span class="dv">40</span><span class="op">,</span> <span class="dv">50</span><span class="op">};</span> <span class="co">// makes and initializes an array of length 5</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>b is a pointer to element <span class="dv">0</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>b<span class="op">[</span><span class="dv">0</span><span class="op">]</span> is the value of element <span class="dv">0</span> <span class="op">-&gt;</span> <span class="dv">10</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="op">*</span>b is also the value of element <span class="dv">0</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>b<span class="op">+</span><span class="dv">1</span> is a pointer to element <span class="dv">1</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="op">*(</span>b<span class="op">+</span><span class="dv">1</span><span class="op">)</span> is the value of element <span class="dv">1</span></span></code></pre></div>
