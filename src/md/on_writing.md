@@ -81,6 +81,30 @@ Avoid adverbs
 Writing is telepathy
 - Our role is to pop ideas out of our head into the reader's head
 
+Be honest in your writing
+- Talk about what you know; e.g., the author of The Firm wrote about his experience with lawyers
+
+Write 1000 words a day
+- Take 1 day off per week
+- Stephen King would write most days of the year
+
+To write well, you have to read a lot
+- Make it a priority, read lots of fiction and non-fiction
+- You can't try writing if you don't already read many books
+- Read in waiting rooms, airports, queues, anytime you get the change
+- Always carry a paperbook or an e-reader with you
+- Learn to read in small sips and big gulps
+
+Have a sense of humor
+- Most writing is dull, and people are easily distracted
+- Use humor to engage people
+
+Your art shouldn't adapt to your space, but your space to your art
+- It doesn't matter where you write, what matters is that you do
+
+Writing involves describing the scenery, the characters, and the narrative; the plot will come along
+- Its hard to know the plot of our lives, your role is to set the stage and let the stories unfold
+
 ## Paul Graham
 
 Put ideas into words

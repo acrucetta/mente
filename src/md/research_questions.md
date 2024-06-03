@@ -38,9 +38,6 @@ These are a list of questions I've stumbled upon while working or learning. As P
 - How can a human being lift heavier things while having the same weight?
 	- How can muscles become "stronger" without being "bigger"?
 
-### Jiu-Jitsu
-- ...
-
 ### Learning
 - How does having an emotional connection with subjects help us learn faster?
 - What makes us cement the lessons from reading an article or a book?

@@ -1,0 +1,17 @@
+
+## Notes on Humor
+
+### Jerry Seinfield on Humor
+
+> But the one thing I really do care about communicating to you is don't lose your humor.
+Forget the rest.
+Forget your education, your degree, your privilege.
+All of you here would do fantastically well without any of it.
+All of you here, without question, are the best of the best.
+Just don't lose your, your humor.
+It's not an accessory.
+It's your Stanley Cup water bottle on the brutal long hike of life.
+And humor is not just for the stress relief or even just a simple fun of laughing, but for the true perspective of the silliness of all humans and all existence.
+That's why you don't want to lose it.
+Try to enjoy some of the dumbness of it all.
+That's the best life advice I can give you.

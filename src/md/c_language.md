@@ -213,3 +213,336 @@ b[0] is the value of element 0 -> 10
 b+1 is a pointer to element 1
 *(b+1) is the value of element 1
 ```
+
+## Strings
+
+Strings in C are "just" char arrays. Type is char*
+
+Chars are stored as numbers according to a code. ASCII is common for english.
+
+To store the char code, write just the single quotes 'H'. To print it as char we use '%c'
+
+We need to either track ther lengths and pass around an unsigned int or use the char sentinel '\0'. But we need to remember adding it anytime we create strings.
+
+To write strings we can do:
+
+```c
+// this is read only
+// cannot be changed using the pointer
+char *s1 = "hello"; // sentinel added automatically
+
+// allocated in stack
+// can be changed
+char s4[] = {'H','e','l'...,'\0'} // here we need to add the sentinel
+
+char *s5 = (char*)malloc(sizeof(char)*20); // 19 + sentinel
+```
+
+To print strings we can use
+
+```c
+  char a[] = "abcde";
+  printf("%s\n", a); // abcde
+  printf("%p\n", a); // 0x16ba47578
+  printf("%c\n", *a); // a
+```
+
+To calculate the length of string we could use the sentinel as below:
+
+```c
+unsigned int strlen2(char* s) {
+	unsigned int i = 0;
+	while (s[i]!='\0') {
+		i++;
+	}
+	return i;
+}
+
+unsigned int strlen3(char *s) {
+  char *t = s;
+  while (*t) {
+    t++;
+  } 
+  return t-s;
+}
+
+int main() {
+  char* s = "Hello World!";
+  printf("%u\n", strlen3(s));
+}
+```
+
+### Iteration v. Recursion
+
+Both can do the same thing. Iteration can do it without the overhead of function calls and without using stack memory. 
+
+Recursion can keep more previous state that has already been executed. Most stack size is 1MB. If we keep maintaining state we will run out of stack memory.
+
+The simplicity of recursion comes at the cost of time and space efficiency.
+
+### Memory Issues
+
+**Memory Overread**
+
+This happens when we read more bytes than we're supposed to.
+
+E.g.,
+
+```c
+char a[] = "hello!";
+  int i = 1;
+  while (i++) {
+    printf("%c at %p\n", a[i], a+i);
+  }
+```
+
+**Memory Overwrite**
+
+We end up overwriting the memory spaces.
+
+```c
+  char src[] = "hello!";
+  char dst[5];
+  int len = strlen(src);
+  for (int i = 0; i < len; i++)
+    dst[i] = src[i];
+  dst[len] = '\0'; 
+  printf("src: %s\n", src);
+  // !
+  printf("dst: %s\n", dst);
+  // hello!
+```
+
+**Memory Leak**
+
+The memory location to which area 1 was pointing to earlier becomes an orphan.
+
+```c
+  char *area1 = malloc(10); // 0x600003150030
+  char *area2 = malloc(10); // 0x600003150040
+area1 = area2;
+// cannot free 0x600003150030 anymore
+```
+
+### Structs
+
+Key questions:
+- How do structs bundles multiple values in one entity
+- How to use structs as parameter type, return type, field, array element, etc
+- What is a struct vs. struct pointer: Difference between . and ->
+
+Use struct . for actual structs and -> for pointers
+
+### Union
+
+Key questions:
+- When is a union preferred over a struct?
+- How does a union represent different datatypes?
+- How to access each field in a union?
+- How many bytes does a union occupy in memory?
+
+## Threading 
+
+Main thread functions in C:
+- pthread_t tid; - declare the thread
+- pthread_create(thread_id, NULL, func, args) - create the thread
+    - the function will be of type `void *(*start_routine)void*)` aka a function pointer
+    - args is of type `void *arg`
+- pthread_join(thread_id, NULL) - wait for the thread to finish
+    - this function blocks the caller thread until this thread id is finished
+
+To use a thread we pass it the function pointer
+
+E.g.,
+
+```c
+void *print_message(void *arg) {
+  char *str = (char*)arg;
+  printf("%s\n", str);
+  return NULL;
+}
+int main() {
+  pthread_t tid;
+  pthread_create(&tid, NULL, print_message, "hello!");
+  pthread_join(tid, NULL);
+  printf("done");
+}
+```
+
+A function pointer points to the code; it can be used to simplify calling other functions or creating more powerful functions such as a map command
+
+E.g.,
+
+```c
+void func(){
+  printf("hello!\n");
+}
+void bar(){
+  void (*f)(void) = func; 
+  // f is a function pointer
+  f(); // prints out "hello!\n"
+} 
+```
+
+E.g., map implementation
+
+```c
+void map(int (*fun)(int), int *arr, int len) {
+  for (int i = 0; i < len; i++){
+    arr[i] = fun(arr[i]);
+  }
+}
+
+int half(int x) {
+  return x/2;
+}
+
+int main(){
+  int arr[] = {1, 2, 3, 4, 5};
+  map(half, arr, 5); // pass function "half" as an argument
+  // arr becomes 0, 1, 1, 2, 2
+} 
+```
+
+To run multiple threads we can build an array of threads:
+
+```c
+void *func(void *arg){
+  // ignored. see last slide
+}
+
+int main() {
+  pthread_t tids[NUM_THREADS];
+  int total = 0;
+  for (int i = 0; i < NUM_THREADS; i++)
+    pthread_create(&tids[i], NULL, func, i);
+
+  for (int i = 0; i < NUM_THREADS; i++){
+    pthread_join(tids[i], NULL);
+    total += sums[i];
+  }
+}
+```
+
+### Data Sharing in Threads
+
+We can't guarantee concurrent process will run at a given order
+
+E.g.,
+
+```c
+void *func(void *arg) {
+  char *str = (char*)arg;
+  printf("%s\n", str);
+  return NULL;
+}
+int main(){
+  pthread_t tid1, tid2;
+  printf("start!\n");
+  pthread_create(&tid1, NULL, func, "peer1");
+  pthread_create(&tid2, NULL, func, "peer2");
+  printf("main!\n");
+  pthread_join(tid1, NULL);
+  pthread_join(tid2, NULL);
+  printf("end!\n");
+} 
+```
+
+We can't tell whether peer1 will run before peer2. Or wehther the main thread will print "main" before or after the threads.
+
+**Memory Layout**
+
+- **Memory space** is shared by all threads
+- Each thread has its own stack segment (created by func call within the thread)
+    - Local variables cannot be directly accessed by other threads; could be done via pointers
+- **Heap** is shared across all threads
+- **Data** segment contains global variables and is shared by all threads
+- **Code** is shared by all threads ("text segment")
+
+![threads](../media/img/threads.png)
+
+**We can use structures to pass arguments and return values**
+
+```c
+typedef struct params params;
+struct params{int a1, a2, ret;};
+
+void *func(void *arg){
+  params *p = (params*)arg;
+  p->ret = p->a1 + p->a2;
+  return NULL;
+}
+
+int main(){
+  params *p = (params*)malloc(sizeof(params));
+  p->a1 = 1;
+  p->a2 = 2;
+  pthread_t tid;
+  pthread_create(&tid, NULL, func, p);
+  pthread_join(tid, NULL);
+  printf("ret %d\n", p->ret);
+}
+```
+
+We could use *return* to return the value too...
+
+```
+void *func(void *arg){
+  params *p = (params*)arg;
+  return p->a1 + p->a2; // same as pthread_exit(code)
+}
+
+// We later just use pthread join and pass the return address
+pthread_join(tid, &ret);
+```
+
+We can also return multiple values with *pthread_exit(res)*
+
+```
+struct params{int a1, a2;};
+struct results{int sum, mul;};
+
+void *func(void *arg){
+  params *p = (params*)arg;   
+  results *res = (results*)malloc(sizeof(results));
+  res->sum = p->a1 + p->a2;
+  res->mul = p->a1 * p->a2;
+  pthread_exit(res);
+}
+
+int main(){ 
+  params *p = (params*)malloc(sizeof(params));
+  p->a1 = 1;
+  p->a2 = 2;
+  pthread_t tid;
+  pthread_create(&tid, NULL, func, p);
+  results *ret;
+	
+	// load ret to the results pointer
+  pthread_join(tid, &ret);  
+  
+  // then we can access it
+  printf("sum=%d, mul=%d\n", ret->sum, ret->mul); 
+}
+```
+
+### Key Questions
+- How do we build a function and pass it as a pointer in threads?
+- How do we build a structure with multiple values and update it concurrently across threads?
+- How do we ensure functions run in a given order?
+
+### Key Topics for Quiz
+- basic C syntax
+- conditionals
+- C types
+- C functions
+- binary numbers, signed and unsigned
+- related number systems (octal and hexadecimal)
+- bit operations
+- packed representations (as in storing three color components in one int)
+- loops
+- pointers
+- arrays
+- clarity on the stack/heap distinction
+- strings
+- malloc/free

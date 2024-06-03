@@ -12,9 +12,53 @@
 
 ...
 
-### Compendium
+### Avoiding Complex Booleans
 
-**Source:** Testing Google Blog
+**Source:** [Google Testing Blog](https://testing.googleblog.com/2024/04/isbooleantoolongandcomplex.html)
+Avoid complex booleans, encapsulate them as functions or variables whenever possible.
+
+**BAD**: spelled out
+```javascript
+// Decide whether this pizza is fantastic.
+
+if ((!pepperoniService.empty() || sausages.size() > 0)
+
+    && (useOnionFlag.get() || hasMushroom(ENOKI, PORTOBELLO)) && hasCheese()) {
+
+  ...
+
+}
+```
+**GOOD**: as a variable
+```javascript
+boolean hasGoodMeat = !pepperoniService.empty() || sausages.size() > 0;
+boolean hasGoodVeggies = useOnionFlag.get() || hasMushroom(ENOKI, PORTOBELLO);
+boolean isPizzaFantastic = hasGoodMeat && hasGoodVeggies && hasCheese();
+```
+**BETTER**: as a function
+
+```javascript
+boolean isPizzaFantastic() {
+
+  if (!hasCheese()) {
+
+    return false;
+
+  }
+
+  if (pepperoniService.empty() && sausages.size() == 0) {
+
+    return false;
+
+  }
+
+  return useOnionFlag.get() || hasMushroom(ENOKI, PORTOBELLO);
+}
+
+```
+
+
+**Source:** [Google Testing Blog](...)
 
 **Reduce cognitive load by making your code simpler.**
 
@@ -40,10 +84,6 @@ Debugging is a science. Always have a clear mind of what question are you trying
 
 Use the finger of blame. What part of the code is really responsible for the problem. Until you find the smoking gun.
 
-
-### From Philosophy of Software Design
-
-...
 
 ### References
 - [1] [https://martinfowler.com/bliki/FunctionLength.html](https://martinfowler.com/bliki/FunctionLength.html)

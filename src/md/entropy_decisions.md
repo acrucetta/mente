@@ -1,0 +1,17 @@
+The entropy of decisions
+
+Sometimes it happens when you make decisions in a company. They carry their own weight. You can choose to pick a certain technology, or a database. Then it becomes really hard to change it after. You can only change it if you start with a new fresh project, or if something is not working. 
+
+The easiest time to change is before you start the project.
+
+Once you start, your decisions starts carrying more weight. It becomes harder to tame it. If you build your database around Elastic Search, then APIs get built around it. The transformation code connects to it and you build functions to connect the data to the Elastic database.
+
+If you picked an orchestrator, you end up sticking with it. No one wants to change a technology for the sake of changing it. It creates more work for everyone involved and gives no benefit to your business.
+
+Sometimes we can feel if we keep improving and changing the tools we validate our value. But our value only comes from who is paying you. And that most times is the customer, not your boss, or the lead architect in your team.
+
+Its as if we were blowing the leaves from one side of the sidewalk on Tuesday and from the other side of the sidewalk on Thursdays.
+
+A lesson I've learned over time is, if you want to change tools or innovate, do it in a fresh project. Once you've decided on something, you have to commit to making it work. Stripe famously still uses Ruby as their language of choice. They decided they're not going to be adding new technologies. They're going to be focusing on building new features for clients.
+
+The same way you have to decide whats worth more in your startup. Building a shiny modern architecture, or shipping features fast to your customers. Sometimes the shiny features can work. But oftentimes we're fooling ourselves.

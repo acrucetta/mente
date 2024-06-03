@@ -5,17 +5,26 @@
 - **B** = Recommended with reservations
 - **C** = Not recommended
 
+## Want to read next
+- Lenin: The Man, the Dictator, and the Master of Terror
+- Hugo Chavez: Biography
+- Tomorrow, and Tomorrow, and Tomorrow: A Novel
+- Pachinko (National Book Award Finalist)
+
 ## 2024
 1. A Mind At Play, Claude Shannon {claude_shannon} (**A**)
-2. 1Q84 (**S**)
+2. 1Q84 (**S**) {1q84}
 3. Von Neuman's Biography (**B**)
 4. The Power Law, A Story of Venture Capital (**S**)
 5. The Maniac (TBD)
 6. 100 Years of Solitude (TBD)
 7. Slow Productivity by Cal Newport (**A**)
 8. The Mind Gym 
-9. Look Ahead by Cass Sunstein
+9. Look Ahead by Cass Sunstein (**B**)
 10. No Man is an Island (**B+**)
+11. Stalin, The Court of the Red Tsar
+12. 1984 by George Orwell (TBD)
+13. The Founders: The Story of Paypal and the Entrepreneurs Who Shaped Silicon Valley (TBD)
 
 ## 2023
 1. The Three Body Problem (Volumes 1-3) by Cixin Liu (**S**)
