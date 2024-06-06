@@ -1,0 +1,188 @@
+<!DOCTYPE html><html lang='en'>
+<head>
+<meta charset='utf-8'>
+
+            <meta name='viewport' content='width=device-width,initial-scale=1'>
+
+            <link rel='stylesheet' type='text/css' href='../links/main.css'>
+
+            <title>Mente &mdash; llm.htm</title>
+</head>
+<body>
+<header>
+<a href='https://andrescn.me/mente/site/about.html'><img src='../media/interface/logo.svg' alt='Mente' height='100'></a></header>
+<nav>
+<details open>
+  <summary>Menu</summary>
+  <section class="site-nav">
+    <section>
+      <ul class="nobull capital">
+        <li><a href="about.html">About</a></li>
+        <li><a href="books.html">Books</a></li>
+        <li><a href="projects.html">Projects</a></li>
+      </ul>
+    </section>
+    <section>
+      <h2><a id='meta'>Meta</a></h2>
+      <ul class='nobull capital'>
+        <li><a href="index.html">Index</a></li>
+      </ul>
+  </section>
+</details></nav>
+<main>
+
+<!-- Generated file, do not edit -->
+
+<h1>llm.htm</h1>
+<h2>Notes on LLMs</h2>
+<h2>Key Terms:</h2>
+<ul>
+<li>Embeddings</li>
+<li>Retriever</li>
+<li>RAG</li>
+<li>Chain-of-thought</li>
+<li>Vector databases</li>
+<li>HNSW - Hierarchical Navigable Small Worlds: a key method for
+approximate nearest neighbor search in high-dimensional vector
+databases, for example in the context of embeddings from neural networks
+in large language models. Databases that use HNSW as search index
+include: Apache Lucene Vector Search (e.g., Elasticsearch uses the HNSW
+algorithm to support efficient kNN search)</li>
+</ul>
+<h2>Embeddings</h2>
+<p>Embeddings are ways of storing similar words together as low-level
+numbers. It uses a pre-trained neural network to process some text and
+then output an array of numbers e.g., [-0.5,1.0] etc...</p>
+<p>Similar words are closer in the matrix space.</p>
+<p>We normally store these embeddings into a vector DB. An example would
+be:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> embeddings <span class="kw">AS</span> (</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    text string,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">array</span> json_agg[<span class="dt">int</span>]</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p>To query this table, we can get embeddings from our search word and
+take the dot product of our embeddings and the embeddings column in that
+table. Then we just get the top K values.</p>
+<p>Embeddings were popularized by Google in 2013 with statements such as
+“king - man + woman = queen.” The gist of it, as you may know, is that
+we can express words as vectors that encode their semantics in a
+meaningful way.</p>
+<p>Some embedding models are: skip-gram and bag of words.</p>
+<h2>Retrievers</h2>
+<p>It's job is to find relevant documents or pieces of information that
+can help answer a query. It takes the input query and searches a DB to
+retrieve info that might be useful to generate the response</p>
+<p>Types:</p>
+<ul>
+<li>Dense retrievers: they use NN to create dense vector embeddings of
+the text; good for semantic similarities</li>
+<li>Sparse retrievers: rely on term-matching techniques like TF-IDF or
+BM25. They're good at finding docs with exact keyword matches</li>
+</ul>
+<h2>Storing embeddings</h2>
+<p>To store embeddings you can use Postgres with pgvector vs. more
+advanced Vector-DBs. These DBs are queried with dot-products between
+your search term and the embedding space</p>
+<p>E.g.,</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> documents (  </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">id</span> SERIAL <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  document bytea</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">..</span>.</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> embeddings (</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">id</span> SERIAL <span class="kw">PRIMARY</span> <span class="kw">KEY</span>, </span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  document_id <span class="dt">INT</span> <span class="kw">NOT</span> <span class="kw">NULL</span>, </span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">chunk</span> <span class="dt">VARCHAR</span> <span class="kw">NOT</span> <span class="kw">NULL</span>, </span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  embeddings vector(<span class="dv">384</span>), </span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="op">..</span>.</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>);</span></code></pre></div>
+<h2>Lang Chain</h2>
+<ul>
+<li>Components
+<ul>
+<li>LLM wrappers</li>
+<li>Prompt templates</li>
+<li>Indices for relevant info retrieval</li>
+</ul></li>
+<li>Chains
+<ul>
+<li>Assemble components</li>
+</ul></li>
+<li>Agents
+<ul>
+<li>Allow us to execute Python code</li>
+</ul></li>
+</ul>
+<h2>RAG</h2>
+<p>What it is:</p>
+<ul>
+<li>Used to enrich prompts with your documents</li>
+<li>Most widely used technique now, doesn't require training an LLM</li>
+</ul>
+<p>Tools:</p>
+<ul>
+<li>Lang chain</li>
+</ul>
+<p>How to use RAG?</p>
+<ul>
+<li>Get a corpus</li>
+<li>Load it to the prompt interface</li>
+<li>Pass it to the LLM when querying data</li>
+</ul>
+<h3>RAG Stack</h3>
+<ul>
+<li>Current RAG stack to build a QA system
+<ul>
+<li>DOC -&gt; Chunks -&gt; Vector DB -&gt; Chunk -&gt; LLM</li>
+</ul></li>
+<li>Main components are:
+<ul>
+<li>Data: can we store additional info beyond raw text</li>
+<li>Embeddings: can we optimize our embedding representations</li>
+<li>Retrieval: can we do better than top-k embedding lookup?</li>
+<li>Synthesis can we use llm for more than generation? (LLMs for
+reasoning)</li>
+</ul></li>
+</ul>
+<h3>Optimizing RAGs</h3>
+<ul>
+<li>Table stacks:
+<ul>
+<li>Better parsers</li>
+<li>Chunk sizes</li>
+<li>Hybrid search</li>
+<li>Metadata filters</li>
+</ul></li>
+<li>Advanced retrieval
+<ul>
+<li>Reranking</li>
+<li>Recursive retrieval</li>
+<li>Embedded tables</li>
+</ul></li>
+<li>Fine-tuning
+<ul>
+<li>Embedding fine-tuning / LLM fine-tuning Agentic Behavior</li>
+<li>Routing</li>
+<li>Query planning</li>
+<li>Multi-document agent</li>
+</ul></li>
+</ul>
+<p>Chunk sizes:</p>
+<ul>
+<li>Tuning your chunk sizes can have outsized impacts. Not obvious more
+tokens = more performance</li>
+</ul>
+<p>Metadata filtering:</p>
+<ul>
+<li>Context you can inject into each text chunk</li>
+<li>Adding page number, document titles, summary of adjacent chunks</li>
+<li>E.g., give me risk factors in 2021; then we provide metadata tags
+
+
+</main>
+<footer id='end_footer'><hr />
+<span style='float:right'>Edited on 2024-06-06</span><b>Mente</b> © 2023 — 
+</footer>
+</body></html>

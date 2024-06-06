@@ -180,3 +180,291 @@ dereferences s the content might be changed.</p>
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="op">*</span>b is also the value of element <span class="dv">0</span></span>
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>b<span class="op">+</span><span class="dv">1</span> is a pointer to element <span class="dv">1</span></span>
 <span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="op">*(</span>b<span class="op">+</span><span class="dv">1</span><span class="op">)</span> is the value of element <span class="dv">1</span></span></code></pre></div>
+<h2>Strings</h2>
+<p>Strings in C are "just" char arrays. Type is char*</p>
+<p>Chars are stored as numbers according to a code. ASCII is common for
+english.</p>
+<p>To store the char code, write just the single quotes 'H'. To print it
+as char we use '%c'</p>
+<p>We need to either track ther lengths and pass around an unsigned int
+or use the char sentinel '\0'. But we need to remember adding it anytime
+we create strings.</p>
+<p>To write strings we can do:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">// this is read only</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">// cannot be changed using the pointer</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> <span class="op">*</span>s1 <span class="op">=</span> <span class="st">&quot;hello&quot;</span><span class="op">;</span> <span class="co">// sentinel added automatically</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">// allocated in stack</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">// can be changed</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> s4<span class="op">[]</span> <span class="op">=</span> <span class="op">{</span><span class="ch">&#39;H&#39;</span><span class="op">,</span><span class="ch">&#39;e&#39;</span><span class="op">,</span><span class="ch">&#39;l&#39;</span><span class="op">...,</span><span class="ch">&#39;</span><span class="sc">\0</span><span class="ch">&#39;</span><span class="op">}</span> <span class="co">// here we need to add the sentinel</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> <span class="op">*</span>s5 <span class="op">=</span> <span class="op">(</span><span class="dt">char</span><span class="op">*)</span>malloc<span class="op">(</span><span class="kw">sizeof</span><span class="op">(</span><span class="dt">char</span><span class="op">)*</span><span class="dv">20</span><span class="op">);</span> <span class="co">// 19 + sentinel</span></span></code></pre></div>
+<p>To print strings we can use</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>  <span class="dt">char</span> a<span class="op">[]</span> <span class="op">=</span> <span class="st">&quot;abcde&quot;</span><span class="op">;</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%s\n</span><span class="st">&quot;</span><span class="op">,</span> a<span class="op">);</span> <span class="co">// abcde</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%p\n</span><span class="st">&quot;</span><span class="op">,</span> a<span class="op">);</span> <span class="co">// 0x16ba47578</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%c\n</span><span class="st">&quot;</span><span class="op">,</span> <span class="op">*</span>a<span class="op">);</span> <span class="co">// a</span></span></code></pre></div>
+<p>To calculate the length of string we could use the sentinel as
+below:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="dt">unsigned</span> <span class="dt">int</span> strlen2<span class="op">(</span><span class="dt">char</span><span class="op">*</span> s<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">unsigned</span> <span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="op">(</span>s<span class="op">[</span>i<span class="op">]!=</span><span class="ch">&#39;</span><span class="sc">\0</span><span class="ch">&#39;</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>        i<span class="op">++;</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> i<span class="op">;</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="dt">unsigned</span> <span class="dt">int</span> strlen3<span class="op">(</span><span class="dt">char</span> <span class="op">*</span>s<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">char</span> <span class="op">*</span>t <span class="op">=</span> s<span class="op">;</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">while</span> <span class="op">(*</span>t<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    t<span class="op">++;</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span> </span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> t<span class="op">-</span>s<span class="op">;</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>  <span class="dt">char</span><span class="op">*</span> s <span class="op">=</span> <span class="st">&quot;Hello World!&quot;</span><span class="op">;</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>  printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%u\n</span><span class="st">&quot;</span><span class="op">,</span> strlen3<span class="op">(</span>s<span class="op">));</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h3>Iteration v. Recursion</h3>
+<p>Both can do the same thing. Iteration can do it without the overhead
+of function calls and without using stack memory.</p>
+<p>Recursion can keep more previous state that has already been
+executed. Most stack size is 1MB. If we keep maintaining state we will
+run out of stack memory.</p>
+<p>The simplicity of recursion comes at the cost of time and space
+efficiency.</p>
+<h3>Memory Issues</h3>
+<p><strong>Memory Overread</strong></p>
+<p>This happens when we read more bytes than we're supposed to.</p>
+<p>E.g.,</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> a<span class="op">[]</span> <span class="op">=</span> <span class="st">&quot;hello!&quot;</span><span class="op">;</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">while</span> <span class="op">(</span>i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%c</span><span class="st"> at </span><span class="sc">%p\n</span><span class="st">&quot;</span><span class="op">,</span> a<span class="op">[</span>i<span class="op">],</span> a<span class="op">+</span>i<span class="op">);</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span></code></pre></div>
+<p><strong>Memory Overwrite</strong></p>
+<p>We end up overwriting the memory spaces.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>  <span class="dt">char</span> src<span class="op">[]</span> <span class="op">=</span> <span class="st">&quot;hello!&quot;</span><span class="op">;</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">char</span> dst<span class="op">[</span><span class="dv">5</span><span class="op">];</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> len <span class="op">=</span> strlen<span class="op">(</span>src<span class="op">);</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> len<span class="op">;</span> i<span class="op">++)</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    dst<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> src<span class="op">[</span>i<span class="op">];</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  dst<span class="op">[</span>len<span class="op">]</span> <span class="op">=</span> <span class="ch">&#39;</span><span class="sc">\0</span><span class="ch">&#39;</span><span class="op">;</span> </span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  printf<span class="op">(</span><span class="st">&quot;src: </span><span class="sc">%s\n</span><span class="st">&quot;</span><span class="op">,</span> src<span class="op">);</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">// !</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  printf<span class="op">(</span><span class="st">&quot;dst: </span><span class="sc">%s\n</span><span class="st">&quot;</span><span class="op">,</span> dst<span class="op">);</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="co">// hello!</span></span></code></pre></div>
+<p><strong>Memory Leak</strong></p>
+<p>The memory location to which area 1 was pointing to earlier becomes
+an orphan.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>  <span class="dt">char</span> <span class="op">*</span>area1 <span class="op">=</span> malloc<span class="op">(</span><span class="dv">10</span><span class="op">);</span> <span class="co">// 0x600003150030</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">char</span> <span class="op">*</span>area2 <span class="op">=</span> malloc<span class="op">(</span><span class="dv">10</span><span class="op">);</span> <span class="co">// 0x600003150040</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>area1 <span class="op">=</span> area2<span class="op">;</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co">// cannot free 0x600003150030 anymore</span></span></code></pre></div>
+<h3>Structs</h3>
+<p>Key questions:</p>
+<ul>
+<li>How do structs bundles multiple values in one entity</li>
+<li>How to use structs as parameter type, return type, field, array
+element, etc</li>
+<li>What is a struct vs. struct pointer: Difference between . and
+-&gt;</li>
+</ul>
+<p>Use struct . for actual structs and -&gt; for pointers</p>
+<h3>Union</h3>
+<p>Key questions:</p>
+<ul>
+<li>When is a union preferred over a struct?</li>
+<li>How does a union represent different datatypes?</li>
+<li>How to access each field in a union?</li>
+<li>How many bytes does a union occupy in memory?</li>
+</ul>
+<h2>Threading</h2>
+<p>Main thread functions in C:</p>
+<ul>
+<li>pthread_t tid; - declare the thread</li>
+<li>pthread_create(thread_id, NULL, func, args) - create the thread
+<ul>
+<li>the function will be of type
+<code>void *(*start_routine)void*)</code> aka a function pointer</li>
+<li>args is of type <code>void *arg</code></li>
+</ul></li>
+<li>pthread_join(thread_id, NULL) - wait for the thread to finish
+<ul>
+<li>this function blocks the caller thread until this thread id is
+finished</li>
+</ul></li>
+</ul>
+<p>To use a thread we pass it the function pointer</p>
+<p>E.g.,</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> <span class="op">*</span>print_message<span class="op">(</span><span class="dt">void</span> <span class="op">*</span>arg<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">char</span> <span class="op">*</span>str <span class="op">=</span> <span class="op">(</span><span class="dt">char</span><span class="op">*)</span>arg<span class="op">;</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%s\n</span><span class="st">&quot;</span><span class="op">,</span> str<span class="op">);</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> NULL<span class="op">;</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  pthread_t tid<span class="op">;</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  pthread_create<span class="op">(&amp;</span>tid<span class="op">,</span> NULL<span class="op">,</span> print_message<span class="op">,</span> <span class="st">&quot;hello!&quot;</span><span class="op">);</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  pthread_join<span class="op">(</span>tid<span class="op">,</span> NULL<span class="op">);</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  printf<span class="op">(</span><span class="st">&quot;done&quot;</span><span class="op">);</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>A function pointer points to the code; it can be used to simplify
+calling other functions or creating more powerful functions such as a
+map command</p>
+<p>E.g.,</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> func<span class="op">(){</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  printf<span class="op">(</span><span class="st">&quot;hello!</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> bar<span class="op">(){</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">void</span> <span class="op">(*</span>f<span class="op">)(</span><span class="dt">void</span><span class="op">)</span> <span class="op">=</span> func<span class="op">;</span> </span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">// f is a function pointer</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  f<span class="op">();</span> <span class="co">// prints out &quot;hello!\n&quot;</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> </span></code></pre></div>
+<p>E.g., map implementation</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> map<span class="op">(</span><span class="dt">int</span> <span class="op">(*</span>fun<span class="op">)(</span><span class="dt">int</span><span class="op">),</span> <span class="dt">int</span> <span class="op">*</span>arr<span class="op">,</span> <span class="dt">int</span> len<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> len<span class="op">;</span> i<span class="op">++){</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    arr<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> fun<span class="op">(</span>arr<span class="op">[</span>i<span class="op">]);</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> half<span class="op">(</span><span class="dt">int</span> x<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> x<span class="op">/</span><span class="dv">2</span><span class="op">;</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(){</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> arr<span class="op">[]</span> <span class="op">=</span> <span class="op">{</span><span class="dv">1</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">4</span><span class="op">,</span> <span class="dv">5</span><span class="op">};</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>  map<span class="op">(</span>half<span class="op">,</span> arr<span class="op">,</span> <span class="dv">5</span><span class="op">);</span> <span class="co">// pass function &quot;half&quot; as an argument</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>  <span class="co">// arr becomes 0, 1, 1, 2, 2</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> </span></code></pre></div>
+<p>To run multiple threads we can build an array of threads:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> <span class="op">*</span>func<span class="op">(</span><span class="dt">void</span> <span class="op">*</span>arg<span class="op">){</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">// ignored. see last slide</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  pthread_t tids<span class="op">[</span>NUM_THREADS<span class="op">];</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> total <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> NUM_THREADS<span class="op">;</span> i<span class="op">++)</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    pthread_create<span class="op">(&amp;</span>tids<span class="op">[</span>i<span class="op">],</span> NULL<span class="op">,</span> func<span class="op">,</span> i<span class="op">);</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> NUM_THREADS<span class="op">;</span> i<span class="op">++){</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>    pthread_join<span class="op">(</span>tids<span class="op">[</span>i<span class="op">],</span> NULL<span class="op">);</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>    total <span class="op">+=</span> sums<span class="op">[</span>i<span class="op">];</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h3>Data Sharing in Threads</h3>
+<p>We can't guarantee concurrent process will run at a given order</p>
+<p>E.g.,</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> <span class="op">*</span>func<span class="op">(</span><span class="dt">void</span> <span class="op">*</span>arg<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">char</span> <span class="op">*</span>str <span class="op">=</span> <span class="op">(</span><span class="dt">char</span><span class="op">*)</span>arg<span class="op">;</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%s\n</span><span class="st">&quot;</span><span class="op">,</span> str<span class="op">);</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> NULL<span class="op">;</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(){</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  pthread_t tid1<span class="op">,</span> tid2<span class="op">;</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  printf<span class="op">(</span><span class="st">&quot;start!</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  pthread_create<span class="op">(&amp;</span>tid1<span class="op">,</span> NULL<span class="op">,</span> func<span class="op">,</span> <span class="st">&quot;peer1&quot;</span><span class="op">);</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  pthread_create<span class="op">(&amp;</span>tid2<span class="op">,</span> NULL<span class="op">,</span> func<span class="op">,</span> <span class="st">&quot;peer2&quot;</span><span class="op">);</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  printf<span class="op">(</span><span class="st">&quot;main!</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  pthread_join<span class="op">(</span>tid1<span class="op">,</span> NULL<span class="op">);</span></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>  pthread_join<span class="op">(</span>tid2<span class="op">,</span> NULL<span class="op">);</span></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>  printf<span class="op">(</span><span class="st">&quot;end!</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> </span></code></pre></div>
+<p>We can't tell whether peer1 will run before peer2. Or wehther the
+main thread will print "main" before or after the threads.</p>
+<p><strong>Memory Layout</strong></p>
+<ul>
+<li><strong>Memory space</strong> is shared by all threads</li>
+<li>Each thread has its own stack segment (created by func call within
+the thread)
+<ul>
+<li>Local variables cannot be directly accessed by other threads; could
+be done via pointers</li>
+</ul></li>
+<li><strong>Heap</strong> is shared across all threads</li>
+<li><strong>Data</strong> segment contains global variables and is
+shared by all threads</li>
+<li><strong>Code</strong> is shared by all threads ("text segment")</li>
+</ul>
+<p><img src="../media/img/threads.png" alt="threads" /></p>
+<p><strong>We can use structures to pass arguments and return
+values</strong></p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">struct</span> params params<span class="op">;</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> params<span class="op">{</span><span class="dt">int</span> a1<span class="op">,</span> a2<span class="op">,</span> ret<span class="op">;};</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> <span class="op">*</span>func<span class="op">(</span><span class="dt">void</span> <span class="op">*</span>arg<span class="op">){</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  params <span class="op">*</span>p <span class="op">=</span> <span class="op">(</span>params<span class="op">*)</span>arg<span class="op">;</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  p<span class="op">-&gt;</span>ret <span class="op">=</span> p<span class="op">-&gt;</span>a1 <span class="op">+</span> p<span class="op">-&gt;</span>a2<span class="op">;</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> NULL<span class="op">;</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(){</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>  params <span class="op">*</span>p <span class="op">=</span> <span class="op">(</span>params<span class="op">*)</span>malloc<span class="op">(</span><span class="kw">sizeof</span><span class="op">(</span>params<span class="op">));</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>  p<span class="op">-&gt;</span>a1 <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>  p<span class="op">-&gt;</span>a2 <span class="op">=</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>  pthread_t tid<span class="op">;</span></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>  pthread_create<span class="op">(&amp;</span>tid<span class="op">,</span> NULL<span class="op">,</span> func<span class="op">,</span> p<span class="op">);</span></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>  pthread_join<span class="op">(</span>tid<span class="op">,</span> NULL<span class="op">);</span></span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>  printf<span class="op">(</span><span class="st">&quot;ret </span><span class="sc">%d\n</span><span class="st">&quot;</span><span class="op">,</span> p<span class="op">-&gt;</span>ret<span class="op">);</span></span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>We could use <em>return</em> to return the value too...</p>
+<pre><code>void *func(void *arg){
+  params *p = (params*)arg;
+  return p-&gt;a1 + p-&gt;a2; // same as pthread_exit(code)
+}
+
+// We later just use pthread join and pass the return address
+pthread_join(tid, &amp;ret);</code></pre>
+<p>We can also return multiple values with
+<em>pthread_exit(res)</em></p>
+<pre><code>struct params{int a1, a2;};
+struct results{int sum, mul;};
+
+void *func(void *arg){
+  params *p = (params*)arg;   
+  results *res = (results*)malloc(sizeof(results));
+  res-&gt;sum = p-&gt;a1 + p-&gt;a2;
+  res-&gt;mul = p-&gt;a1 * p-&gt;a2;
+  pthread_exit(res);
+}
+
+int main(){ 
+  params *p = (params*)malloc(sizeof(params));
+  p-&gt;a1 = 1;
+  p-&gt;a2 = 2;
+  pthread_t tid;
+  pthread_create(&amp;tid, NULL, func, p);
+  results *ret;
+    
+    // load ret to the results pointer
+  pthread_join(tid, &amp;ret);  
+  
+  // then we can access it
+  printf(&quot;sum=%d, mul=%d\n&quot;, ret-&gt;sum, ret-&gt;mul); 
+}</code></pre>
+<h3>Key Questions</h3>
+<ul>
+<li>How do we build a function and pass it as a pointer in threads?</li>
+<li>How do we build a structure with multiple values and update it
+concurrently across threads?</li>
+<li>How do we ensure functions run in a given order?</li>
+</ul>
+<h3>Key Topics for Quiz</h3>
+<ul>
+<li>basic C syntax</li>
+<li>conditionals</li>
+<li>C types</li>
+<li>C functions</li>
+<li>binary numbers, signed and unsigned</li>
+<li>related number systems (octal and hexadecimal)</li>
+<li>bit operations</li>
+<li>packed representations (as in storing three color components in one
+int)</li>
+<li>loops</li>
+<li>pointers</li>
+<li>arrays</li>
+<li>clarity on the stack/heap distinction</li>
+<li>strings</li>
+<li>malloc/free</li>
+</ul>

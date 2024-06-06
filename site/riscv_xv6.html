@@ -1,0 +1,300 @@
+<!DOCTYPE html><html lang='en'>
+<head>
+<meta charset='utf-8'>
+
+            <meta name='viewport' content='width=device-width,initial-scale=1'>
+
+            <link rel='stylesheet' type='text/css' href='../links/main.css'>
+
+            <title>Mente &mdash; riscv_xv6.htm</title>
+</head>
+<body>
+<header>
+<a href='https://andrescn.me/mente/site/about.html'><img src='../media/interface/logo.svg' alt='Mente' height='100'></a></header>
+<nav>
+<details open>
+  <summary>Menu</summary>
+  <section class="site-nav">
+    <section>
+      <ul class="nobull capital">
+        <li><a href="about.html">About</a></li>
+        <li><a href="books.html">Books</a></li>
+        <li><a href="projects.html">Projects</a></li>
+      </ul>
+    </section>
+    <section>
+      <h2><a id='meta'>Meta</a></h2>
+      <ul class='nobull capital'>
+        <li><a href="index.html">Index</a></li>
+      </ul>
+  </section>
+</details></nav>
+<main>
+
+<!-- Generated file, do not edit -->
+
+<h1>riscv_xv6.htm</h1>
+<h2>Notes on XV6 Risc-V</h2>
+<h2>Key Terms</h2>
+<ul>
+<li>inode: contains metadata about a file. E.g., size, type, number of
+links. It is basically a data structure that describes a file-system
+object such as a file or a directory.</li>
+<li>ELF Headers</li>
+<li>stack</li>
+<li>guard page</li>
+</ul>
+<h2>RISCV System Overview</h2>
+<p>Features of xv6</p>
+<ul>
+<li>Processes</li>
+<li>Virtual address spaces, page tables</li>
+<li>Files, directories</li>
+<li>Pipes</li>
+<li>Multi-tasking, time slicing</li>
+<li>21 sys calls</li>
+</ul>
+<p>It contains the main Unix sys calls: grep, ls, grep, echo, kill,
+ln...</p>
+<p>What is missing?</p>
+<ul>
+<li>All of the complexity of a "real" OS</li>
+<li>User IDs, login, file protection, mountable filesystems</li>
+<li>Paging to disk</li>
+<li>Sockets, support for networks</li>
+<li>IPC (interprocess comms)</li>
+<li>Device drivers (only 2)</li>
+<li>User code / apps</li>
+</ul>
+<h2>General Features</h2>
+<p>"SMP": shared memory multiprocessor</p>
+<ul>
+<li>main memory (ram) is shared</li>
+<li>128 mbytes (fixed with define)</li>
+</ul>
+<p>Memory Management</p>
+<ul>
+<li>Page Size = 4096 bytes</li>
+<li>Single free list</li>
+<li>No variable-sized allocation</li>
+<li>No malloc</li>
+<li>Page tables have
+<ul>
+<li>three levels</li>
+<li>one table per process plus one for the kernel</li>
+<li>pages are marked as r/w/x/u/v</li>
+</ul></li>
+</ul>
+<p>Scheduler</p>
+<ul>
+<li>Round robin</li>
+<li>Size of timeslice is fixed (1M cycles)</li>
+<li>All cores share one "ready queue"</li>
+<li>Next time slice may be on a diff core</li>
+</ul>
+<p>Boot sequence</p>
+<ul>
+<li>QEMU
+<ul>
+<li>Loads kernel code at a fixed address</li>
+</ul></li>
+<li>No bootloader/boot block or bios</li>
+</ul>
+<p>Locking</p>
+<ul>
+<li>Spin locks</li>
+<li>sleep() ; wakeup()</li>
+</ul>
+<p>"param.h"</p>
+<ul>
+<li>fixed limits (# of processes and open files)</li>
+<li>several arrays (e.g. pids)</li>
+</ul>
+<p>Address Space</p>
+<ul>
+<li>Max VA</li>
+<li>Trampoline Page (not available to user)</li>
+<li>Trap Frame (not available to user)</li>
+<li>HEAP</li>
+<li>Stack (1 page)</li>
+<li>Guard Page (1 page) - not available to user</li>
+<li>Data and code (Loaded from ELF exec file)</li>
+</ul>
+<p>RISC Architecture</p>
+<ul>
+<li>Multiple schemes (SV 32, 39 or 48)</li>
+<li>xv6 uses SV39 architecture</li>
+<li>Virtual address size:
+<ul>
+<li>39 bits</li>
+<li>2^39 = 512 GB</li>
+</ul></li>
+</ul>
+<h3>Anatomy of a system call</h3>
+<p>User space</p>
+<ul>
+<li>user.h</li>
+<li>usys.S
+<ul>
+<li>Short sub-routine for all the sys calls</li>
+<li>Calls syscall.h -&gt; looks for the number of the syscall there</li>
+</ul></li>
+<li>syscall.C</li>
+</ul>
+<p>Process:</p>
+<ul>
+<li>User mode calls TRAP</li>
+<li>Trap operates in Kernel Mode</li>
+<li>Then we call sret to go back into user mode TO REVIEW</li>
+</ul>
+<h2>System Calls</h2>
+<h3>Exec()</h3>
+<p><a
+href="https://www.youtube.com/watch?v=bp0qo4-ozEg&amp;list=PLbtzT1TYeoMhTPzyTZboW_j7TPAnjv9XB&amp;index=38">Video</a></p>
+<ul>
+<li>ELF File Format: Linux / Unix</li>
+<li>Mach-O: MacOs, iOS</li>
+<li>Windows: PE</li>
+</ul>
+<p>ELF File Format (contained in elf.h file)</p>
+<ul>
+<li>File Header (fixed format)
+<ul>
+<li>Has info on the system type, executable code, entry points, where in
+file the program header begins</li>
+<li>Little endian vs. big endian</li>
+</ul></li>
+<li>Program Headers (each is fixed size)
+<ul>
+<li>Type</li>
+<li>Flags</li>
+<li>Offset</li>
+<li>Virtual Address (vaddr): Where in memory</li>
+<li>File Size: How much data in the segment</li>
+<li>Memory Size: How many bytes in memory segment</li>
+<li>Align</li>
+</ul></li>
+<li>Segments (chunk of data bytes)</li>
+<li>Other stuff (section headers, relocation info, debugging info)</li>
+</ul>
+<p><code>sys_exec</code></p>
+<ul>
+<li>Called before the <code>exec()</code> function</li>
+</ul>
+<p><code>exec()</code></p>
+<ul>
+<li>Begins with a transaction</li>
+<li>It ensures the file exists and loads it into <code>ip</code>
+(inode)</li>
+<li>Then it locks the file with <code>ilock</code></li>
+<li>Checks magic number; if it's OK we keep going</li>
+<li>We then call <code>proc_pagetable</code>; create a new virtual
+address space and have the function point to the new address space
+(<code>pagetable</code>)</li>
+<li>We the ego through a for loop of the <code>program headers</code>
+<ul>
+<li>We check the type field, ensure it's not ELF_PROG_LOAD ("loadable
+segment")</li>
+<li>We check that memory size is not less than file size</li>
+<li>We then check that the virtual address for overflows
+<ul>
+<li>e.g., <code>ph.vaddr + ph.memsz &lt; v.addr</code> this happens when
+its negative (they are unsigned integers)</li>
+<li>If overflow occurs this will be negative</li>
+</ul></li>
+<li>We check that the address is a multiple of page size</li>
+<li>We call <code>uvmalloc</code>
+<ul>
+<li>We provide a size large enough to contain the segment we're
+holding</li>
+<li>We call flags2perm
+<ul>
+<li>Take the offset with the executable bit</li>
+<li>It ensures the executable and writable bits are set</li>
+</ul></li>
+<li>If there's a problem we return 0</li>
+</ul></li>
+</ul></li>
+<li>Load the segment to the virtual address space
+<ul>
+<li>We tell it the file size <code>ph.filesz</code> and where in the
+file those files begin <code>ph.off</code></li>
+</ul></li>
+<li>Once we're done with the loop we unlock and end the operation</li>
+<li>We then call <code>uvmalloc</code> with the page table
+<ul>
+<li>We round up to the next page boundary</li>
+<li>We allocate the current size plus two pages (for the stack and the
+guard page)</li>
+<li>The pages will be marked as readable and accessible in user mode
+(U/R/W)</li>
+</ul></li>
+<li>We then call <code>uvmclear</code> to mark the guard page not
+accesible in usermode</li>
+</ul>
+<p>We now deal with argument strings</p>
+<ul>
+<li>We want to push each of the argument strings to the stack and push
+an array with pointers to those arguments</li>
+<li>We then copy the string to the position of the stack pointer</li>
+<li><code>ustack[argc]</code> we save a pointer</li>
+</ul>
+<p>We then push the array of argv[] pointers</p>
+<ul>
+<li>Copy argc+1 (null pointer)</li>
+</ul>
+<h4>loadseg(pagetable_t pagetable, uint64 va, struct inode *ip, uint
+offset, uint sz)</h4>
+<p><em>Load a program segment into pagetable at virtual address va.</em>
+<em>va must be page-aligned and the pages from va to va+sz must already
+be mapped. Returns 0 on success, -1 on failure.</em></p>
+<ul>
+<li>Takes address at which we load the data, the inode, the offset and
+the size of bits we're moving into the address space</li>
+<li>We will loop in units of page size until we move all the
+<code>sz</code> bytes.</li>
+<li>We call <code>walkaddr</code> which will give us the physical
+address of the page in kernel memory</li>
+<li>We finally call readi with the inode and the physical address</li>
+</ul>
+<h4>uvmalloc(pagetable_t pagetable, uint64 oldsz, uint64 newsz, int
+xperm)</h4>
+<p><em>Allocate PTEs and physical memory to grow process from oldsz to
+newsz, which need not be page aligned. Returns new size or 0 on
+error.</em></p>
+<p><strong>TO REVIEW</strong></p>
+<h3>Fork()</h3>
+<ul>
+<li>Calls allocproc: obtain new proc struct with a new PID</li>
+<li>Copy virtual address space
+<ul>
+<li>all data pages are copied</li>
+<li>if there are any issues we free the proc structure</li>
+</ul></li>
+<li>Initialize proc structure
+<ul>
+<li>sz</li>
+<li>trapframe:</li>
+<li>name</li>
+<li>ofile: copy open files</li>
+<li>cwd: copy current working dir</li>
+<li>parent: set the parent piointer to the parents proc</li>
+<li>state: make it runnable</li>
+</ul></li>
+<li>Return the PID of the process</li>
+</ul>
+<p>Child Process:</p>
+<ul>
+<li>Alloc Proc
+<ul>
+<li>Initializes context</li>
+<li>Zeroes registers</li>
+</ul></li>
+</ul>
+
+
+</main>
+<footer id='end_footer'><hr />
+<span style='float:right'>Edited on 2024-06-06</span><b>Mente</b> © 2023 — 
+</footer>
+</body></html>

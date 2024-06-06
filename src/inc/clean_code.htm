@@ -4,8 +4,46 @@
 <p>...</p>
 <h4>Single Responsibility Principle</h4>
 <p>...</p>
-<h3>Compendium</h3>
-<p><strong>Source:</strong> Testing Google Blog</p>
+<h3>Avoiding Complex Booleans</h3>
+<p><strong>Source:</strong> <a
+href="https://testing.googleblog.com/2024/04/isbooleantoolongandcomplex.html">Google
+Testing Blog</a> Avoid complex booleans, encapsulate them as functions
+or variables whenever possible.</p>
+<p><strong>BAD</strong>: spelled out</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Decide whether this pizza is fantastic.</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> ((<span class="op">!</span>pepperoniService<span class="op">.</span><span class="fu">empty</span>() <span class="op">||</span> sausages<span class="op">.</span><span class="fu">size</span>() <span class="op">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">&amp;&amp;</span> (useOnionFlag<span class="op">.</span><span class="fu">get</span>() <span class="op">||</span> <span class="fu">hasMushroom</span>(ENOKI<span class="op">,</span> PORTOBELLO)) <span class="op">&amp;&amp;</span> <span class="fu">hasCheese</span>()) {</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="op">...</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p><strong>GOOD</strong>: as a variable</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>boolean hasGoodMeat <span class="op">=</span> <span class="op">!</span>pepperoniService<span class="op">.</span><span class="fu">empty</span>() <span class="op">||</span> sausages<span class="op">.</span><span class="fu">size</span>() <span class="op">&gt;</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>boolean hasGoodVeggies <span class="op">=</span> useOnionFlag<span class="op">.</span><span class="fu">get</span>() <span class="op">||</span> <span class="fu">hasMushroom</span>(ENOKI<span class="op">,</span> PORTOBELLO)<span class="op">;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>boolean isPizzaFantastic <span class="op">=</span> hasGoodMeat <span class="op">&amp;&amp;</span> hasGoodVeggies <span class="op">&amp;&amp;</span> <span class="fu">hasCheese</span>()<span class="op">;</span></span></code></pre></div>
+<p><strong>BETTER</strong>: as a function</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>boolean <span class="fu">isPizzaFantastic</span>() {</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="op">!</span><span class="fu">hasCheese</span>()) {</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (pepperoniService<span class="op">.</span><span class="fu">empty</span>() <span class="op">&amp;&amp;</span> sausages<span class="op">.</span><span class="fu">size</span>() <span class="op">==</span> <span class="dv">0</span>) {</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> useOnionFlag<span class="op">.</span><span class="fu">get</span>() <span class="op">||</span> <span class="fu">hasMushroom</span>(ENOKI<span class="op">,</span> PORTOBELLO)<span class="op">;</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p><strong>Source:</strong> <a href="...">Google Testing Blog</a></p>
 <p><strong>Reduce cognitive load by making your code
 simpler.</strong></p>
 <ul>
@@ -55,8 +93,6 @@ you trying to answer. Before you debug think <em>What do I think will
 happen in this breakpoint?</em></p>
 <p>Use the finger of blame. What part of the code is really responsible
 for the problem. Until you find the smoking gun.</p>
-<h3>From Philosophy of Software Design</h3>
-<p>...</p>
 <h3>References</h3>
 <ul>
 <li>[1] <a

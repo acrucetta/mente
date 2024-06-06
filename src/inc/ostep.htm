@@ -1,11 +1,11 @@
-<h2>Notes on Operating Systems in 3 Easy Pieces</h2>
+<h1>Notes on Operating Systems in 3 Easy Pieces</h1>
 <h3>Anki Questions</h3>
 <h4>System Calls</h4>
 <p><strong>What does wait() do?</strong> The parent process calls wait()
 to delay its execution until the child finishes executing. When the
 child is done, wait() returns to the parent.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> rc <span class="op">=</span> fork<span class="op">();</span> <span class="co">// Fork a new process</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">-</span>     <span class="dt">int</span> rc <span class="op">=</span> fork<span class="op">();</span> <span class="co">// Fork a new process</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>rc <span class="op">&lt;</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Fork failed; exit</span></span>
@@ -463,12 +463,552 @@ large chunk on the free list</li>
 <li>Next fit: keep a pointer to the location within the list where one
 was looking last. Avoids exhaustive looking.</li>
 </ul>
-<p>Segregated lists: if an app has few popular-sized requests that it
-makes. Keep a separate list just to manage objects of that size.
-Anything else send to a more general allocator. An issue is how much
-memory do you keep for this speciall allocator.</p>
+<p><strong>Segregated lists</strong></p>
+<p>If an app has few popular-sized requests that it makes. Keep a
+separate list just to manage objects of that size. Anything else send to
+a more general allocator. An issue is how much memory do you keep for
+this speciall allocator.</p>
 <p>To fix this Jeff Bonwick invented the slab allocator. When the kernel
 boots up, it allocates object caches for kernel objects requested
 frequently. Thus these caches are segregated free lists of a given size
 and serve quickly. When they're running low on space they ask for slabs
 of memory from the general memory allocator.</p>
+<p><strong>Buddy allocation</strong></p>
+<p>Memory is thought of as a big space of size 2^N. When the request is
+made. THe search divides free space by two until a block that is big
+enough can be returned. Then its returned to the user.</p>
+<p>When the block is freed. The allocator checks whether the buddy 8KB
+is free. If so, it coalesces the blocks. And so on and so forth. It
+stops when a buddy is found in use.</p>
+<p>There are many trade-offs in these allocators. The more you know
+about the workloads, the more you can tune it to work better for that
+workload. Making it fast and spece-efficient is still a big
+challenge.</p>
+<p>In the exercise, we can see how changing the order of the sizes can
+speed up searching through the lists. When we use worst fit, and sort in
+descending order, the searching is quick. If it was sorted in ascending
+order it would take close to O(N).</p>
+<p>When we coalesce the list, even if we have a lot of ops, we end up
+with a smaller free-list. I assume this would lower the latency of the
+process.</p>
+<p>When many of the operations were to free vs. allocate we returned
+more and less failures in allocating memory. It makes sense, when we run
+out of memory we start returning -1 to the malloc() functions.</p>
+<h3>Paging: Introduction</h3>
+<p>Key question: how do we virtualize memory with pages to avoid the
+problems of segmentation.</p>
+<h3>The Page Table</h3>
+<p>One of the most important data structures in the memory management
+subsystem of a modern OS is the page table.</p>
+<p>It stores virtual-to-physical address translations. Letting the
+system know where each page of an address resides in physical
+memory.</p>
+<p>Structure of a page table:</p>
+<p>PFN | G | PAT | D | A | PCD | PWT | U/S | R/W | P</p>
+<ul>
+<li>We have a present bit</li>
+<li>A reference bit</li>
+<li>A read/write bit</li>
+<li>A user/supervisor bit</li>
+<li>Hardware caching bits</li>
+<li>An accessed bit</li>
+<li>A dirty bit</li>
+<li>And the page-frame-number itself</li>
+</ul>
+<p><strong>Formula to calculate map from virtual to phyisical
+memory</strong></p>
+<p>The main page table operation can be exemplified by:</p>
+<p><code>movl 21, %eax</code></p>
+<p>This means that we're referencing address 21. We want to translate
+virtual address 21 into the proper address 117. To do so we need to run
+the instructions below to find the physical address.</p>
+<p>To find the location of the desired page table entry.</p>
+<pre><code>// Extract the VPN from the virtual address
+VPN = (virtualAddress &amp; VPN_MASK) &gt;&gt; SHIFT
+
+// Form the address of the PTE
+PTEAddr = PageTableBase Register + (VPN * sizeof(PTE))</code></pre>
+<p>In the example above shift is 4 (number of bits in the1 offset).
+Assuming we have a virtual address 21 (010101); the masking turns this
+value into 010000; the shift turns it into 01 which would be the virtual
+page 1.</p>
+<p>We then use this value to index the array of PTEs.</p>
+<pre><code>// Access is OK, form the physical address and fetch it
+offset = virtual address &amp; offset mask
+physical address = (PFN &lt;&lt; shift) | offset</code></pre>
+<p>With this physical address, the hardware can fetch the desired data
+from memory and put it into register eax.</p>
+<p>Summary code:</p>
+<pre><code>// Extract the VPN from the virtual address
+VPN = (VirtualAddress &amp; VPN_MASK) &gt;&gt; SHIFT
+
+// Form the address of the page-table entry (PTE)
+PTEAddr = PTBR + (VPN * sizeof(PTE))
+
+// Fetch the PTE
+PTE = AccessMemory(PTEAddr)
+
+// Check if process can access the page
+if (PTE.Valid == False)
+    RaiseException(SEGMENTATION_FAULT)
+else if (CanAccess(PTE.ProtectBits) == False)
+    RaiseException(PROTECTION_FAULT)
+else
+// Access is OK: form physical address and fetch it
+offset = VirtualAddress &amp; OFFSET_MASK
+PhysAddr = (PTE.PFN &lt;&lt; PFN_SHIFT) | offset
+Register = AccessMemory(PhysAddr)</code></pre>
+<p><strong>Example translation</strong></p>
+<p>Virtual Address 4: 0x00003a1e (Decimal: 14878)</p>
+<p><strong>Extract VPN and Offset:</strong></p>
+<ul>
+<li>Hexadecimal 0x3a1e to binary is 11 1010 0001 1110.</li>
+<li>VPN: Top 2 bits → 11 (binary) → 3 (decimal).</li>
+<li>Offset: Lower 12 bits → 1010 0001 1110 → 0xa1e (hex).</li>
+</ul>
+<p><strong>Check Page Table for VPN 3:</strong></p>
+<ul>
+<li>Entry: 0x80000006 (Valid, PFN = 6).</li>
+</ul>
+<p><strong>Calculate Physical Address:</strong></p>
+<ul>
+<li>PFN 6 to base address: 6 * 4096 = 24576 or 0x6000.</li>
+<li>Physical Address: 0x6000 + 0xa1e = 0x6a1e.</li>
+</ul>
+<h3>Reflection questions</h3>
+<p>What happens as address space grows?</p>
+<ul>
+<li>We get more potential page tables</li>
+</ul>
+<p>What happens as we increase page size?</p>
+<ul>
+<li>We get less page tables; bigger ones</li>
+</ul>
+<p>Why not use big page sizes in general?</p>
+<ul>
+<li>As we increase the size of the pages, we get less pages in the page
+table entry.</li>
+<li>The bigger the tables the more fragmentation.</li>
+<li>Bigger pages mean smaller processes must still be allocated a full
+large page.</li>
+<li>Larger pages can reduce the effectiveness of cache systems. Ihey can
+decrease the locality of reference.</li>
+<li>When page fault occur, the system must load the required page from
+disk. Larger pages means more transferred data per page fault, which can
+slow down the response time</li>
+</ul>
+<p>What happens as you increase the percentage of pages that are
+allocated in each address space?</p>
+<ul>
+<li>We suffer more page faults because the physical memory is busy</li>
+<li>The system might have to swap pages in and out more frequently</li>
+</ul>
+<h3>Paging: Faster Translations</h3>
+<p>Key question: how can we speed up address translation, and generally
+avoid the extra memory reference that paging seems to require? What kind
+of hardware support do we need?</p>
+<p>To speed up translations we use a cache. We call it the
+translation-lookaside buffer (TLB). It is simply a hardware cache of
+popular translations. A better name would be an address-translation
+cache.</p>
+<p>Example algorithm:</p>
+<pre><code>VPN = (VirtualAddress &amp; VPN_MASK) &gt;&gt; SHIFT
+(Success, TlbEntry) = TLB_Lookup(VPN)
+if (Success == True)   // TLB Hit
+    if (CanAccess(TlbEntry.ProtectBits) == True)
+        Offset   = VirtualAddress &amp; OFFSET_MASK
+        PhysAddr = (TlbEntry.PFN &lt;&lt; SHIFT) | Offset
+        Register = AccessMemory(PhysAddr)
+    else
+        RaiseException(PROTECTION_FAULT)
+else                  // TLB Miss
+    PTEAddr = PTBR + (VPN * sizeof(PTE))
+    PTE = AccessMemory(PTEAddr)
+    if (PTE.Valid == False)
+        RaiseException(SEGMENTATION_FAULT)
+    else if (CanAccess(PTE.ProtectBits) == False)
+        RaiseException(PROTECTION_FAULT)
+    else
+        TLB_Insert(VPN, PTE.PFN, PTE.ProtectBits)
+        RetryInstruction()</code></pre>
+<p><strong>Caching</strong></p>
+<p>Caching is an important principle of this process. It relies on
+spatial locality and temporal locality. Spatial locality means if a
+program accesses memory in an area X, it might access areas nearby in
+the future. Temporal locality means if an instruction is commonly
+accessed, it might be re-accessed again in the future.</p>
+<p>All of this relies on the cache being small. Once we try to grow it
+too much we will have the same issues of accessing other types of
+memory.</p>
+<p><strong>Who handles TLB misses?</strong></p>
+<p>Hardware and software people didn't trust each other. Thus the
+hardware sometimes would handle the TLB miss entirely.</p>
+<p>Most architectures now (RISC) handle the TLB with a software-managed
+TLB. On a TLB miss, the hardware raises an exception, which pauses the
+instruction stream, raises the priviledge to kernel mode and jumps to a
+trap handler.</p>
+<p><strong>RISC vs. CISC</strong></p>
+<p>There used to be two camps. Complex Instruction Set Comptuing (CISC)
+and Reduced ISC.</p>
+<p>CISC sets had a lot of instructions in them; each one was really
+powerful. The idea was that instructions should be high-level
+primitives, to make the assembly language easier to use.</p>
+<p>RISC are the opposite. They argued to rip out as much hardware as
+possible and make whats left really fast. RISC chips were faster and
+MIPS and Sun were started out of it.</p>
+<p>Intel then started making their CISC chips faster and now we have
+both combinations.</p>
+<p><strong>TLB Contents</strong></p>
+<p>TLBs might have 32, 64, or 128 entires.</p>
+<p>VPN | PFN | other bits</p>
+<p>Key question: how do we handle the TLB during context switches?</p>
+<p>A potential solution is to flush it every time. But this will be
+costly because then we need to incur new TLB misses until it is
+refreshed.</p>
+<p>Another solution can be adding an identifier to the process that's
+using each entry. This is known as the Address Space Identifier (ASID).
+Similar to a process identifier but with fewer bits.</p>
+<p><strong>Issue: Replacement Policies</strong></p>
+<p>What happens when we need to replace a TLB entry? we can use the
+Least Recently Used method or a random method. Each one has its pros and
+cons. The LRU can behave unreasonably in certain occassions; so the
+random one might avoid edge cases in other times.</p>
+<p><strong>Reflection questions:</strong></p>
+<ul>
+<li>Why do we use TLBs when managing address translations?</li>
+<li>What happens if we didn't have TLBs?</li>
+<li>How do we deal with TLBs across different processes?</li>
+<li>What's the max amount of entries and mappings a TLB could
+handle?</li>
+</ul>
+<h2>Paging: Smaller Tables</h2>
+<p>Key question: how to make page tables smaller? Linear page tables are
+too big; taking up far too much memory on typical systems. How can we
+make them smaller?</p>
+<p>If we make them too big, we have internal fragmentation. Often we
+just end up using 4KB and 8KB pages.</p>
+<p>E.g., If we have a page table for a 16KB address space with 1KB
+pages; we might have 3-4 used pages but the other ones might be
+empty.</p>
+<h3>Multi-Level Page Table</h3>
+<p>We use a page directory that points to each page table. Each entry in
+this page diretory has a valid bit and a page frame number. The valid
+bit indicates if any of the entries in the page table it points to is
+valid.</p>
+<pre><code>PDE (Page Directory Entries)
+  Valid Bit -&gt; Tell us if the page table has any valid entries
+  Page Frame Number -&gt; Points to the page table
+
+Page Table
+  Valid Bit
+  Protection
+  Page Frame Number
+
+Page frame (X bits of info)
+  Contains the a set of bits with information on the process
+
+Page-Directory Entry:
+PDEAddr = PageDirBase + (PDIndex + sizeof(PDE))
+PTEAddr = (PDE.PFN &lt;&lt; SHIFT) + (PTIndex * sizeof(PTE))</code></pre>
+<h3>Tip</h3>
+<p>Be wary of design trade-offs. Always implement the least complex
+system that achieves the task at hand. Avoid needless complexity, in
+prematurely-optimized code or other forms. It makes it harder to
+understand, maintain and debug the code.</p>
+<p>Reflection question:</p>
+<ul>
+<li>Why do we use page tables in the first place: they're used to
+translate virtual to physical addresses. If the page table is too small
+we might have collissions?</li>
+<li>How do address translations work in multi-level page entries</li>
+<li>What are the time-space trade-offs of linear page tables vs.
+multi-level page tables</li>
+</ul>
+<h2>Beyond Physical Memory: Mechanisms</h2>
+<p>General page mechanism:</p>
+<ul>
+<li>The hardware extracts the VPN (virtual page number) from the virtual
+address</li>
+<li>It then checks the TLB (dictionary cache) for a match; if its a hit,
+it return the physical address</li>
+<li>If not, it looks up the page table in memory (using the page table
+base register) and looks up the entry (page table entry) using the VPN
+as the index</li>
+<li>If the table is valid and present, we extract the page frame number,
+add it to the cache, and retry generating a cache hit next time</li>
+</ul>
+<p>What if we try to access the page but its not in memory? It is
+normally determined through a "present bit". If its set to 1, we're
+good. If not (its on the disk) then we we cause a <strong>page
+fault</strong></p>
+<p>The page fault is handled by a <strong>page fault handler</strong>
+which is in the software.</p>
+<p>If the page is not present, and has been swapped to disk. The OS is
+going to <em>swap</em> the page into memory to service the page fault.
+It will use the PTE to find the addrtess and issue the request to the
+disk.</p>
+<p><strong>What if the OS is full?</strong></p>
+<p>We then need to replace the page. Here comes the page replacement
+policy.</p>
+<pre><code> PFN = FindFreePhysicalPage()
+// no free page found
+2 if (PFN == -1)
+    // run replacement algorithm
+    3 PFN = EvictPage()
+// sleep (waiting for I/O)
+4 DiskRead(PTE.DiskAddr, PFN)
+// update page table with present
+5 PTE.present = True
+// bit and translation (PFN)
+6 PTE.PFN = PFN
+7 RetryInstruction()</code></pre>
+<p>To keep the memory free the OS has a low and high watermark. It
+proactively evicts tables until we have a certain amount of free pages.
+This is done by the page daemon.</p>
+<p>Key questions:</p>
+<ul>
+<li>What type of storage devices are easier or faster to swap
+spaces?</li>
+<li>What happens when a program needs to access memory?</li>
+</ul>
+<h2>Beyond Physical Memory: Policies</h2>
+<p><strong>Key question</strong>: what page do we evict when we run out
+of memory?</p>
+<p>We want to maximize the amount of cache hits. Number of times a page
+can be accessed in memory.</p>
+<p>We use the "Average Memory Access Time"</p>
+<p>$AMAT = T_M + P_{Miss} * T_D$</p>
+<p>TM represents the cost of accessing memory, TD the cost of ac-
+cessing disk, and PMiss the probability of not finding the data in the
+cache (a miss); PMiss varies from 0.0 to 1.0,</p>
+<p><strong>What is the optimal policy?</strong></p>
+<p>Replace the page that will be accessed the furthest in the future.
+Resulting in the fewest cache misses.</p>
+<p>There are 3 types of cache misses (Three Cs)</p>
+<ul>
+<li><strong>Compulsory miss aka cold start miss</strong>: it occurs
+because it was empty to being with and you need to add it</li>
+<li><strong>Capacity miss</strong>: the cache ran out of space and had
+to evict an item to bring a new one to the cache</li>
+<li><strong>Conflict miss</strong>: no space available. Doesn't have in
+OS page cache because there's no restrictions where can put a page.</li>
+</ul>
+<p><strong>Simpler Policy: FIFO</strong></p>
+<p>We evict the caches in order. It doesn't perform as well as the
+optimal more complicated policy. Pages are placed in a queue when they
+enter the system. When we need to replace we evict the page at the end
+of the queue.</p>
+<p><strong>Another Simple Policy: Random</strong></p>
+<p>Simply picks a random page to replace under memory pressure. Can do
+better or worst. But simple to implement.</p>
+<p><strong>Usage History Policy: LRU</strong></p>
+<p>A more commonly- used property of a page is its
+<strong>recency</strong> of access; the more recently a page has been
+accessed, perhaps the more likely it will be accessed again.</p>
+<p>This is based on the "principle of locality". Programs tend to access
+certain code and data structures frequently. We should use history to
+figure out which pages are important and keep them.</p>
+<p>We then have Least Frequently Used and Least Recently Used.</p>
+<p><strong>Types of Locality</strong></p>
+<ul>
+<li>Spatial: pages around a given page will be accessed more
+frequently</li>
+<li>Temporal: pages accessed often will be accessed again</li>
+</ul>
+<p>The performance of each policy will vary based on the workload.</p>
+<ul>
+<li>Random workload: they all perform about the same.</li>
+<li>80/20 workload (some memories get accessed more often): LRU and the
+Optimal perform better than FIFO and Random</li>
+<li>Looping workload (for loop): OPT and LRU perform better but random
+performs not too bad.</li>
+</ul>
+<h2>Virtualization Key Concepts</h2>
+<ul>
+<li>What is a system call and how does it work?</li>
+<li>What is a context switch?</li>
+<li>What are some common process scheduling algorithms?</li>
+<li>How does a process reserve memory?</li>
+<li>What are the different ways in which memory can be stored?
+(Segmentation and paging)</li>
+<li>How does segmentation work?</li>
+<li>What is the free-space management problem in memory allocation?</li>
+<li>What is the principle of locality in caching?</li>
+<li>How does paging work?</li>
+<li>What are page replacement algorithms and why are they
+necessary?</li>
+<li>How does the system map virtual memory to physical memory?</li>
+<li>What happens when the OS runs out of memory?</li>
+<li>What happens if we have huge page tables? What are the drawbacks?
+<ul>
+<li>e.g., Internal fragmentation</li>
+</ul></li>
+<li>How do page tables work?</li>
+<li>What are the different types of page tables?</li>
+<li>How are multi-level page tables better than linear ones?</li>
+<li>What is a TLB? When is it used?</li>
+<li>What happens during TLB misses?</li>
+<li>What are some policies we use to replace cache in TLBs?</li>
+<li>How do segmentation fault occurs?</li>
+</ul>
+<h1>Phase 2: Concurrency</h1>
+<h2>Introduction to Concurrency</h2>
+<p>Concurrency is great because it allows us to do parallel programming
+and to run the program while we wait for I/O operations.</p>
+<p>Concurrency is harder than single-threaded programs because we now
+have to manage shared data and state across threads.</p>
+<p>We can run into issues such as data races and deadlocking among
+others.</p>
+<p>To solve for this, Dijkstra invented atomic operations and sync
+primitives that allow us to give some guarantees to the program.</p>
+<p>An example is sempahores. They guarantee at most N threads will pass
+through a critical section.</p>
+<p>Another example is incrementing a counter with two threads, if we
+don't use sync primitives we may run into an indeterministic program.
+i.e., run it twice and get different results.</p>
+<p>The most important questions are:</p>
+<ul>
+<li>What support do we need from the hardware in order to build useful
+synchronization primitives?</li>
+<li>What support do we need from the OS?</li>
+<li>How can we build these primitives correctly and efficiently?</li>
+<li>How can programs use them to get the desired results?</li>
+</ul>
+<p>The key terms are:</p>
+<ul>
+<li>A critical section: two threads accessing a shared resource</li>
+<li>A race condition: two threads targeting a critical section</li>
+<li>An indeterminate program vs. indeterminate: random vs. not</li>
+<li>Mutual exclusion primitives: 1 single thread ever entering critical
+sections</li>
+</ul>
+<p>An useful tool to validate threads in C is helgrind, run it with
+<code>valgrind --tool=helgrind ./main-signal-cv</code></p>
+<h2>Thread APIs</h2>
+<ul>
+<li>pthread_create()</li>
+<li>pthread_join()</li>
+<li>pthread_mutex_lock(&amp;lock);</li>
+<li>pthread_mutex_unlock(&amp;lock);</li>
+<li>pthread_cond(&amp;lock);</li>
+</ul>
+<h2>Locks</h2>
+<p>Key Question:</p>
+<ul>
+<li>How do we build an efficient lock? It should provide mutual
+exclusion at a low cost</li>
+</ul>
+<p>A good lock should provide:</p>
+<ul>
+<li>Fairness</li>
+<li>Mutual exclusion</li>
+<li>No starvation</li>
+<li>Performance (as low overhead as possible)</li>
+</ul>
+<p>Locks can have hardware support and OS support to run properly. To
+build a good lock we need to assume a little hardware support. That way
+we can meet all the properties above.</p>
+<h3>Spin lock using Test-and-set</h3>
+<p>As long as the lock is held by another thread, TestAndSet() will
+repeatedly return 1, and thus this thread will spin and spin until the
+lock is finally released.</p>
+<pre><code>typedef struct __lock_t {
+    int flag;
+
+void init(lock_t *lock) {
+    // 0: lock is available, 1: lock is held
+    lock-&gt;flag = 0;
+}
+
+void lock(lock_t *lock) {
+        // It tests the old value while simultaneously sets it to
+        // a new value
+    while (TestAndSet(&amp;lock-&gt;flag, 1) == 1)
+        ; // spin-wait (do nothing)
+}
+void unlock(lock_t *lock) {
+    lock-&gt;flag = 0;
+}</code></pre>
+<p>Questions:</p>
+<ul>
+<li>How do we measure the CPU impact of different types of locks?</li>
+</ul>
+<h3>Compare-And-Swap</h3>
+<p>Checks if the value at an address is expected, if so updates it with
+a new value.</p>
+<pre><code>   void lock(lock_t *lock) {
+          while (CompareAndSwap(&amp;lock-&gt;flag, 0, 1) == 1)
+                    ; // spin</code></pre>
+<h3>Load-Linked and Store-Conditional</h3>
+<ul>
+<li><strong>Load-Linked</strong>: fetches a value from memory and places
+it in a register</li>
+<li><strong>Store-Conditional</strong>: only succeeds if no intervening
+store to the address has taken place</li>
+</ul>
+<p>Potential lock:</p>
+<ul>
+<li>We fetch a value from memory</li>
+<li>Only succeed if no store has taken place</li>
+</ul>
+<p>If there's not a value stored in memory keep rotating.</p>
+<p>E.g.,</p>
+<pre><code>int LoadLinked(int *ptr) {
+    return *ptr;
+}
+
+int StoreConditional(int *ptr, int value) {
+    if (no update to *ptr since LoadLinked to this address) {
+        *ptr = value;
+        return 1; // success!
+    } else {
+        return 0; // failed to update
+    }
+}
+
+void lock(lock_t *lock) {
+       while (1) {
+           while (LoadLinked(&amp;lock-&gt;flag) == 1)
+               ; // spin until it’s zero
+           if (StoreConditional(&amp;lock-&gt;flag, 1) == 1)
+               // if set-it-to-1 was a success: all done
+               // otherwise: try it all over again
+               return; 
+   
+   void unlock(lock_t *lock) {
+       lock-&gt;flag = 0;
+    }</code></pre>
+<h3>Fetch-And-Add</h3>
+<pre><code>int FetchAndAdd(int *ptr) {
+    int old = *ptr;
+    *ptr = old + 1;
+    return old;
+}
+
+typedef struct __lock_t {
+    int ticket;
+    int turn;
+} lock_t;
+
+
+void lock_init(lock_t *lock) {
+    lock-&gt;ticket = 0;
+    lock-&gt;turn = 0;
+}
+
+void lock(lock_t *lock) {
+    int myturn = FetchAndAdd(&amp;lock-&gt;ticket);
+    while (lock-&gt;turn != myturn)
+        ; // spin
+}
+
+void unlock(lock_t *lock) {
+    lock-&gt;turn = lock-&gt;turn + 1;
+}</code></pre>
+<h3>OS Support</h3>
+<p>In the case of some locks, the OS can allows us to yield or park
+certain threads. This works well in some cases.</p>
+<p>Yield lets us yield the CPU to other threads while our current thread
+is blocked.</p>
+<p>Park allows us to put a calling thread to sleep and unpack to wake it
+up by its <code>threadID</code></p>

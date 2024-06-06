@@ -1,0 +1,96 @@
+<h1>C Tools</h1>
+<h2>Make files</h2>
+<h2>LLDB Cheat Sheet</h2>
+<h4>Starting and Controlling Execution</h4>
+<ul>
+<li><strong>Start a program:</strong> <code>lldb ./program</code></li>
+<li><strong>Run the program:</strong> <code>run</code> or
+<code>r</code></li>
+<li><strong>Set a breakpoint:</strong>
+<code>breakpoint set --name main</code> or <code>b main</code></li>
+<li><strong>List breakpoints:</strong> <code>breakpoint list</code> or
+<code>b l</code></li>
+<li><strong>Delete a breakpoint:</strong>
+<code>breakpoint delete &lt;breakpoint-id&gt;</code> or
+<code>b del &lt;breakpoint-id&gt;</code></li>
+<li><strong>Continue execution:</strong> <code>continue</code> or
+<code>c</code></li>
+<li><strong>Step over:</strong> <code>thread step-over</code> or
+<code>n</code></li>
+<li><strong>Step into:</strong> <code>thread step-in</code> or
+<code>s</code></li>
+<li><strong>Step out:</strong> <code>thread step-out</code> or
+<code>finish</code></li>
+</ul>
+<h4>Inspecting State</h4>
+<ul>
+<li><strong>Print variable:</strong>
+<code>frame variable &lt;variable-name&gt;</code> or
+<code>p &lt;variable-name&gt;</code></li>
+<li><strong>Print all local variables:</strong>
+<code>frame variable</code> or <code>fr v</code></li>
+<li><strong>Backtrace:</strong> <code>thread backtrace</code> or
+<code>bt</code></li>
+<li><strong>View source code:</strong> <code>source list</code> or
+<code>list</code></li>
+<li><strong>Evaluate expression:</strong>
+<code>expression &lt;expression&gt;</code> or
+<code>p &lt;expression&gt;</code></li>
+</ul>
+<h4>Advanced Usage</h4>
+<ul>
+<li><strong>Attach to a process:</strong>
+<code>lldb -p &lt;pid&gt;</code></li>
+<li><strong>Detach from a process:</strong>
+<code>process detach</code></li>
+<li><strong>Set environment variable:</strong>
+<code>settings set target.env-vars &lt;VAR&gt;=&lt;value&gt;</code></li>
+</ul>
+<h2>Valgrind Cheat Sheet</h2>
+<h4>Basic Commands</h4>
+<ul>
+<li><strong>Run a program with Valgrind:</strong>
+<code>valgrind ./program</code></li>
+<li><strong>Check for memory leaks:</strong>
+<code>valgrind --leak-check=yes ./program</code></li>
+<li><strong>Show reachable memory at exit:</strong>
+<code>valgrind --leak-check=full --show-reachable=yes ./program</code></li>
+<li><strong>Use Valgrind with gdb:</strong>
+<code>valgrind --vgdb=yes --vgdb-error=0 ./program</code></li>
+</ul>
+<h4>Common Options</h4>
+<ul>
+<li><strong>Track origins of uninitialized memory:</strong>
+<code>--track-origins=yes</code></li>
+<li><strong>Suppress specific errors:</strong>
+<code>--suppressions=&lt;file&gt;</code></li>
+<li><strong>Log output to a file:</strong>
+<code>--log-file=&lt;filename&gt;</code></li>
+<li><strong>Limit stack traces:</strong>
+<code>--num-callers=&lt;number&gt;</code></li>
+</ul>
+<h2>Obj Dump Cheat Sheet</h2>
+<h4>Basic Commands</h4>
+<ul>
+<li><strong>Display all headers:</strong>
+<code>objdump -x &lt;file&gt;</code></li>
+<li><strong>Display disassembly:</strong>
+<code>objdump -d &lt;file&gt;</code></li>
+<li><strong>Display section headers:</strong>
+<code>objdump -h &lt;file&gt;</code></li>
+<li><strong>Display symbol table:</strong>
+<code>objdump -t &lt;file&gt;</code></li>
+</ul>
+<h4>Detailed Options</h4>
+<ul>
+<li><strong>Disassemble specific function:</strong>
+<code>objdump -d -j &lt;section&gt; &lt;file&gt;</code></li>
+<li><strong>Display file offsets:</strong>
+<code>objdump -D &lt;file&gt;</code></li>
+<li><strong>Display relocation entries:</strong>
+<code>objdump -r &lt;file&gt;</code></li>
+<li><strong>Display dynamic symbols:</strong>
+<code>objdump -T &lt;file&gt;</code></li>
+</ul>
+<p>These commands and options provide a foundational toolkit for using
+LLDB, Valgrind, and Obj Dump effectively in C development.</p>
