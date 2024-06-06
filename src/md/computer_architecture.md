@@ -1,6 +1,12 @@
 
 ## Computer Architecture
 
+## Key Terms
+- Instruction Fetch
+- Pipelining
+- Cache Memory
+- Virtual Memory
+
 All computers stem from the "stored program concept". The computer is based on a fixed hardware platform capable of executing a fixed set of instructions. They can be combined like building blocks to yield sophisticated programs.
 
 The von Neumann architecture:

@@ -38,6 +38,10 @@
 
 - Choosing to be nice is strength. Feeling compelled to always be nice is weakness. Choosing when to be disagreeable, when required, is strength. Always being disagreeable is weakness. (Mark Manson)
 
+### On Technology
+
+- People who are more than casually interested in computers should have at least some idea of what the underlying hardware is like. Otherwise the programs they write will be pretty weird.— Don Knuth
+
 ### On Opinions
 
 - “If your opinions on one subject can be predicted from your opinions on another, you may be in the grip of an ideology. When you truly think for yourself, your conclusions will not be predictable.” (Kevin Kelly)

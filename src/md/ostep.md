@@ -767,4 +767,144 @@ The key terms are:
 - An indeterminate program vs. indeterminate: random vs. not
 - Mutual exclusion primitives: 1 single thread ever entering critical sections
 
+An useful tool to validate threads in C is helgrind, run it with `valgrind --tool=helgrind ./main-signal-cv`
+
+## Thread APIs
+
+- pthread_create()
+- pthread_join()
+- pthread_mutex_lock(&lock);
+- pthread_mutex_unlock(&lock);
+- pthread_cond(&lock);
+
+## Locks
+
+Key Question:
+- How do we build an efficient lock? It should provide mutual exclusion at a low cost
+
+A good lock should provide:
+- Fairness
+- Mutual exclusion
+- No starvation
+- Performance (as low overhead as possible)
+
+Locks can have hardware support and OS support to run properly. To build a good lock we need to assume a little hardware support. That way we can meet all the properties above.
+
+### Spin lock using Test-and-set
+
+As long as the lock is held by another thread, TestAndSet() will repeatedly return 1, and thus this thread will spin and spin until the lock is finally released.
+
+```
+typedef struct __lock_t {
+    int flag;
+
+void init(lock_t *lock) {
+    // 0: lock is available, 1: lock is held
+    lock->flag = 0;
+}
+
+void lock(lock_t *lock) {
+		// It tests the old value while simultaneously sets it to
+		// a new value
+    while (TestAndSet(&lock->flag, 1) == 1)
+        ; // spin-wait (do nothing)
+}
+void unlock(lock_t *lock) {
+    lock->flag = 0;
+}
+```
+
+Questions:
+- How do we measure the CPU impact of different types of locks?
+
+### Compare-And-Swap
+
+Checks if the value at an address is expected, if so updates it with a new value.
+
+```
+   void lock(lock_t *lock) {
+          while (CompareAndSwap(&lock->flag, 0, 1) == 1)
+					; // spin
+```
+
+### Load-Linked and Store-Conditional
+
+- **Load-Linked**: fetches a value from memory and places it in a register
+- **Store-Conditional**: only succeeds if no intervening store to the address has taken place
+
+Potential lock: 
+- We fetch a value from memory
+- Only succeed if no store has taken place
+
+If there's not a value stored in memory keep rotating.
+
+E.g.,
+
+```
+int LoadLinked(int *ptr) {
+    return *ptr;
+}
+
+int StoreConditional(int *ptr, int value) {
+    if (no update to *ptr since LoadLinked to this address) {
+        *ptr = value;
+        return 1; // success!
+    } else {
+        return 0; // failed to update
+    }
+}
+
+void lock(lock_t *lock) {
+       while (1) {
+           while (LoadLinked(&lock->flag) == 1)
+               ; // spin until it’s zero
+           if (StoreConditional(&lock->flag, 1) == 1)
+               // if set-it-to-1 was a success: all done
+               // otherwise: try it all over again
+               return; 
+   
+   void unlock(lock_t *lock) {
+       lock->flag = 0;
+	}
+```
+
+### Fetch-And-Add
+
+```
+int FetchAndAdd(int *ptr) {
+    int old = *ptr;
+    *ptr = old + 1;
+    return old;
+}
+
+typedef struct __lock_t {
+    int ticket;
+    int turn;
+} lock_t;
+
+
+void lock_init(lock_t *lock) {
+    lock->ticket = 0;
+    lock->turn = 0;
+}
+
+void lock(lock_t *lock) {
+    int myturn = FetchAndAdd(&lock->ticket);
+    while (lock->turn != myturn)
+        ; // spin
+}
+
+void unlock(lock_t *lock) {
+    lock->turn = lock->turn + 1;
+}
+```
+
+
+### OS Support
+
+In the case of some locks, the OS can allows us to yield or park certain threads. This works well in some cases. 
+
+Yield lets us yield the CPU to other threads while our current thread is blocked.
+
+Park allows us to put a calling thread to sleep and unpack  to wake it up by its `threadID`
 
