@@ -1,0 +1,153 @@
+<h1>Virtual Memory</h1>
+<h2>Scheduling</h2>
+<p>...</p>
+<h1>Concurrency</h1>
+<h2>Thread: API</h2>
+<p>Key questions:</p>
+<ul>
+<li>What's the API behind pthreads and how do we use it?
+<ul>
+<li>How do we return values?</li>
+<li>How do we use shared structures?</li>
+<li>What does join do?</li>
+</ul></li>
+<li>What support do we need from the hardware in order to build useful
+synchronization primitives?</li>
+<li>What support do we need from the OS?</li>
+<li>How can we build these primitives correctly and efficiently?</li>
+<li>How can programs use them to get the desired results?</li>
+</ul>
+<h2>Thread: Locks</h2>
+<p>Key questions:</p>
+<ul>
+<li>How do we measure each of the principles behind concurrency? e.g.,
+fairness, mutual exclusion, performance, and correctness</li>
+<li>How do we build an efficient lock? It should provide mutual
+exclusion at a low cost</li>
+<li>What are the hardware primitives for locks?
+<ul>
+<li>Test-and-Set (TAS)</li>
+<li>Compare-and-Swap</li>
+<li>Fetch-and-Add</li>
+<li>Load-Link/Store-Conditional (LL/SC)</li>
+</ul></li>
+<li>How does each lock work? Can you explain the principles of each lock
+and why do we use it?
+<ul>
+<li>How does the Peterson lock work?</li>
+<li>How does the TAS lock and the TTS lock work?</li>
+<li>What does yield help us accomplish in locks?
+<ul>
+<li>Yield is simply a system call that moves the caller from the running
+state to the ready state, and thus promotes another thread to running.
+Thus, the yielding thread essentially de-schedules itself.</li>
+<li>It doesn't address starvation given that some threads might yield
+indefinitely</li>
+</ul></li>
+</ul></li>
+<li>What are the most used locks in practice?</li>
+<li>How do we measure the CPU impact of different types of locks?</li>
+</ul>
+<h2>Thread: Conditional Variables</h2>
+<ul>
+<li><strong>What is the ideal way to use a conditional variable in
+C?</strong>
+<ul>
+<li>Use <code>pthread_mutex_lock</code> and
+<code>pthread_mutex_unlock</code> to protect the shared resource.</li>
+<li>Use <code>pthread_cond_wait</code> to wait for a condition. This
+releases the mutex and blocks the thread until the condition is
+signaled.</li>
+<li>Use <code>pthread_cond_signal</code> or
+<code>pthread_cond_broadcast</code> to signal waiting threads when the
+condition changes.</li>
+</ul></li>
+<li><strong>What is the difference between using a while vs. if
+statement in producer consumer problems with conditional
+variables?</strong>
+<ul>
+<li>A <code>while</code> loop is used to re-check the condition after
+waking up because spurious wake-ups can occur. This ensures that the
+condition is still valid before proceeding.</li>
+<li>An <code>if</code> statement checks the condition only once. This
+can lead to issues if a spurious wake-up occurs, as the thread might
+proceed even if the condition is not met. Aka race conditions.</li>
+</ul></li>
+<li><strong>What is the difference between using 1 or 2 conditional
+variables in producer consumer problems?</strong>
+<ul>
+<li>A single condition variable is used to signal both producers and
+consumers. This can work but is less efficient because both types of
+threads wake up and re-check their conditions even if only one type of
+thread can proceed.</li>
+<li>Separate condition variables for producers and consumers
+(<code>empty</code> and <code>fill</code>) provide more fine-grained
+control. Producers wait on <code>empty</code> (signaled when an item is
+consumed), and consumers wait on <code>fill</code> (signaled when an
+item is produced). This improves efficiency because only the relevant
+threads are woken up.</li>
+</ul></li>
+<li><strong>What is the role of the buffer in producer / consumer
+problems?</strong>
+<ul>
+<li>It decouples producers and consumers. They can both access and
+consumer from the same data. Allows the producers and consumers to
+operate independently.</li>
+<li>It acts as a temporary storage. It's helpful when the producer and
+consumer work at different speeds.</li>
+<li>It allows for concurrent execution. Both threads can add and consume
+from the buffer.</li>
+</ul></li>
+<li><strong>Does buffer size matter in producer / consumer
+problems?</strong>
+<ul>
+<li>Bigger buffers can take more memory and increase the complexity of
+managing the buffer.</li>
+</ul></li>
+</ul>
+<h3>Thread: Semaphores</h3>
+<ul>
+<li>How do semaphores work?</li>
+<li>When are semaphores useful?</li>
+<li>What are ways in which we can use semaphores? (e.g., counting,
+binary)</li>
+</ul>
+<h3>Common Concurrency Bugs</h3>
+<ul>
+<li>What are the most common non-deadlock bugs?</li>
+<li>What are atomicity violations in non-deadlock bugs?</li>
+<li>What are ordering violations in non-deadlock bugs?</li>
+<li>What are the 4 conditions for deadlocks to occur?</li>
+</ul>
+<h1>File Systems</h1>
+<h2>Hard Disk Drives</h2>
+<ul>
+<li>What is SCSI vs. STATA?</li>
+<li>Why does it take so long for a disk to read a given section?</li>
+<li>What is the main use of hard disk drives?</li>
+<li>What are the different scheduling mechanisms to seek information
+from the disk?</li>
+<li>What is the role of the OS in scheduling disk seeks?</li>
+<li>Why is it better to read data sequentially from the disk over
+randomly?</li>
+<li>What's the history behind hard disk drives?</li>
+</ul>
+<h3>Files and Directories</h3>
+<ul>
+<li>What are file descriptors in C?</li>
+<li>What are file descriptions in C?</li>
+<li>What is an <code>i-node</code> and why is it called like that?</li>
+<li>How do we delete files in the systems? (unlink)</li>
+</ul>
+<h3>File Systems</h3>
+<ul>
+<li>What are i-nodes? What kind of information is stored in an
+i-node?</li>
+<li>What are bitmaps?</li>
+<li>What is the difference and the trade-offs between static and dynamic
+partitioning in file systems?</li>
+<li>How do file systems use caching to improve response times? What are
+the trade-offs?</li>
+<li>How do file systems use buffering to improve response times? What
+are the trade-offs?</li>
+</ul>

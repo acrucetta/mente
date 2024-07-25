@@ -130,10 +130,31 @@
 </ul>
 <p>These commands and options provide a foundational toolkit for using
 LLDB, Valgrind, and Obj Dump effectively in C development.</p>
+<h2>Track Data Races</h2>
+<h3>GCC</h3>
+<ol type="1">
+<li>To check for data races using dynamic analysis tools, you can
+compile this code with ThreadSanitizer. Here's how you can do it using
+GCC:</li>
+</ol>
+<p><code>gcc -fsanitize=thread -g thread_safety_example.c -o thread_safety_example -lpthread</code></p>
+<ol start="2" type="1">
+<li>Run the program</li>
+</ol>
+<p><code>./thread_safety_example</code></p>
+<h3>Helgrind</h3>
+<ol type="1">
+<li>First, compile your C program with debugging symbols:</li>
+</ol>
+<p><code>gcc -g your_program.c -o your_program -lpthread</code></p>
+<ol start="2" type="1">
+<li>Then run your program using Valgrind with the Helgrind tool:</li>
+</ol>
+<p><code>valgrind --tool=helgrind ./your_program</code></p>
 
 
 </main>
 <footer id='end_footer'><hr />
-<span style='float:right'>Edited on 2024-06-06</span><b>Mente</b> © 2023 — 
+<span style='float:right'>Edited on 2024-07-25</span><b>Mente</b> © 2023 — 
 </footer>
 </body></html>

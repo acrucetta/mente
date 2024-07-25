@@ -1,0 +1,165 @@
+<h2>Designing API for Humans (<a
+href="https://dev.to/stripe/designing-apis-for-humans-error-messages-94p">source</a>)</h2>
+<h3>Object IDs</h3>
+<ul>
+<li>Avoid <code>id = 42</code></li>
+<li>Use universally unique identifiers (UUID):
+<code>4c4a82ed-a3e1-4c56-aa0a-26962ddd0425</code></li>
+<li>Or even better, add a prefix to them:
+<code>pi_3LKQhvGUcADgqoEM3bh6pslE</code></li>
+</ul>
+<h3>Error messages</h3>
+<p>Avoid error messages in 200 status.</p>
+<pre><code>{
+  status: 200,
+  body: {
+    message: &quot;Error&quot;
+  }
+}</code></pre>
+<blockquote>
+<p>Most error monitoring systems first filter based on status code and
+then try to parse the body. This error would likely be put in the
+“everything’s fine” bucket and get completely missed</p>
+</blockquote>
+<p>| <strong>Code</strong> | <strong>Message</strong> | | --------- |
+------------- | | 200 - 299 | All good | | 400 - 499 | You messed up | |
+500 - 599 | We messed up |</p>
+<p>E.g. code logic</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">// ❌ Don&#39;t forget the error status code</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>app<span class="op">.</span><span class="fu">post</span>(<span class="st">&#39;/your-api-route&#39;</span><span class="op">,</span> <span class="kw">async</span> (req<span class="op">,</span> res) <span class="kw">=&gt;</span> {      </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">try</span> {</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">// ... your server logic</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">catch</span> (error) {    </span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> res<span class="op">.</span><span class="fu">send</span>({ <span class="dt">error</span><span class="op">:</span> { <span class="dt">message</span><span class="op">:</span> error<span class="op">.</span><span class="at">message</span> } })<span class="op">;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  }  </span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> res<span class="op">.</span><span class="fu">send</span>(<span class="st">&#39;ok&#39;</span>)<span class="op">;</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">// ✅ Do set the status correctly</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>app<span class="op">.</span><span class="fu">post</span>(<span class="st">&#39;/your-api-route&#39;</span><span class="op">,</span> <span class="kw">async</span> (req<span class="op">,</span> res) <span class="kw">=&gt;</span> {      </span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="cf">try</span> {</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">// ... your server logic</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">catch</span> (error) {    </span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> res<span class="op">.</span><span class="fu">status</span>(<span class="dv">400</span>)<span class="op">.</span><span class="fu">send</span>({ <span class="dt">error</span><span class="op">:</span> { <span class="dt">message</span><span class="op">:</span> error<span class="op">.</span><span class="at">message</span> } })<span class="op">;</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  }  </span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> res<span class="op">.</span><span class="fu">send</span>(<span class="st">&#39;ok&#39;</span>)<span class="op">;</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span></code></pre></div>
+<p><strong>Be helpful with your API errors</strong></p>
+<p><strong>Bad</strong></p>
+<ul>
+<li>Which customer?</li>
+</ul>
+<pre><code>{
+  status: 404,
+  body: {
+    error: {
+      message: &quot;Customer not found&quot;
+    }    
+  }
+}</code></pre>
+<p><strong>Better</strong></p>
+<ul>
+<li>Relevant status code</li>
+<li>Clear message</li>
+<li>Error message wrapped in an error object</li>
+</ul>
+<pre><code>{
+  status: 404,
+  body: {
+    error: {
+      message: &quot;Customer cus_Jop8JpEFz1lsCL not found&quot;
+    }    
+  }
+}</code></pre>
+<p><strong>Best</strong></p>
+<ul>
+<li>If you have a type mismatch, say which one</li>
+<li>If your request is missing permissions say which permission
+method</li>
+<li>If its missing a field, say which field</li>
+</ul>
+<pre><code>{
+  status: 404,
+  body: {
+    error: {
+      message: &quot;Customer cus_Jop8JpEFz1lsCL not found; a similar object exists in live mode, but a test mode key was used to make this request.&quot;
+    }    
+  }
+}</code></pre>
+<p><strong>Give useful 500 errors when things fail</strong></p>
+<p>Some examples:</p>
+<ul>
+<li>“An error occurred, the team has been informed. If this keeps
+happening please contact us at <code>{URL}</code>”</li>
+<li>“Something went wrong, please check our status page
+at <code>{URL}</code> if this keeps happening”</li>
+<li>“Something goofed, our engineers have been informed. Please try
+again in a few moments”</li>
+</ul>
+<p><strong>Summary of a good response:</strong></p>
+<ol type="1">
+<li>Using the correct HTTP status code</li>
+<li>Wrapping the error in an “error” object</li>
+<li>Being helpful by providing:
+<ol type="1">
+<li>The error code</li>
+<li>The error type</li>
+<li>A link to the relevant docs</li>
+<li>The API version used in this request</li>
+<li>A suggestion on how to fix the issue</li>
+</ol></li>
+<li>Providing the request ID to look up the request and response
+pairing</li>
+</ol>
+<ul>
+<li></li>
+</ul>
+<pre><code>{
+  status: 404, -- good status code
+  body: {
+    error: {
+      code: &quot;resource_missing&quot;, 
+      doc_url: &quot;https://stripe.com/docs/error-codes/resource-missing&quot;,
+      message: &quot;No such customer: &#39;cus_Jop8JpEFz1lsCL&#39;; a similar object exists in live mode, but a test mode key was used to make this request.&quot;, -- good message
+      param: &quot;id&quot;,
+      type: &quot;invalid_request_error&quot; -- good error type
+    }
+  },
+  headers: {    
+    &#39;request-id&#39;: &#39;req_su1OkwzKIeEoCy&#39;,
+    &#39;stripe-version&#39;: &#39;2020-08-27&#39;,    
+  }  
+}</code></pre>
+<h3>Stripe design patterns</h3>
+<p><strong>Use enums vs. booleans</strong></p>
+<p><strong>Bad</strong></p>
+<pre><code>Subscription.canceled={true, false}
+Subscription.paused={true, false}</code></pre>
+<p><strong>Better</strong></p>
+<pre><code>Subscription.status={&quot;active&quot;, &quot;canceled&quot;, &quot;paused&quot;}</code></pre>
+<p><strong>Use nested objects</strong></p>
+<p><strong>Bad</strong></p>
+<pre><code>customer.address_line1 = &quot;Main street 123&quot;;
+customer.address_city = &quot;San Francisco&quot;;
+customer.address_postal_code: &quot;12345&quot;;</code></pre>
+<p><strong>Better</strong></p>
+<pre><code>customer.address = {
+  line1: &quot;Main Street 123&quot;,
+  city: &quot;San Francisco&quot;,
+  postal_code: &quot;12345&quot;
+};</code></pre>
+<p><strong>Return object types</strong></p>
+<pre><code>/v1/customers/:customer/payment_methods/:payment_method
+
+Returns:
+{
+  &quot;id&quot;: &quot;pm_123&quot;,
+  &quot;object&quot;: &quot;payment_method&quot;, -- useful for filters
+  &quot;created&quot;: 1672217299,
+  &quot;customer&quot;: &quot;cus_123&quot;,
+  &quot;livemode&quot;: false,
+  ...
+}</code></pre>

@@ -897,6 +897,10 @@ sections</li>
 <ul>
 <li>How do we build an efficient lock? It should provide mutual
 exclusion at a low cost</li>
+<li>How does each lock work? Can you explain the principles of each lock
+and why do we use it?</li>
+<li>What are the most used locks in practice?</li>
+<li>How do we measure the CPU impact of different types of locks?</li>
 </ul>
 <p>A good lock should provide:</p>
 <ul>
@@ -929,10 +933,6 @@ void lock(lock_t *lock) {
 void unlock(lock_t *lock) {
     lock-&gt;flag = 0;
 }</code></pre>
-<p>Questions:</p>
-<ul>
-<li>How do we measure the CPU impact of different types of locks?</li>
-</ul>
 <h3>Compare-And-Swap</h3>
 <p>Checks if the value at an address is expected, if so updates it with
 a new value.</p>
@@ -1012,3 +1012,534 @@ certain threads. This works well in some cases.</p>
 is blocked.</p>
 <p>Park allows us to put a calling thread to sleep and unpack to wake it
 up by its <code>threadID</code></p>
+<h2>Lock-Based Concurrent Data Structures</h2>
+<h2>Conditional Variables</h2>
+<p>Key questions:</p>
+<ul>
+<li>How can we make a thread wait based on some condition? In a way that
+is efficient and doesn't waste CPU cycles?</li>
+</ul>
+<p><strong>Condition variables</strong> A condition variable has two
+operations associated with it: wait() and signal()</p>
+<p>E.g.,</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> done  <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>pthread_mutex_t m <span class="op">=</span> PTHREAD_MUTEX_INITIALIZER<span class="op">;</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>pthread_cond_t c  <span class="op">=</span> PTHREAD_COND_INITIALIZER<span class="op">;</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> thr_exit<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    Pthread_mutex_lock<span class="op">(&amp;</span>m<span class="op">);</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    done <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    Pthread_cond_signal<span class="op">(&amp;</span>c<span class="op">);</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    Pthread_mutex_unlock<span class="op">(&amp;</span>m<span class="op">);</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> <span class="op">*</span>child<span class="op">(</span><span class="dt">void</span> <span class="op">*</span>arg<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>    printf<span class="op">(</span><span class="st">&quot;child</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>    thr_exit<span class="op">();</span></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> NULL<span class="op">;</span></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> thr_join<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>    Pthread_mutex_lock<span class="op">(&amp;</span>m<span class="op">);</span></span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="op">(</span>done <span class="op">==</span> <span class="dv">0</span><span class="op">)</span></span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>        Pthread_cond_wait<span class="op">(&amp;</span>c<span class="op">,</span> <span class="op">&amp;</span>m<span class="op">);</span></span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>    Pthread_mutex_unlock<span class="op">(&amp;</span>m<span class="op">);</span></span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> <span class="dt">int</span></span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> main<span class="op">(</span><span class="dt">int</span> argc<span class="op">,</span> <span class="dt">char</span> <span class="op">*</span>argv<span class="op">[])</span> <span class="op">{</span></span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>    printf<span class="op">(</span><span class="st">&quot;parent: begin</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a>    pthread_t p<span class="op">;</span></span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>    Pthread_create<span class="op">(&amp;</span>p<span class="op">,</span> NULL<span class="op">,</span> child<span class="op">,</span> NULL<span class="op">);</span></span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a>    thr_join<span class="op">();</span></span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a>    printf<span class="op">(</span><span class="st">&quot;parent: end</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span> </span>
+<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><strong>Note:</strong></p>
+<ul>
+<li>Although it is strictly not necessary in all cases, it is likely
+simplest and best to hold the lock while signaling when using condition
+variables.</li>
+<li>Always use while loops with conditional variables (Mesa semantics);
+you want to re-check the condition</li>
+</ul>
+<h3>Semaphores</h3>
+<p><strong>Key question</strong></p>
+<ul>
+<li>How can we use semaphores instead of locks and condition variables?
+What is a semaphore and how do we use it?</li>
+</ul>
+<blockquote>
+<p>A semaphore is an object with an integer value that we can manipulate
+with two routines; in the POSIX standard, these routines are sem wait()
+and sem post()</p>
+</blockquote>
+<p><code>sem_wait(s)</code>: decrements the value of semaphore s by one,
+wait if the value is negative</p>
+<p><code>sem_post(s)</code>: increments value of s by one, if there are
+threads waiting, wake one</p>
+<p><strong>Binary Semaphores</strong></p>
+<p>\We can have multiple types of semaphores, an example of one is a
+<code>Binary Semaphore</code> which acts as a lock.</p>
+<p><strong>Semaphores for Ordering</strong></p>
+<p>We can also use semaphores to have a parent wait for its child to
+run. To do this, we set <code>s</code> as 0.</p>
+<p>![[Pasted image 20240625101238.png|500]]</p>
+<p><strong>Producer/Consumer Problem</strong></p>
+<blockquote>
+<p>One simple way to think about it, thanks to Perry Kivolowitz, is to
+consider the <strong>number of resources you are willing to give away
+immediately after initialization.</strong> With the lock, it was 1,
+because you are willing to have the lock locked (given away) immediately
+after initialization. With the ordering case, it was 0, because there is
+nothing to give away at the start; only when the child thread is done is
+the resource created, at which point, the value is incremented to 1. Try
+this line of thinking on future semaphore problems, and see if it
+helps.</p>
+</blockquote>
+<p>We can use multiple semaphores to add mutual exclusion.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> <span class="op">*</span>producer<span class="op">(</span><span class="dt">void</span> <span class="op">*</span>arg<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> i<span class="op">;</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span>i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> loops<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>        sem_wait<span class="op">(&amp;</span>empty<span class="op">);</span>   <span class="co">// Wait for empty slot</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>        sem_wait<span class="op">(&amp;</span>mutex<span class="op">);</span>   <span class="co">// Enter critical section</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>        put<span class="op">(</span>i<span class="op">);</span>             <span class="co">// Put item in the buffer</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>        sem_post<span class="op">(&amp;</span>mutex<span class="op">);</span>   <span class="co">// Leave critical section</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>        sem_post<span class="op">(&amp;</span>full<span class="op">);</span>    <span class="co">// Increment count of full slots</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> <span class="op">*</span>consumer<span class="op">(</span><span class="dt">void</span> <span class="op">*</span>arg<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> i<span class="op">,</span> tmp<span class="op">;</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span>i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> loops<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>        sem_wait<span class="op">(&amp;</span>full<span class="op">);</span>    <span class="co">// Wait for full slot</span></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>        sem_wait<span class="op">(&amp;</span>mutex<span class="op">);</span>   <span class="co">// Enter critical section</span></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>        tmp <span class="op">=</span> get<span class="op">();</span>        <span class="co">// Get item from the buffer</span></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>        sem_post<span class="op">(&amp;</span>mutex<span class="op">);</span>   <span class="co">// Leave critical section</span></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>        sem_post<span class="op">(&amp;</span>empty<span class="op">);</span>   <span class="co">// Increment count of empty slots</span></span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>        printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d\n</span><span class="st">&quot;</span><span class="op">,</span> tmp<span class="op">);</span> <span class="co">// Print the consumed item</span></span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><strong>Reader-Writer Locks</strong></p>
+<p>Reader-writer locks allow us to have multiple readers (threads)
+accessing a critical section to read data. If there's a writer modifying
+the shared data we won't allow readers to access this section.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">struct</span> _rwlock_t <span class="op">{</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  sem_t lock<span class="op">;</span>      <span class="co">// binary semaphore (basic lock)</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  sem_t writelock<span class="op">;</span> <span class="co">// allow ONE writer/MANY readers</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span>   readers<span class="op">;</span>   <span class="co">// #readers in critical section</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  rwlock_t<span class="op">;</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> rwlock_init<span class="op">(</span>rwlock_t <span class="op">*</span>rw<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  rw<span class="op">-&gt;</span>readers <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  sem_init<span class="op">(&amp;</span>rw<span class="op">-&gt;</span>lock<span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">1</span><span class="op">);</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  sem_init<span class="op">(&amp;</span>rw<span class="op">-&gt;</span>writelock<span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">1</span><span class="op">);</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> rwlock_acquire_readlock<span class="op">(</span>rwlock_t <span class="op">*</span>rw<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>  sem_wait<span class="op">(&amp;</span>rw<span class="op">-&gt;</span>lock<span class="op">);</span></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>  rw<span class="op">-&gt;</span>readers<span class="op">++;</span></span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>rw<span class="op">-&gt;</span>readers <span class="op">==</span> <span class="dv">1</span><span class="op">)</span> <span class="co">// first reader gets writelock</span></span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>    sem_wait<span class="op">(&amp;</span>rw<span class="op">-&gt;</span>writelock<span class="op">);</span></span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>  sem_post<span class="op">(&amp;</span>rw<span class="op">-&gt;</span>lock<span class="op">);</span></span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> rwlock_release_readlock<span class="op">(</span>rwlock_t <span class="op">*</span>rw<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>  sem_wait<span class="op">(&amp;</span>rw<span class="op">-&gt;</span>lock<span class="op">);</span></span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>  rw<span class="op">-&gt;</span>readers<span class="op">--;</span></span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>rw<span class="op">-&gt;</span>readers <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="co">// last reader lets it go</span></span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>    sem_post<span class="op">(&amp;</span>rw<span class="op">-&gt;</span>writelock<span class="op">);</span></span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>  sem_post<span class="op">(&amp;</span>rw<span class="op">-&gt;</span>lock<span class="op">);</span></span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> rwlock_acquire_writelock<span class="op">(</span>rwlock_t <span class="op">*</span>rw<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a>  sem_wait<span class="op">(&amp;</span>rw<span class="op">-&gt;</span>writelock<span class="op">);</span></span>
+<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> rwlock_release_writelock<span class="op">(</span>rwlock_t <span class="op">*</span>rw<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a>  sem_post<span class="op">(&amp;</span>rw<span class="op">-&gt;</span>writelock<span class="op">);</span></span>
+<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h3>Common Concurrency Bugs</h3>
+<p>Key question:</p>
+<ul>
+<li>How to recognize and prevent common bugs?</li>
+</ul>
+<h4>Non-Deadlocks</h4>
+<p><strong>Atomicity Violations</strong></p>
+<p>One thread tries to access a shared variable before the other. To fix
+it, we need to add mutex around the critical sections.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>Thread <span class="dv">1</span><span class="op">::</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span>thd<span class="op">-&gt;</span>proc_info<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    fputs<span class="op">(</span>thd<span class="op">-&gt;</span>proc_info<span class="op">,...)</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>Thread <span class="dv">2</span><span class="op">::</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>thd<span class="op">-&gt;</span>proc_info <span class="op">=</span> NULL<span class="op">;</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>pthread_mutex_t proc_info_lock <span class="op">=</span> PTHREAD_MUTEX_INITIALIZER<span class="op">;</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>Thread <span class="dv">1</span><span class="op">::</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>pthread_mutex_lock<span class="op">(&amp;</span>proc_info_lock<span class="op">);</span></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span>thd<span class="op">-&gt;</span>proc_info<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>    fputs<span class="op">(</span>thd<span class="op">-&gt;</span>proc_info<span class="op">,</span> <span class="op">...);</span></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>pthread_mutex_unlock<span class="op">(&amp;</span>proc_info_lock<span class="op">);</span></span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>Thread <span class="dv">2</span><span class="op">::</span></span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>pthread_mutex_lock<span class="op">(&amp;</span>proc_info_lock<span class="op">);</span></span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>thd<span class="op">-&gt;</span>proc_info <span class="op">=</span> NULL<span class="op">;</span></span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>pthread_mutex_unlock<span class="op">(&amp;</span>proc_info_lock<span class="op">);</span></span></code></pre></div>
+<p><strong>Ordering Violations</strong></p>
+<p>Threads depend on each other and one thread might run before the
+other. Thread 2 will fail if it runs first.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>Thread <span class="dv">1</span><span class="op">::</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> init<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    mthread <span class="op">=</span> create_thread<span class="op">()</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>Thread <span class="dv">2</span><span class="op">::</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> mMain<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>    m_state <span class="op">=</span> mthread<span class="op">-&gt;</span>state</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>We need to initialize conditional variables and mutex to allow the
+first thread to run first.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>pthread_mutex_t mtLock <span class="op">=</span> PTHREAD_MUTEX_INITIALIZER<span class="op">;</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>pthread_cond_t  mtCond <span class="op">=</span> PTHREAD_COND_INITIALIZER<span class="op">;</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> mtInit <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>Thread <span class="dv">1</span><span class="op">::</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> Init<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">...</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>    mThread <span class="op">=</span> PR_CreateThread<span class="op">(</span>mMain<span class="op">,</span> <span class="op">...);</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">// signal that the thread has been created...</span></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>    pthread_mutex_lock<span class="op">(&amp;</span>mtLock<span class="op">);</span></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>    mtInit <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>    pthread_cond_signal<span class="op">(&amp;</span>mtCond<span class="op">);</span></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>    pthread_mutex_unlock<span class="op">(&amp;</span>mtLock<span class="op">);</span></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>    <span class="op">...</span></span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>Thread <span class="dv">2</span><span class="op">::</span></span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> mMain<span class="op">(...)</span> <span class="op">{</span></span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>    <span class="op">...</span></span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>    <span class="co">// wait for the thread to be initialized...</span></span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a>    pthread_mutex_lock<span class="op">(&amp;</span>mtLock<span class="op">);</span></span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="op">(</span>mtInit <span class="op">==</span> <span class="dv">0</span><span class="op">)</span></span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a>        pthread_cond_wait<span class="op">(&amp;</span>mtCond<span class="op">,</span> <span class="op">&amp;</span>mtLock<span class="op">);</span></span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a>    pthread_mutex_unlock<span class="op">(&amp;</span>mtLock<span class="op">);</span></span>
+<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a>    mState <span class="op">=</span> mThread<span class="op">-&gt;</span>State<span class="op">;</span></span>
+<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h4>Deadlock Bugs</h4>
+<p>Conditions for deadlocks are:</p>
+<ul>
+<li>Mutual exclusion</li>
+<li>Hold and wait</li>
+<li>No preemption</li>
+<li>Circular wait</li>
+</ul>
+<p><em>If any of these four conditions are not met, deadlock cannot
+occur.</em></p>
+<p><strong>How to prevent the common deadlocks?</strong></p>
+<p><strong>Circular wait</strong> Use total ordering or partial
+ordering: acquire one lock before the other</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span>m1 <span class="op">&gt;</span> m2<span class="op">)</span> <span class="op">{</span> <span class="co">// grab in high-to-low address order</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>       pthread_mutex_lock<span class="op">(</span>m1<span class="op">);</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>       pthread_mutex_lock<span class="op">(</span>m2<span class="op">);</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>     <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>       pthread_mutex_lock<span class="op">(</span>m2<span class="op">);</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>       pthread_mutex_lock<span class="op">(</span>m1<span class="op">);</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>     <span class="op">}</span></span></code></pre></div>
+<p><strong>Hold-and-wait</strong> The hold-and-wait requirement for
+deadlock can be avoided by acquiring all locks at once, atomically.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>pthread_mutex_lock<span class="op">(</span>prevention<span class="op">);</span> <span class="co">// begin acquisition</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>pthread_mutex_lock<span class="op">(</span>L1<span class="op">);</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>pthread_mutex_lock<span class="op">(</span>L2<span class="op">);</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>pthread_mutex_unlock<span class="op">(</span>prevention<span class="op">);</span> <span class="co">// end</span></span></code></pre></div>
+<p><strong>No preemption</strong> Keep trying to grab the lock
+constantly.</p>
+<p>Big issue, a <strong>live-lock</strong>.Two threads could both be
+repeatedly attempting this sequence and repeatedly failing to acquire
+both locks. In this case, both systems are running through this code
+sequence over and over again (and thus it is not a deadlock), but
+progress is not being made, hence the name livelock</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>top<span class="op">:</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    pthread_mutex_lock<span class="op">(</span>L1<span class="op">)</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>pthread_mutex_trylock<span class="op">(</span>L2<span class="op">)</span> <span class="op">!=</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>        pthread_mutex_unlock<span class="op">(</span>L1<span class="op">);</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">goto</span> top<span class="op">;</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span></code></pre></div>
+<p><strong>Mutual exclusion</strong> Use a lock-free or wait-free
+approach. Use compare-and-swap instructions.</p>
+<p><strong>Steps:</strong></p>
+<ul>
+<li>Read the value at the target memory address</li>
+<li>Compare it with an expected value</li>
+<li>If equal, swap it with a new value</li>
+<li>If not equal, do nothing</li>
+</ul>
+<div class="sourceCode" id="cb27"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> CompareAndSwap<span class="op">(</span><span class="dt">int</span> <span class="op">*</span>address<span class="op">,</span> <span class="dt">int</span> expected<span class="op">,</span> <span class="dt">int</span> new<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(*</span>address <span class="op">==</span> expected<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>        <span class="op">*</span>address<span class="op">=</span>new<span class="op">;</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><strong>Scheduling</strong>: used in small hardware OS where we know
+the tasks ahead of time. <strong>Detect and recover:</strong> used in
+databases; they run periodical deadlock detectors for cycles.</p>
+<h3>Event-Based Concurrency</h3>
+<blockquote>
+<p>How can we build a concurrent server without using threads, and thus
+retain control over concurrency as well as avoid some of the problems
+that seem to plague multi-threaded applications?</p>
+</blockquote>
+<p>We can use functions such as <code>select()</code> or
+<code>poll()</code> to constantly check for updates on a given
+event.</p>
+<p>We do this on an event loop: <code>while (1)</code></p>
+<p>Handling events has challenges:</p>
+<ul>
+<li>Handling state (you don't have a stack): we have to manually manage
+the stack.</li>
+<li>Handling blocking system calls (the event loop would sit idle)</li>
+<li>If you have more than 1 CPU, you need to handle multiple event
+handlers</li>
+<li>Page faults are harder to handle. They will block the server until
+the page fault completes</li>
+<li>Hard to manage over time. The semantics of the routine might
+change.</li>
+</ul>
+<h1>File Systems</h1>
+<h2>I/O Devices</h2>
+<p><strong>Key questions</strong></p>
+<ul>
+<li>How should I/O be integrated into our systems? What should be the
+ideal mechanism?</li>
+<li>How can the OS check device status without frequent polling?
+Lowering CPU overhead to manage the device?</li>
+<li>How to lower PIO overheads? i.e., spending too much time moving data
+to and from the devices by hand.
+<ul>
+<li>How can we offload this work?</li>
+</ul></li>
+<li>How should hardware communicate with devices? Explicitly? Or
+abstracting?</li>
+<li>How can we build a device-neutral OS? Hide t he device
+interactions?</li>
+</ul>
+<p><strong>System architecture</strong> In a traditional diagrams we
+have a CPU attached to the main memory via some kind of memory bus. They
+connect via a general I/O bus. Lower down we have peripheral buses too,
+such as SCSI, SATA, and USB. They connect to slower devices such as
+disks, mice and keyboard.</p>
+<p>![[Pasted image 20240708193837.png|400]]</p>
+<p>The faster the bus is, the shorter it must be. We put high
+performance components closer to the CPU.</p>
+<p>Modern systems put the components close to the CPU.</p>
+<p>![[Pasted image 20240708193953.png|500]].</p>
+<h3>Devices</h3>
+<p>A canonical device needs the following.</p>
+<p>![[Pasted image 20240708194121.png|500]]</p>
+<p>A typical OS interaction will be like this.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a> While <span class="op">(</span>STATUS <span class="op">==</span> BUSY<span class="op">)</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>       <span class="op">;</span> <span class="co">// wait until device is not busy</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>   Write data to DATA <span class="dt">register</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>   Write command to COMMAND <span class="dt">register</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>       <span class="op">(</span>starts the device and executes the command<span class="op">)</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>   While <span class="op">(</span>STATUS <span class="op">==</span> BUSY<span class="op">)</span></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>       <span class="op">;</span> <span class="co">// wait until device is done with your request</span></span></code></pre></div>
+<p>The OS waits until the device receives a command by polling it. The
+CPU sometimes will send data to the device via programmed I/O (PIO). The
+OS will write a command to the register. Finally, the OS will wait for
+the device to finish by polling in a loop.</p>
+<p>Polling takes a lot of time, so we enable
+<strong>interrupts</strong>.</p>
+<p>The interrupt will stop the I/O to run other operations. This is best
+for slower processes, if we have a fast I/O process we might slow down
+the overall performance of the system.</p>
+<p>Sometimes we can do a hybrid approach. Use polling and interrupts.
+This allows to us to prevent <strong>live-locks</strong>.</p>
+<p><strong>Moving data efficiently with Direct Memory Access
+(DMA)</strong></p>
+<p>A DMA engine is a device tailored to orchestrate transfers between
+devices and main memory without the CPU. It's like another machine that
+does the transfer if you give it instructions, freeing the CPU.</p>
+<p><strong>How to fit devices into an OS?</strong></p>
+<p>We use device drivers. This is actual code in the OS to map to have
+instructions on how to access the specific device. They involve most of
+the code in modern OS's, 70% of the lines of code in Linux.</p>
+<p>With proper mapping, we can make the device feel as if it was part of
+the file system.</p>
+<p>![[Pasted image 20240708195259.png|500]]</p>
+<h2>Hard Disk Drives</h2>
+<p>Key questions:</p>
+<ul>
+<li>How do modern hard-disk drives store data? What is the interface?
+How is the data actually laid out and accessed? How does disk scheduling
+improve performance?</li>
+<li>How can we implement SSTF-like scheduling but avoid starvation?</li>
+<li>How can we implement an algorithm that more closely approximates SJF
+by taking both seek and rotation into account?</li>
+</ul>
+<p>Tips:</p>
+<ul>
+<li>Use disks sequentially: transfer data in a sequential manner or in
+large chunks; avoid small I/O ops at all costs</li>
+<li>Almost any question can be answered with “it depends”, as our
+colleague Miron Livny always says. However, use with caution, as if you
+answer too many questions this way, people will stop asking you
+questions alto- gether.</li>
+</ul>
+<p>![[Pasted image 20240710101857.png]]</p>
+<h2>Redundant Array of Inexpensive Disks (RAIDs)</h2>
+<p>Key questions:</p>
+<ul>
+<li>What are RAIDs?</li>
+<li>What are they used for?</li>
+<li>What are the different levels?</li>
+<li>What kind of applications benefit from each level?</li>
+<li>What are software vs. hardware RAIDs?</li>
+<li>What are the design considerations when it comes to RAIDs?</li>
+</ul>
+<h2>Files and Directories</h2>
+<p>Key questions:</p>
+<ul>
+<li>How should the OS manage a persistent device? What are the
+APIs?</li>
+</ul>
+<p>A file is just a linear array of bytes, each of which you can read or
+write. Each file has a low-level name. It is often referred as inode
+number.</p>
+<h3>Files &amp; Commands</h3>
+<p>We can create a new file with <code>open()</code>; we can add flags
+to it such as: <code>O_CREAT</code>, <code>O_WRONLY</code> or
+<code>O_TRUNC</code></p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> fd <span class="op">=</span> open<span class="op">(</span><span class="st">&quot;foo&quot;</span><span class="op">,</span> O_CREAT<span class="op">|</span>O_WRONLY<span class="op">|</span>O_TRUNC<span class="op">,</span> S_IRUSR<span class="op">|</span>S_IWUSR<span class="op">);</span></span></code></pre></div>
+<p>When we create a file with <code>open()</code> it returns a
+[[file_descriptor]]. A file descriptor is an integer, private per
+process, used in UNIX systems to access files. An opaque handle that
+lets you do certain ops. A pointer to an object of type file.</p>
+<p>Each process maintains an array of file descriptors. Each one refers
+to an entry in the system-wide open file table.</p>
+<p>When we call <code>write()</code> (update a file in persistent
+storage) it acts as if it writes the updates right away but they
+actually go into a buffer in memory then get written after a few
+seconds.</p>
+<p>To write to files right away, sometimes we use <code>fsync()</code>
+this guarantees that the writes will be performed asap in critical
+systems such as database mgmt systems.</p>
+<p>When we call <code>mv foo bar</code> these are the system calls that
+happen:</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> fd <span class="op">=</span> open<span class="op">(</span><span class="st">&quot;foo.txt.tmp&quot;</span><span class="op">,</span> O_WRONLY<span class="op">|</span>O_CREAT<span class="op">|</span>O_TRUNC<span class="op">,</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>              S_IRUSR<span class="op">|</span>S_IWUSR<span class="op">);</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>write<span class="op">(</span>fd<span class="op">,</span> buffer<span class="op">,</span> size<span class="op">);</span> <span class="co">// write out new version of file</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>fsync<span class="op">(</span>fd<span class="op">);</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>close<span class="op">(</span>fd<span class="op">);</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>rename<span class="op">(</span><span class="st">&quot;foo.txt.tmp&quot;</span><span class="op">,</span> <span class="st">&quot;foo.txt&quot;</span><span class="op">);</span></span></code></pre></div>
+<p>When we call <code>rm foo</code> it calls the following actions:</p>
+<pre class="shell"><code>prompt&gt; strace rm foo
+...
+unlink(&quot;foo&quot;)                           = 0</code></pre>
+<h3>Directories</h3>
+<p>An empty directory contains <code>.</code> and <code>..</code></p>
+<p>We can modify them with <code>mkdir</code>, and
+<code>rmdir</code></p>
+<p>A key part of directories is <code>link</code>. It basically creates
+a new reference to the inode with your preferred file name.</p>
+<div class="sourceCode" id="cb32"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="ex">prompt</span><span class="op">&gt;</span> echo hello <span class="op">&gt;</span> file</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="ex">prompt</span><span class="op">&gt;</span> cat file</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="ex">hello</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="ex">prompt</span><span class="op">&gt;</span> ln file file2</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="ex">prompt</span><span class="op">&gt;</span> cat file2</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="ex">hello</span></span></code></pre></div>
+<p>The file is not copied. You just now have two names.</p>
+<div class="sourceCode" id="cb33"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="ex">prompt</span><span class="op">&gt;</span> ls <span class="at">-i</span> file file2</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="ex">67158084</span> file</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="ex">67158084</span> file2</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="ex">prompt</span><span class="op">&gt;</span></span></code></pre></div>
+<p>When we <code>unlink</code> we remove the references to that file.
+Over time, the system will check the reference counts to that file and
+if it reaches zero the system will free the inode and the related data
+blocks.</p>
+<p>We can also use symbolic links with:</p>
+<div class="sourceCode" id="cb34"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="ex">prompt</span><span class="op">&gt;</span> echo hello <span class="op">&gt;</span> file</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="ex">prompt</span><span class="op">&gt;</span> ln <span class="at">-s</span> file file2</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="ex">prompt</span><span class="op">&gt;</span> cat file2</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="ex">hello</span></span></code></pre></div>
+<p>The issue is that they might create a dangling reference if we remove
+the file while keeping file2. They're its own type called:
+<code>symbolic link</code></p>
+<h3>Key terms</h3>
+<ul>
+<li>A <strong>file</strong> is an array of bytes which can be created,
+read, written, and deleted. It has a low-level name (i.e., a number)
+that refers to it uniquely. The low-level name is often called an
+i-number.</li>
+<li>A <strong>directory</strong> is a collection of tuples, each of
+which contains a human-readable name and low-level name to which it
+maps. Each entry refers either to another directory or to a file. Each
+directory also has a low-level name (i-number) itself. A directory
+always has two special entries: the . entry, which refers to itself, and
+the .. entry, which refers to its parent.</li>
+<li>A directory tree organizes all files into a large tree starting at
+the <strong>root</strong></li>
+<li>To access a file, a process must use a system call (usually, open())
+to request permission from the operating system. If permission is
+granted, the OS returns a <strong>file descriptor</strong>, which can
+then be used for read or write access, as permissions and intent
+allow.</li>
+<li>Each file descriptor is a private, per-process entity, which refers
+to an entry in the <strong>open file table</strong>. The entry therein
+tracks which file this access refers to, the <strong>current
+offset</strong> of the file (i.e., which part of the file the next read
+or write will access), and other relevant information.</li>
+<li>To force updates to persistent media, a process must use fsync() or
+related calls. However, doing so correctly while maintaining high
+performance is challenging [P+14], so think carefully when doing so</li>
+<li>To have multiple human-readable names in the file system refer to
+the same underlying file, use hard links or symbolic links. Each is
+useful in different circumstances, so consider their strengths and
+weaknesses before usage. And remember, deleting a file is just
+performing that one last unlink() of it from the directory
+hierarchy.</li>
+</ul>
+<h3>Implementing a File System</h3>
+<p>Key questions:</p>
+<ul>
+<li>How do we implement a simple file system?</li>
+<li>What are the data structure it needs</li>
+<li>Even the simplest of operations like opening, reading, or writing a
+file incurs a huge number of I/O operations, scattered over the disk.
+What can a file system do to reduce the high costs of doing so many
+I/Os?</li>
+</ul>
+<p><strong>i-Nodes</strong> Structure that holds metadata for a given
+file (length, permissions, and location of its blocks) short for index
+node. It is used to index into an array of on-disk inodes to find the
+inode of that number. (can also be called dnode, fnodes, etc)</p>
+<p>When engineers design file systems, they hold these high level
+rules:</p>
+<ul>
+<li>Most files are small; 2K most common</li>
+<li>Avg. file size is growing; 200K is avg</li>
+<li>Most bytes are stored in large files; few big files occupy most of
+the space</li>
+<li>File systems contains lots of files; up to 100K on avg</li>
+<li>Directories are typically small; most 20 or fewer</li>
+</ul>

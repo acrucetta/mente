@@ -1,0 +1,217 @@
+<!DOCTYPE html><html lang='en'>
+<head>
+<meta charset='utf-8'>
+
+            <meta name='viewport' content='width=device-width,initial-scale=1'>
+
+            <link rel='stylesheet' type='text/css' href='../links/main.css'>
+
+            <title>Mente &mdash; event_driven_architecture.htm</title>
+</head>
+<body>
+<header>
+<a href='https://andrescn.me/mente/site/about.html'><img src='../media/interface/logo.svg' alt='Mente' height='100'></a></header>
+<nav>
+<details open>
+  <summary>Menu</summary>
+  <section class="site-nav">
+    <section>
+      <ul class="nobull capital">
+        <li><a href="about.html">About</a></li>
+        <li><a href="books.html">Books</a></li>
+        <li><a href="projects.html">Projects</a></li>
+      </ul>
+    </section>
+    <section>
+      <h2><a id='meta'>Meta</a></h2>
+      <ul class='nobull capital'>
+        <li><a href="index.html">Index</a></li>
+      </ul>
+  </section>
+</details></nav>
+<main>
+
+<!-- Generated file, do not edit -->
+
+<h1>event_driven_architecture.htm</h1>
+<p>An event-driven architecture uses events to trigger and communicate
+between decoupled services and is common in modern applications built
+with microservices.</p>
+<p>An event is a change in state, or an update, like an item being
+placed in a shopping cart on an e-commerce website. <strong>Events can
+either carry the state (the item purchased, its price, and a delivery
+address) or events can be identifiers</strong> (a notification that an
+order was shipped).</p>
+<p>Event-driven architectures have three key components: event
+producers, event routers, and event consumers.</p>
+<p>In Request/Response the API are the building blocks. In event-driven.
+data is the building block.</p>
+<p>It's powered by Apache Kafka.</p>
+<p><strong>Why use it?</strong></p>
+<ul>
+<li>Event persistence</li>
+<li>Single point of failure</li>
+<li>Performance</li>
+</ul>
+<p><strong>When to use?</strong></p>
+<p>![[Pasted image 20240618115255.png]]</p>
+<h3>Components</h3>
+<p>Pub/Sub Model</p>
+<ul>
+<li>Consumers (APIs)</li>
+<li>Brokers
+<ul>
+<li>Manages who gets what message</li>
+</ul></li>
+<li>Producers
+<ul>
+<li>Produces the messages</li>
+</ul></li>
+</ul>
+<h3>Architecture Patterns</h3>
+<p>The value of a pattern is telling you things to watch out for. Most
+systems have some form of these patterns.</p>
+<ol type="1">
+<li>Event notification
+<ul>
+<li>A key element of event notification is that the source system
+doesn't really care much about the response</li>
+<li>An application creates an event, that goes into a queue</li>
+</ul></li>
+<li>Event-driven state transfer
+<ol type="1">
+<li>Since we have more availability we have less consistency
+(eventual)</li>
+<li>We try to keep the data consistent across all services</li>
+</ol></li>
+<li>Event sourcing
+<ul>
+<li>Upsides
+<ul>
+<li>Auditing, debugging, historic state, alternative state, memory
+image</li>
+<li>With more RAM we can do a lot more processes without using a
+database</li>
+</ul></li>
+<li>Downsides
+<ul>
+<li>Unfamiliar, external systems, event schema, identifiers</li>
+</ul></li>
+<li>You have logs and application state</li>
+<li>You could rebuild the application state based on the logs</li>
+<li>Version control is a form of event sourcing system (builds app state
+off log changes)</li>
+<li>Another example is the accounting ledger</li>
+</ul></li>
+<li>CQRS (Command Query Responsibility Segregation)
+<ul>
+<li>You have a write component and a read component</li>
+<li>Similar pattern is used in other databases (oltp and olap)</li>
+</ul></li>
+</ol>
+<h3>Design Patterns</h3>
+<ul>
+<li>Unit of Work</li>
+<li>Dependency Inversion
+<ul>
+<li>All components (prod / consumer) depend on an abstraction (event
+broker)</li>
+</ul></li>
+</ul>
+<h3>Disadvantages</h3>
+<ul>
+<li>Keeping data consistent
+<ul>
+<li>EDA uses "eventual consistency"; it might cause problems if the data
+is not aligned across all systems</li>
+<li>We can use a cache layer to mitigate this (e.g., redis)</li>
+</ul></li>
+<li>Duplicate messages
+<ul>
+<li>If the server goes offline and back online, it might get
+duplicates</li>
+<li>We can use unique IDs to not process the same events twice</li>
+</ul></li>
+<li>More complex
+<ul>
+<li>More components to build</li>
+<li>Harder to debug when we have issues</li>
+</ul></li>
+</ul>
+<h2>Azure</h2>
+<p><strong>Service Bus vs. Event Grid</strong></p>
+<ul>
+<li>Azure Service Bus is an <strong>enterprise messaging
+product</strong>. It covers queuing, pub/sub, and has multiple compute
+based features. Receiving is done via polling (long polling) and
+usually, a namespace is accessed within/by a single organization.</li>
+<li>Azure Event Grid is a <strong>notification service</strong>. Its
+sole purpose is to enable pub/sub between event generators and
+subscribers. It has no queuing semantics. Message delivery is push-based
+and only a few compute based features are available unlike with Service
+Bus</li>
+</ul>
+<h3>Azure Service Bus</h3>
+<ul>
+<li>Fully managed message broker with message queues and pub-sub
+topics.</li>
+<li>Benefits:
+<ul>
+<li>Load-balancing</li>
+<li>Routes data</li>
+<li>Coordinates transactional work</li>
+</ul></li>
+</ul>
+<p><strong>Concepts</strong></p>
+<p><strong>Queues</strong></p>
+<ul>
+<li>Messages are sent to and received from <strong>queues</strong>.
+Queues store messages until the receiving application is available to
+receive and process them.</li>
+<li>Service Bus keeps messages in memory or volatile storage until
+client reports them as accepted.</li>
+<li>Messages are delivered in <strong>pull</strong> mode, only
+delivering messages when requested.</li>
+</ul>
+<p><strong>Topics</strong></p>
+<ul>
+<li>You can also use <strong>topics</strong> to send and receive
+messages. While a queue is often used for point-to-point communication,
+topics are useful in publish-subscribe scenarios.</li>
+<li>Topics can have multiple subscribers</li>
+<li>You can define rules on a subscription. A subscription can have a
+filter to define a condition for the message. It also has an optional
+action to modify the metadata</li>
+</ul>
+<p><strong>Namespaces</strong></p>
+<ul>
+<li>A namespace is a container for all messaging components (queues and
+topics). A namespace can have one or more queues and topics and it often
+serves as an application container.</li>
+</ul>
+<h3>Resources</h3>
+<p><strong>Videos</strong></p>
+<ul>
+<li><a
+href="https://www.youtube.com/watch?v=8UlLgOf20Ho&amp;list=PL4JxLacgYgqTgS8qQPC17fM-NWMTr5GW6">Event
+Driven Architecture Playlist</a></li>
+<li><a href="https://www.youtube.com/watch?v=DQ5Cbt8DQbM">What is Event
+Driven Architecture</a></li>
+<li><a href="https://www.youtube.com/watch?v=STKCRSUsyP0&amp;t=244s">The
+Many Meanings of Event-Driven Architecture • Martin Fowler • GOTO
+2017</a></li>
+<li><a
+href="https://martinfowler.com/articles/201701-event-driven.html">What
+do you mean by “Event-Driven”?</a></li>
+</ul>
+<p><strong>Books</strong></p>
+<ul>
+<li>Architecture Patterns with Python</li>
+</ul>
+
+
+</main>
+<footer id='end_footer'><hr />
+<span style='float:right'>Edited on 2024-07-25</span><b>Mente</b> © 2023 — 
+</footer>
+</body></html>

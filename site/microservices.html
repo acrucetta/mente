@@ -1,0 +1,150 @@
+<!DOCTYPE html><html lang='en'>
+<head>
+<meta charset='utf-8'>
+
+            <meta name='viewport' content='width=device-width,initial-scale=1'>
+
+            <link rel='stylesheet' type='text/css' href='../links/main.css'>
+
+            <title>Mente &mdash; microservices.htm</title>
+</head>
+<body>
+<header>
+<a href='https://andrescn.me/mente/site/about.html'><img src='../media/interface/logo.svg' alt='Mente' height='100'></a></header>
+<nav>
+<details open>
+  <summary>Menu</summary>
+  <section class="site-nav">
+    <section>
+      <ul class="nobull capital">
+        <li><a href="about.html">About</a></li>
+        <li><a href="books.html">Books</a></li>
+        <li><a href="projects.html">Projects</a></li>
+      </ul>
+    </section>
+    <section>
+      <h2><a id='meta'>Meta</a></h2>
+      <ul class='nobull capital'>
+        <li><a href="index.html">Index</a></li>
+      </ul>
+  </section>
+</details></nav>
+<main>
+
+<!-- Generated file, do not edit -->
+
+<h1>microservices.htm</h1>
+<h2>Notes on Microservices</h2>
+<p>Microservices are a great architecture pattern that can allow teams
+to scale fast. It allows you to use different technologies and to
+differentiate system boundaries across your services. However, it
+doesn't need to be the default architecture. For most small teams, a
+modular monolithic architecture is better than using a microservices
+architecture.</p>
+<p>They're good once your domain model has stabilized and you have clear
+boundaries.</p>
+<p>Pros of Microservices</p>
+<ul>
+<li>Can use different technologies</li>
+<li>If one system fails, the other ones can still be active</li>
+<li>Easy to scale independent services</li>
+<li>Easy to deploy individual changes (no need to reboot the entire
+application)</li>
+<li>Easy to split teams based on your org</li>
+</ul>
+<p>Cons of Microservices</p>
+<ul>
+<li>Too many new technologies for microservices</li>
+<li>More expensive</li>
+<li>Harder to manage reporting (need log aggregation tools)</li>
+<li>Harder to monitor issues</li>
+<li>Security risk as information flows between processes</li>
+<li>Can be slower because of networking costs</li>
+<li>Keeping data consistent across microservices</li>
+</ul>
+<h3>What makes a good microservices boundary?</h3>
+<p>Any interaction from a service that depends on another one means the
+services are coupled. We want to modify and update the services
+independently.</p>
+<p>We generally want strong cohesion and low coupling.</p>
+<p><strong>Information Hiding</strong></p>
+<ul>
+<li>Programs should hide as many details from each other as
+possible</li>
+<li>We want to hide as many details as possible from the end user</li>
+<li><em>The connection between modules are the assumptions they make
+about each other</em></li>
+</ul>
+<p><strong>Cohesion</strong></p>
+<ul>
+<li>Programs should be cohesive internally but loosely coupled
+externally</li>
+<li><em>Code that changes together, stays together</em></li>
+<li>We want to make changes in as few places as possible. If we need to
+make changes in multiple places it will be a pain</li>
+<li>E.g., config values change behavior across the code</li>
+</ul>
+<p><strong>Coupling</strong></p>
+<ul>
+<li>Changes to one service shouldn't require changes to others</li>
+<li>Classic mistakes are services that depend on each other (see
+below)</li>
+<li>This can happen when a service changes state in another service,
+when it depends on many services downstream, or when it needs to pass
+data through other services to do tasks</li>
+</ul>
+<h3>Types of coupling</h3>
+<p>![[Pasted image 20240612112812.png]]</p>
+<p>Domain</p>
+<ul>
+<li>The microservice interacts with another microservice</li>
+<li>If it depends in too many it might be an issue</li>
+<li>It is generally considered to be a loose form of coupling</li>
+</ul>
+<p>![[Pasted image 20240613141735.png|500]]</p>
+<p><strong>Pass-through</strong></p>
+<ul>
+<li>The microservice needs to pass through a request to another
+microservice</li>
+<li>We might be coupling the microservices because the downstream
+microservice might need to know how the once-removed service works</li>
+<li>It might be easier to build the whole package in the same
+microservice then return the full result to the final microservice</li>
+</ul>
+<p><em>Bad</em> ![[Pasted image 20240613141749.png|500]]</p>
+<p><em>Better</em> ![[Pasted image 20240613142005.png|500]]</p>
+<p><em>Best</em> ![[Pasted image 20240613141937.png|500]]</p>
+<p><strong>Common</strong></p>
+<ul>
+<li>Happens when 2+ ms make use of common data</li>
+<li>Happens when they used a shared database or filesystem</li>
+<li>IF the schema changes it will require changes in each consumer, it's
+hard to change as a result</li>
+<li>It can also overwhelm the database if multiple consumers are using
+it</li>
+</ul>
+<p><em>Bad</em> ![[Pasted image 20240613142137.png|500]]</p>
+<p><em>Best</em> ![[Pasted image 20240613142309.png|500]]</p>
+<p><strong>Content</strong></p>
+<ul>
+<li>A microservice goes into another one and changes its database</li>
+<li>Really bad, can result in unforeseen changes in the raw data that
+can affect another service's response</li>
+<li>The database becomes part of the contract</li>
+</ul>
+<p>![[Pasted image 20240613142408.png|500]]</p>
+<h2>Implementation</h2>
+<h3>Technologies Available</h3>
+<ul>
+<li>gRPC</li>
+<li>REST</li>
+<li>GraphQL</li>
+<li>Message Brokers</li>
+</ul>
+
+
+</main>
+<footer id='end_footer'><hr />
+<span style='float:right'>Edited on 2024-07-25</span><b>Mente</b> © 2023 — 
+</footer>
+</body></html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html><html lang='en'>
+<head>
+<meta charset='utf-8'>
+
+            <meta name='viewport' content='width=device-width,initial-scale=1'>
+
+            <link rel='stylesheet' type='text/css' href='../links/main.css'>
+
+            <title>Mente &mdash; file_descriptor.htm</title>
+</head>
+<body>
+<header>
+<a href='https://andrescn.me/mente/site/about.html'><img src='../media/interface/logo.svg' alt='Mente' height='100'></a></header>
+<nav>
+<details open>
+  <summary>Menu</summary>
+  <section class="site-nav">
+    <section>
+      <ul class="nobull capital">
+        <li><a href="about.html">About</a></li>
+        <li><a href="books.html">Books</a></li>
+        <li><a href="projects.html">Projects</a></li>
+      </ul>
+    </section>
+    <section>
+      <h2><a id='meta'>Meta</a></h2>
+      <ul class='nobull capital'>
+        <li><a href="index.html">Index</a></li>
+      </ul>
+  </section>
+</details></nav>
+<main>
+
+<!-- Generated file, do not edit -->
+
+<h1>file_descriptor.htm</h1>
+<p>A file descriptor is just an integer, private per process, and is
+used in UNIX systems to access files; thus, once a file is opened, you
+use the file de- scriptor to read or write the file, assuming you have
+permission to do so. In this way, a file descriptor is a capability
+[L84], i.e., an opaque handle that gives you the power to perform
+certain operations.</p>
+<p>Another way to think of a file descriptor is as a pointer to an
+object of type file; once you have such an object, you can call other
+“methods” to access the file, like read() and write() (we’ll see how to
+do so below).</p>
+<p>When we create a new file, the first call to open() returns 3, not 0
+or 1. 0, 1, and 2 are reserved for standard input, output, and
+error.</p>
+
+
+</main>
+<footer id='end_footer'><hr />
+<span style='float:right'>Edited on 2024-07-25</span><b>Mente</b> © 2023 — 
+</footer>
+</body></html>

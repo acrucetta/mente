@@ -1,0 +1,78 @@
+<!DOCTYPE html><html lang='en'>
+<head>
+<meta charset='utf-8'>
+
+            <meta name='viewport' content='width=device-width,initial-scale=1'>
+
+            <link rel='stylesheet' type='text/css' href='../links/main.css'>
+
+            <title>Mente &mdash; raft_protocol.htm</title>
+</head>
+<body>
+<header>
+<a href='https://andrescn.me/mente/site/about.html'><img src='../media/interface/logo.svg' alt='Mente' height='100'></a></header>
+<nav>
+<details open>
+  <summary>Menu</summary>
+  <section class="site-nav">
+    <section>
+      <ul class="nobull capital">
+        <li><a href="about.html">About</a></li>
+        <li><a href="books.html">Books</a></li>
+        <li><a href="projects.html">Projects</a></li>
+      </ul>
+    </section>
+    <section>
+      <h2><a id='meta'>Meta</a></h2>
+      <ul class='nobull capital'>
+        <li><a href="index.html">Index</a></li>
+      </ul>
+  </section>
+</details></nav>
+<main>
+
+<!-- Generated file, do not edit -->
+
+<h1>raft_protocol.htm</h1>
+<p>Overview</p>
+<ul>
+<li>Raft is a protocol for implementing distributed consensus.</li>
+</ul>
+<p>Leader Election</p>
+<ul>
+<li>All nodes start as followers, they can become candidates or leaders
+over time</li>
+<li>The candidate becomes the majority if it receives most of the
+votes</li>
+<li>Each node has an <em>election timeout</em> (150-300ms), after a
+certain time it asks other nodes for a vote. If the node hasn't voted it
+will vote for the requesting node</li>
+<li>To commit an entry, the node replicates the value to the
+followers</li>
+<li>Messages are sent across nodes in "heartbeat timeouts"</li>
+</ul>
+<p>Log Replication</p>
+<ul>
+<li>The leader receives a message</li>
+<li>Then it sends it to the other nodes via a "heartbeat"</li>
+<li>Once it receives the reply back, it sends back an acknowledge
+message to the client</li>
+</ul>
+<p>Network issues</p>
+<ul>
+<li>Raft can sustain network partitions. If the client wants to change a
+node, and the partition has a majority, then it succeeds. It will send
+the message to the other nodes after.</li>
+</ul>
+<p>Sources:</p>
+<ul>
+<li>https://thesecretlivesofdata.com/raft/</li>
+<li>https://pdos.csail.mit.edu/6.824/notes/raft_diagram.pdf</li>
+</ul>
+
+
+</main>
+<footer id='end_footer'><hr />
+<span style='float:right'>Edited on 2024-07-25</span><b>Mente</b> © 2023 — 
+</footer>
+</body></html>
