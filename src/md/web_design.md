@@ -1,15 +1,7 @@
 
-## Design for my own website
+## Notes on Web Design
 
-Main page with list of blog posts like this
-
-
-Top menu with About, Blog, Now page
-
-Posts
-
-2024-02-14 ~ <Blog Post Title>
+Design Concepts:
+- https://brutalist-web.design/
 
 
-Examples:
-- https://stephango.com/

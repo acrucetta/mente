@@ -1,0 +1,5 @@
+A file descriptor is just an integer, private per process, and is used in UNIX systems to access files; thus, once a file is opened, you use the file de- scriptor to read or write the file, assuming you have permission to do so. In this way, a file descriptor is a capability [L84], i.e., an opaque handle that gives you the power to perform certain operations. 
+
+Another way to think of a file descriptor is as a pointer to an object of type file; once you have such an object, you can call other “methods” to access the file, like read() and write() (we’ll see how to do so below).
+
+When we create a new file, the first call to open() returns 3, not 0 or 1. 0, 1, and 2 are reserved for standard input, output, and error.

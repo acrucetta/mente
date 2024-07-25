@@ -7,9 +7,10 @@
 
 ## Want to read next
 - Lenin: The Man, the Dictator, and the Master of Terror
+- Things Hidden Since The Foundations of the World by Rene Girard
 - Hugo Chavez: Biography
 - Tomorrow, and Tomorrow, and Tomorrow: A Novel
-- Pachinko (National Book Award Finalist)
+- Pachinko 
 
 ## 2024
 1. A Mind At Play, Claude Shannon {claude_shannon} (**A**)
@@ -22,9 +23,16 @@
 8. The Mind Gym 
 9. Look Ahead by Cass Sunstein (**B**)
 10. No Man is an Island (**B+**)
-11. Stalin, The Court of the Red Tsar
-12. 1984 by George Orwell (TBD)
-13. The Founders: The Story of Paypal and the Entrepreneurs Who Shaped Silicon Valley (TBD)
+11. Stalin: The Court of the Red Tsar (Didn't finish)
+12. Stalin: The Paradoxes of Power (**S**)
+12. 1984 by George Orwell (**S**)
+13. The Founders: The Story of Paypal and the Entrepreneurs Who Shaped Silicon Valley (**A**)
+14. Wanting: The Power of Mimetic Desire In Every Day Life by Luke Borges (**A**) {mimesis}
+15. The Ruthless Elimination of Hurry (**A**)
+16. The Book of Laughter and Forgetting (**S**)
+17. The Unbearable Lightness of Being (**A**) 
+18. Make Something Wonderful by Steve Jobs (TBD)
+19. The Dead of Ivan Ilych by Leo Tolstoy (**S**)
 
 ## 2023
 1. The Three Body Problem (Volumes 1-3) by Cixin Liu (**S**)

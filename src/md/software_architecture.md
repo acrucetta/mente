@@ -1,3 +1,6 @@
+## Types of architecture
+
+{event_driven_architecture}
 
 ## Notes on Software Architecture
 

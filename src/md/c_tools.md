@@ -58,3 +58,26 @@
 - **Display dynamic symbols:** `objdump -T <file>`
 
 These commands and options provide a foundational toolkit for using LLDB, Valgrind, and Obj Dump effectively in C development.
+
+## Track Data Races
+
+### GCC
+
+1. To check for data races using dynamic analysis tools, you can compile this code with ThreadSanitizer. Here's how you can do it using GCC:
+
+`gcc -fsanitize=thread -g thread_safety_example.c -o thread_safety_example -lpthread`
+
+2. Run the program
+
+`./thread_safety_example`
+
+### Helgrind
+
+1. First, compile your C program with debugging symbols:
+
+`gcc -g your_program.c -o your_program -lpthread`
+
+2. Then run your program using Valgrind with the Helgrind tool:
+
+`valgrind --tool=helgrind ./your_program`
+

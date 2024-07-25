@@ -1,0 +1,179 @@
+{
+  "main": {
+    "id": "bfc09341f4319d03",
+    "type": "split",
+    "children": [
+      {
+        "id": "46b412b0e14f6802",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "2d4b99861550e702",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "anki_ostep.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "bc419c31cb8fc6fe",
+    "type": "split",
+    "children": [
+      {
+        "id": "aa52a92017616017",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "3464e0be9351f03f",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "6cc420b7d1e565f6",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "4f9b7f6b7a87cfb4",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "right": {
+    "id": "a4303ba01b38f487",
+    "type": "split",
+    "children": [
+      {
+        "id": "9e4ed31f967988d7",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "fe43e4b4ac70af96",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "anki_ostep.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "962c6ffd01f67340",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "anki_ostep.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "bc7ae8bbbdc97ef1",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "5711a0e48ae1d5ca",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "anki_ostep.md"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false
+    }
+  },
+  "active": "2d4b99861550e702",
+  "lastOpenFiles": [
+    "ostep.md",
+    "anki_ostep.md",
+    "Untitled 1.md",
+    "file_descriptor.md",
+    "Pasted image 20240710101857.png",
+    "Pasted image 20240708195259.png",
+    "Pasted image 20240708194121.png",
+    "Pasted image 20240708193953.png",
+    "Pasted image 20240708193837.png",
+    "api_design.md",
+    "c_tools.md",
+    "career.md",
+    "concepts.md",
+    "event_driven_architecture.md",
+    "Pasted image 20240625101238.png",
+    "software_quality.md",
+    "software_architecture.md",
+    "Pasted image 20240618115255.png",
+    "Untitled.md",
+    "distributed_systems.md",
+    "microservices.md",
+    "raft_protocol.md",
+    "Pasted image 20240613142408.png",
+    "Pasted image 20240613142310.png",
+    "Pasted image 20240613142309.png",
+    "consistent_hashing.md"
+  ]
+}

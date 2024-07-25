@@ -1,0 +1,15 @@
+
+## Poems I've written
+
+```
+In the toil of the sea
+I sensed a rising tide
+I became enveloped by it
+It tossed me around
+And I felt like I drowned
+Only when I saw its illusion
+Did it dissappear
+
+6/7/24
+```
+

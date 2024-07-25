@@ -781,6 +781,9 @@ An useful tool to validate threads in C is helgrind, run it with `valgrind --too
 
 Key Question:
 - How do we build an efficient lock? It should provide mutual exclusion at a low cost
+- How does each lock work? Can you explain the principles of each lock and why do we use it?
+- What are the most used locks in practice?
+- How do we measure the CPU impact of different types of locks?
 
 A good lock should provide:
 - Fairness
@@ -813,9 +816,6 @@ void unlock(lock_t *lock) {
     lock->flag = 0;
 }
 ```
-
-Questions:
-- How do we measure the CPU impact of different types of locks?
 
 ### Compare-And-Swap
 
@@ -907,4 +907,522 @@ In the case of some locks, the OS can allows us to yield or park certain threads
 Yield lets us yield the CPU to other threads while our current thread is blocked.
 
 Park allows us to put a calling thread to sleep and unpack  to wake it up by its `threadID`
+
+## Lock-Based Concurrent Data Structures
+
+
+## Conditional Variables
+
+Key questions:
+- How can we make a thread wait based on some condition? In a way that is efficient and doesn't waste CPU cycles?
+
+**Condition variables**
+A condition variable has two operations associated with it: wait() and signal()
+
+E.g.,
+
+```c
+int done  = 0;
+pthread_mutex_t m = PTHREAD_MUTEX_INITIALIZER;
+pthread_cond_t c  = PTHREAD_COND_INITIALIZER;
+
+void thr_exit() {
+    Pthread_mutex_lock(&m);
+    done = 1;
+    Pthread_cond_signal(&c);
+    Pthread_mutex_unlock(&m);
+
+}
+
+void *child(void *arg) {
+    printf("child\n");
+    thr_exit();
+    return NULL;
+
+}
+
+void thr_join() {
+    Pthread_mutex_lock(&m);
+    while (done == 0)
+		Pthread_cond_wait(&c, &m);
+	Pthread_mutex_unlock(&m);
+} int
+
+void main(int argc, char *argv[]) {
+	printf("parent: begin\n");
+	pthread_t p;
+	Pthread_create(&p, NULL, child, NULL);
+	thr_join();
+
+	printf("parent: end\n");
+	return 0; 
+}
+```
+
+**Note:**
+- Although it is strictly not necessary in all cases, it is likely simplest and best to hold the lock while signaling when using condition variables.
+- Always use while loops with conditional variables (Mesa semantics); you want to re-check the condition 
+
+### Semaphores
+
+**Key question**
+- How can we use semaphores instead of locks and condition variables? What is a semaphore and how do we use it?
+
+> A semaphore is an object with an integer value that we can manipulate with two routines; in the POSIX standard, these routines are sem wait() and sem post()
+
+`sem_wait(s)`: decrements the value of semaphore s by one, wait if the value is negative
+
+`sem_post(s)`: increments value of s by one, if there are threads waiting, wake one
+
+**Binary Semaphores**
+
+\We can have multiple types of semaphores, an example of one is a `Binary Semaphore` which acts as a lock.
+
+**Semaphores for Ordering**
+
+We can also use semaphores to have a parent wait for its child to run. To do this, we set `s` as 0. 
+
+![[Pasted image 20240625101238.png|500]]
+
+**Producer/Consumer Problem**
+
+> One simple way to think about it, thanks to Perry Kivolowitz, is to consider the **number of resources you are willing to give away immediately after initialization.** With the lock, it was 1, because you are willing to have the lock locked (given away) immediately after initialization. With the ordering case, it was 0, because there is nothing to give away at the start; only when the child thread is done is the resource created, at which point, the value is incremented to 1. Try this line of thinking on future semaphore problems, and see if it helps.
+
+We can use multiple semaphores to add mutual exclusion.
+
+```c
+void *producer(void *arg) {
+    int i;
+    for (i = 0; i < loops; i++) {
+        sem_wait(&empty);   // Wait for empty slot
+        sem_wait(&mutex);   // Enter critical section
+        put(i);             // Put item in the buffer
+        sem_post(&mutex);   // Leave critical section
+        sem_post(&full);    // Increment count of full slots
+    }
+}
+
+void *consumer(void *arg) {
+    int i, tmp;
+    for (i = 0; i < loops; i++) {
+        sem_wait(&full);    // Wait for full slot
+        sem_wait(&mutex);   // Enter critical section
+        tmp = get();        // Get item from the buffer
+        sem_post(&mutex);   // Leave critical section
+        sem_post(&empty);   // Increment count of empty slots
+        printf("%d\n", tmp); // Print the consumed item
+    }
+}
+```
+
+**Reader-Writer Locks**
+
+Reader-writer locks allow us to have multiple readers (threads) accessing a critical section to read data. If there's a writer modifying the shared data we won't allow readers to access this section.
+
+```c
+typedef struct _rwlock_t {
+  sem_t lock;      // binary semaphore (basic lock)
+  sem_t writelock; // allow ONE writer/MANY readers
+  int   readers;   // #readers in critical section
+  rwlock_t;
+
+void rwlock_init(rwlock_t *rw) {
+  rw->readers = 0;
+  sem_init(&rw->lock, 0, 1);
+  sem_init(&rw->writelock, 0, 1);
+
+}
+
+void rwlock_acquire_readlock(rwlock_t *rw) {
+  sem_wait(&rw->lock);
+  rw->readers++;
+  if (rw->readers == 1) // first reader gets writelock
+    sem_wait(&rw->writelock);
+  sem_post(&rw->lock);
+
+}
+
+void rwlock_release_readlock(rwlock_t *rw) {
+  sem_wait(&rw->lock);
+  rw->readers--;
+  if (rw->readers == 0) // last reader lets it go
+    sem_post(&rw->writelock);
+  sem_post(&rw->lock);
+}
+
+void rwlock_acquire_writelock(rwlock_t *rw) {
+  sem_wait(&rw->writelock);
+}
+
+void rwlock_release_writelock(rwlock_t *rw) {
+  sem_post(&rw->writelock);
+}
+```
+
+### Common Concurrency Bugs
+
+Key question:
+- How to recognize and prevent common bugs?
+
+#### Non-Deadlocks
+
+**Atomicity Violations**
+
+One thread tries to access a shared variable before the other. To fix it, we need to add mutex around the critical sections.
+
+```c
+Thread 1::
+if (thd->proc_info) {
+	fputs(thd->proc_info,...)
+}
+
+Thread 2::
+thd->proc_info = NULL;
+
+pthread_mutex_t proc_info_lock = PTHREAD_MUTEX_INITIALIZER;
+
+Thread 1::
+pthread_mutex_lock(&proc_info_lock);
+if (thd->proc_info) {
+    fputs(thd->proc_info, ...);
+}
+pthread_mutex_unlock(&proc_info_lock);
+
+Thread 2::
+pthread_mutex_lock(&proc_info_lock);
+thd->proc_info = NULL;
+pthread_mutex_unlock(&proc_info_lock);
+
+```
+**Ordering Violations**
+
+Threads depend on each other and one thread might run before the other. Thread 2 will fail if it runs first.
+
+```c
+
+Thread 1::
+void init() {
+	mthread = create_thread()
+}
+
+Thread 2::
+void mMain() {
+	m_state = mthread->state
+}
+```
+
+We need to initialize conditional variables and mutex to allow the first thread to run first.
+
+```c
+pthread_mutex_t mtLock = PTHREAD_MUTEX_INITIALIZER;
+pthread_cond_t  mtCond = PTHREAD_COND_INITIALIZER;
+int mtInit = 0;
+
+Thread 1::
+void Init() {
+    ...
+    mThread = PR_CreateThread(mMain, ...);
+    
+    // signal that the thread has been created...
+    pthread_mutex_lock(&mtLock);
+    mtInit = 1;
+    pthread_cond_signal(&mtCond);
+    pthread_mutex_unlock(&mtLock);
+    ...
+}
+
+Thread 2::
+void mMain(...) {
+    ...
+    // wait for the thread to be initialized...
+    pthread_mutex_lock(&mtLock);
+    while (mtInit == 0)
+        pthread_cond_wait(&mtCond, &mtLock);
+    pthread_mutex_unlock(&mtLock);
+    
+    mState = mThread->State;
+}
+```
+
+#### Deadlock Bugs
+
+Conditions for deadlocks are:
+- Mutual exclusion
+- Hold and wait
+- No preemption
+- Circular wait
+
+*If any of these four conditions are not met, deadlock cannot occur.*
+
+**How to prevent the common deadlocks?**
+
+**Circular wait**
+Use total ordering or partial ordering: acquire one lock before the other
+
+```c
+if (m1 > m2) { // grab in high-to-low address order
+       pthread_mutex_lock(m1);
+       pthread_mutex_lock(m2);
+
+     } else {
+       pthread_mutex_lock(m2);
+       pthread_mutex_lock(m1);
+
+     }
+```
+
+**Hold-and-wait**
+The hold-and-wait requirement for deadlock can be avoided by acquiring all locks at once, atomically.
+
+```c
+pthread_mutex_lock(prevention); // begin acquisition
+pthread_mutex_lock(L1);
+pthread_mutex_lock(L2);
+pthread_mutex_unlock(prevention); // end
+```
+**No preemption**
+Keep trying to grab the lock constantly.
+
+Big issue, a **live-lock**.Two threads could both be repeatedly attempting this sequence and repeatedly failing to acquire both locks. In this case, both systems are running through this code sequence over and over again (and thus it is not a deadlock), but progress is not being made, hence the name livelock
+
+```c
+top:
+	pthread_mutex_lock(L1)
+	if (pthread_mutex_trylock(L2) != 0) {
+	    pthread_mutex_unlock(L1);
+	    goto top;
+	}
+```
+
+**Mutual exclusion**
+Use a lock-free or wait-free approach. Use compare-and-swap instructions.
+
+**Steps:**
+- Read the value at the target memory address
+- Compare it with an expected value
+- If equal, swap it with a new value
+- If not equal, do nothing
+
+```c
+int CompareAndSwap(int *address, int expected, int new) {
+	if (*address == expected) {
+		*address=new;
+		return 1;
+	}
+	return 0;
+}
+```
+
+**Scheduling**: used in small hardware OS where we know the tasks ahead of time.
+**Detect and recover:** used in databases; they run periodical deadlock detectors for cycles.
+
+
+### Event-Based Concurrency
+
+> How can we build a concurrent server without using threads, and thus retain control over concurrency as well as avoid some of the problems that seem to plague multi-threaded applications?
+
+We can use functions such as `select()` or `poll()` to constantly check for updates on a given event. 
+
+We do this on an event loop: `while (1)`
+
+Handling events has challenges:
+- Handling state (you don't have a stack): we have to manually manage the stack.
+- Handling blocking system calls (the event loop would sit idle)
+- If you have more than 1 CPU, you need to handle multiple event handlers
+- Page faults are harder to handle. They will block the server until the page fault completes
+- Hard to manage over time. The semantics of the routine might change.
+
+# File Systems
+
+## I/O Devices
+
+**Key questions**
+- How should I/O be integrated into our systems? What should be the ideal mechanism?
+- How can the OS check device status without frequent polling? Lowering CPU overhead to manage the device?
+- How to lower PIO overheads? i.e., spending too much time moving data to and from the devices by hand.
+	- How can we offload this work?
+- How should hardware communicate with devices? Explicitly? Or abstracting?
+- How can we build a device-neutral OS? Hide t he device interactions?
+
+**System architecture**
+In a traditional diagrams we have a CPU attached to the main memory via some kind of memory bus. They connect via a general I/O bus. Lower down we have peripheral buses too, such as SCSI, SATA, and USB. They connect to slower devices such as disks, mice and keyboard.
+
+![[Pasted image 20240708193837.png|400]]
+
+The faster the bus is, the shorter it must be. We put high performance components closer to the CPU.
+
+Modern systems put the components close to the CPU. 
+
+![[Pasted image 20240708193953.png|500]].
+
+
+### Devices 
+
+A canonical device needs the following.
+
+![[Pasted image 20240708194121.png|500]]
+
+A typical OS interaction will be like this.
+
+```c
+ While (STATUS == BUSY)
+       ; // wait until device is not busy
+
+   Write data to DATA register
+   Write command to COMMAND register
+
+       (starts the device and executes the command)
+   While (STATUS == BUSY)
+
+       ; // wait until device is done with your request
+```
+
+The OS waits until the device receives a command by polling it. The CPU sometimes will send data to the device via programmed I/O (PIO). The OS will write a command to the register. Finally, the OS will wait for the device to finish by polling in a loop.
+
+Polling takes a lot of time, so we enable **interrupts**.
+
+The interrupt will stop the I/O to run other operations. This is best for slower processes, if we have a fast I/O process we might slow down the overall performance of the system.
+
+Sometimes we can do a hybrid approach. Use polling and interrupts. This allows to us to prevent **live-locks**. 
+
+**Moving data efficiently with Direct Memory Access (DMA)**
+
+A DMA engine is a device tailored to orchestrate transfers between devices and main memory without the CPU. It's like another machine that does the transfer if you give it instructions, freeing the CPU.
+
+**How to fit devices into an OS?**
+
+We use device drivers. This is actual code in the OS to map to have instructions on how to access the specific device. They involve most of the code in modern OS's, 70% of the lines of code in Linux.
+
+With proper mapping, we can make the device feel as if it was part of the file system. 
+
+![[Pasted image 20240708195259.png|500]]
+
+## Hard Disk Drives
+
+Key questions:
+- How do modern hard-disk drives store data? What is the interface? How is the data actually laid out and accessed? How does disk scheduling improve performance?
+- How can we implement SSTF-like scheduling but avoid starvation?
+- How can we implement an algorithm that more closely approximates SJF by taking both seek and rotation into account?
+
+Tips:
+- Use disks sequentially: transfer data in a sequential manner or in large chunks; avoid small I/O ops at all costs
+- Almost any question can be answered with “it depends”, as our colleague Miron Livny always says. However, use with caution, as if you answer too many questions this way, people will stop asking you questions alto- gether.
+
+![[Pasted image 20240710101857.png]]
+## Redundant Array of Inexpensive Disks (RAIDs)
+
+Key questions:
+- What are RAIDs?
+- What are they used for? 
+- What are the different levels?
+- What kind of applications benefit from each level?
+- What are software vs. hardware RAIDs?
+- What are the design considerations when it comes to RAIDs?
+
+## Files and Directories
+
+Key questions:
+- How should the OS manage a persistent device? What are the APIs?
+
+A file is just a linear array of bytes, each of which you can read or write. Each file has a low-level name. It is often referred as inode number.
+
+### Files & Commands
+
+We can create a new file with `open()`; we can add flags to it such as: `O_CREAT`, `O_WRONLY` or `O_TRUNC`
+
+```c
+int fd = open("foo", O_CREAT|O_WRONLY|O_TRUNC, S_IRUSR|S_IWUSR);
+```
+
+When we create a file with `open()` it returns a [[file_descriptor]]. A file descriptor is an integer, private per process, used in UNIX systems to access files. An opaque handle that lets you do certain ops. A pointer to an object of type file.
+
+Each process maintains an array of file descriptors. Each one refers to an entry in the system-wide open file table.
+
+When we call `write()` (update a file in persistent storage) it acts as if it writes the updates right away but they actually go into a buffer in memory then get written after a few seconds.
+
+To write to files right away, sometimes we use `fsync()` this guarantees that the writes will be performed asap in critical systems such as database mgmt systems. 
+
+When we call `mv foo bar` these are the system calls that happen:
+
+```c
+int fd = open("foo.txt.tmp", O_WRONLY|O_CREAT|O_TRUNC,
+              S_IRUSR|S_IWUSR);
+
+write(fd, buffer, size); // write out new version of file
+fsync(fd);
+close(fd);
+rename("foo.txt.tmp", "foo.txt");
+```
+
+When we call `rm foo` it calls the following actions:
+
+```shell
+prompt> strace rm foo
+...
+unlink("foo")                           = 0
+```
+### Directories
+
+An empty directory contains `.` and `..`
+
+We can modify them with `mkdir`, and `rmdir`
+
+A key part of directories is `link`. It basically creates a new reference to the inode with your preferred file name.
+
+```bash
+prompt> echo hello > file
+prompt> cat file
+hello
+prompt> ln file file2
+prompt> cat file2
+hello
+```
+The file is not copied. You just now have two names.
+
+```bash
+prompt> ls -i file file2
+67158084 file
+67158084 file2
+prompt>
+```
+
+When we `unlink` we remove the references to that file. Over time, the system will check the reference counts to that file and if it reaches zero the system will free the inode and the related data blocks.
+
+We can also use symbolic links with: 
+
+```bash
+prompt> echo hello > file
+prompt> ln -s file file2
+prompt> cat file2
+hello
+```
+
+The issue is that they might create a dangling reference if we remove the file while keeping file2. They're its own type called: `symbolic link`
+
+### Key terms
+
+- A **file** is an array of bytes which can be created, read, written, and deleted. It has a low-level name (i.e., a number) that refers to it uniquely. The low-level name is often called an i-number.
+- A **directory** is a collection of tuples, each of which contains a human-readable name and low-level name to which it maps. Each entry refers either to another directory or to a file. Each directory also has a low-level name (i-number) itself. A directory always has two special entries: the . entry, which refers to itself, and the .. entry, which refers to its parent.
+- A directory tree organizes all files into a large tree starting at the **root**
+- To access a file, a process must use a system call (usually, open()) to request permission from the operating system. If permission is granted, the OS returns a **file descriptor**, which can then be used for read or write access, as permissions and intent allow.
+- Each file descriptor is a private, per-process entity, which refers to an entry in the **open file table**. The entry therein tracks which file this access refers to, the **current offset** of the file (i.e., which part of the file the next read or write will access), and other relevant information.
+- To force updates to persistent media, a process must use fsync() or related calls. However, doing so correctly while maintaining high performance is challenging [P+14], so think carefully when doing so
+- To have multiple human-readable names in the file system refer to the same underlying file, use hard links or symbolic links. Each is useful in different circumstances, so consider their strengths and weaknesses before usage. And remember, deleting a file is just performing that one last unlink() of it from the directory hierarchy.
+
+### Implementing a File System
+
+Key questions: 
+- How do we implement a simple file system?
+- What are the data structure it needs
+- Even the simplest of operations like opening, reading, or writing a file incurs a huge number of I/O operations, scattered over the disk. What can a file system do to reduce the high costs of doing so many I/Os?
+
+**i-Nodes**
+Structure that holds metadata for a given file (length, permissions, and location of its blocks) short for index node. It is used to index into an array of on-disk inodes to find the inode of that number. (can also be called dnode, fnodes, etc)
+
+When engineers design file systems, they hold these high level rules:
+- Most files are small; 2K most common
+- Avg. file size is growing; 200K is avg
+- Most bytes are stored in large files; few big files occupy most of the space
+- File systems contains lots of files; up to 100K on avg
+- Directories are typically small; most 20 or fewer
 

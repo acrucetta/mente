@@ -10,3 +10,4 @@
 - john keats
 - ts eliot
 - walt whitman
+- elen bass 
