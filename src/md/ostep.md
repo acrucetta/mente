@@ -1426,3 +1426,154 @@ When engineers design file systems, they hold these high level rules:
 - File systems contains lots of files; up to 100K on avg
 - Directories are typically small; most 20 or fewer
 
+### Locality and the Fast File System
+
+**Key questions:**
+- How can we organize file system data structures so as to improve per- formance? What types of allocation policies do we need on top of those data structures? How do we make the file system “disk aware”?
+
+Researchers at Berkeley implemented the Fast File System. The main idea is to design structures and allocation policies to be "disk aware" and thus improve performance. 
+
+### Log-Structured File Systems
+
+These type of file systems focus on writes. They keep writing unto the file system. Whenever there's an overwrite, it creates a new block of memory with a more fresh version. 
+
+The downside is that it needs to clean up those old versions over time. That means it needs to implement cleaning policies for the old data.
+
+The system came from the revelation that there's a large gap between random I/O and sequential I/O performance. That file systems are not [[RAID]] aware
+
+All data in LFS is written in a continuous sequential stream, taking advantage of the speed of sequential I/O.
+
+When writing to disk, LFS buffers the updates (incl. metadata) in an in-memory segment. When its full, the data is written to a disk in one sequential long transfer.
+
+**Finding Inodes**
+
+Normally, inodes are stored in a fixed location in the disk. In the old UNIX file system it was easy, you found them in the fixed location the multiplied by the offset to find the inode you wanted.
+
+In FFS they're split up into chunks and places a group of inodes within each cylinder group. 
+
+In LFS, they're spread out across the disk. The latest version of the inode also keep moving. 
+
+To solve this we use an inode map. It takes an inode number as input and produces the disk address of the most recent version.
+
+How to find this inode map? We have a fixed location in-disk called the "**checkpoint region (CR)**". It contains pointers to the latest pieces of the inode map.
+
+![[Pasted image 20240729095120.png|500]]
+
+**Collecting garbage**
+
+LFS must periodically find dead versions and clean them. Periodically, the LFS cleaner finds the old segments and determines which blocks are live. Then writes out a new set of segments just with the live blocks.
+
+How to know which ones are live?
+
+We use a segment summary block. 
+
+Longer method: check the segment summary, then the imap, and check if the inode routes back to the address A. If it does then its alive.
+
+```
+(N, T) = SegmentSummary[A];
+inode  = Read(imap[N]);
+if (inode[T] == A)
+    // block D is alive
+else
+    // block D is garbage
+```
+Shorter method: record a version number in the on-disk segment and compare them with the version in the imap.
+
+**Recovering crashes**
+
+What if the system crashes while LFS is writing to disk? What if it fails during writes to the logs or checkpoint region.
+
+Checkpoint region failure
+- Keep two CRs, one at either end of the disk and write to them alternately
+- Write out first a header, then the body of the CRR, then one last block. If the timestamps are inconsistent then we know they failed
+
+Log failure
+- Recover the log by reading the checkpoint region. Use a **roll-forward**. Roll through the segments and see if they have valid updates.
+- Recover the data and metadata written since the last checkpoint
+
+### Flash-based SSDs
+
+**Key SSD Terms:**
+- Flash chips have many banks, each organized into blocks. Each block is further divided into pages
+- Blocks are large (128KB-2MB); pages are small (1-8KB)
+- To read, we issue a read command with an address and length
+- Writing is harder, we need to erase the block, then program the page once. Careful doing this too often because the block will wear out.
+- Flash reliability is mostly derived by wear out. If a block gets programmed too often, it is unusable
+- A flash-based SSD behaves as a normal block-based read/write disk by using a flash translation layer
+- Most FTLs are log-structured; reducing the cost of writing but you then have to deal with garbage collection
+- The mapping table can be large, we use hybrid mapping or caching hot pieces when possible
+- One last problem is wear leveling, we need to occasionally migrate data from blocks that are mostly read 
+
+**Key questions:**
+- How can we build a flash-based SSD? How can we handle the expensive nature of erasing? How can we build a device that lasts a long time, given that repeated overwrite will wear the device out? Will the march of progress in technology ever cease? Or cease to amaze?
+
+There's a new rise in solid-state storage. They're better than disk drives because they have no mechanical or moving parts. They're simply built out of transistors, like memory and processors. Unlike DRAM they retain info despite power loss. 
+
+**Basic flash operations:**
+- Read a page: specify a page number and read it, takes 10s of a microsecond. The device can access any location uniformly, meaning its a [[random access device]].
+- Erase a block: before writing to a block, we have to erase the entire block the page lies within. Takes a few milliseconds to complete.
+- Program a page: Less expensive than erasing a block, but more costly than reading a page. Takes 100s of microseconds.
+
+![[Pasted image 20240730085551.png]]
+
+Therein, the author presents the basic operation latency of reads, programs, and erases across SLC, MLC, and TLC flash, which store 1, 2, and 3 bits of information per cell, respectively.
+
+![[Pasted image 20240730090020.png]]
+
+**SSD Performance And Cost**
+
+**Performance:** 
+- No mechanical components, similar to DRAM
+
+![[Pasted image 20240730091016.png]]
+
+The reason for such unexpectedly good random-write performance is due to the log-structured design of many SSDs, which transforms random writes into sequential ones and improves performance.
+
+**Cost:**
+The answer is simple: cost, or more specifically, cost per unit of capacity. Currently an SSD costs something like $150 for a 250-GB drive; such an SSD costs 60 cents per GB. A typical hard drive costs roughly $50 for 1-TB of storage, which means it costs 5 cents per GB. There is still more than a 10× difference in cost between these two storage media.
+
+
+### Data Integrity and Protection
+
+**Key questions:**
+- How should systems ensure that the data written to storage is protected? What techniques are required? How can such techniques be made efficient, with both low space and time overheads?
+- How should a storage system handle latent sector errors? How much extra machinery is needed to handle this form of partial failure?
+- Given the silent nature of such failures, what can a storage system do to detect when corruption arises? What techniques are needed? How can one implement them efficiently?
+- How should a storage system or disk controller detect misdirected writes? What additional features are required from the checksum?
+- How should a storage system or disk controller detect lost writes? What additional features are required from the checksum?
+
+Multiple issues can arise in disks. Therefore, it is important to have a few techniques to cross-check the disk health.
+
+Here are common issues:
+- Single-block failures
+	- Latent-sector errors: a disk head touches the surface (head crash) and damages it making the bits unreadable. We use in-disk error correcting codes to determine when on-disk bits in a block are good
+	- Block corruption: buggy firmware may write a block to wrong locations. They are silent faults. 
+- Misdirected writes: arises in disk and RAID controllers which write the data to disk correctly, except in the wrong location
+- Lost writes: occurs when the device informs us that a write has been completed but it was never persisted. The old contents are still there.
+
+
+**Handling latent segment errors:**
+- 
+
+**Handling block corruption:**
+- Use **[[checksums]]**, it validates using a math function the bytes in a given memory space. It gives a small summary of the contents of the data. It tells us whether the data has somehow been corrupted
+- There's different checksum formulas, each one has their pros and cons.
+	- XOR-based
+		- Do an XOR of each set of binary bits
+	- Additives
+		- Add the decimal values of all the bits
+	- [[Fletcher checksum]]
+		- Use two running sums with modulo operations
+	- Cyclic redundancy check
+
+**Handling misdirected writes:**
+- Add more information to each checksum, e.g., a physical identifier. If the stored information now contains the checksum C(D) and both the disk and sector numbers of the block, it is easy for the client to determine whether the correct information resides within a particular locale.
+- ***Redundancy is the key to error detection and recovery***
+
+**Handling lost writes:**
+- None of our previous strategies help here.
+- A basic approach could be to read after write. We could also add a check-sum in each file system inode and indirect block. If the write to a data block is lost, the checksum within the inode wont match the old data.
+
+When to clean the disks and run all these operations? Overnight, every once in a while. It's called ***disk scrubbing***.
+
+****

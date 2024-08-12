@@ -1111,7 +1111,6 @@ DFS (to visit a vertex v)
 	Mark v as visited
 	Recursively visit all unmarked vertices w adjacent to v
 ```
-
 ```
 def dfs(graph, start):
     visited = set()

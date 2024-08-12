@@ -11,6 +11,8 @@
 - Hugo Chavez: Biography
 - Tomorrow, and Tomorrow, and Tomorrow: A Novel
 - Pachinko 
+- Slouching Towards Bethlehem: Essays 
+- The Year of Magical Thinking: National Book Award Winner
 
 ## 2024
 1. A Mind At Play, Claude Shannon {claude_shannon} (**A**)

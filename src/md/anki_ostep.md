@@ -88,6 +88,7 @@ Key questions:
 - What are file descriptions in C?
 - What is an `i-node` and why is it called like that?
 - How do we delete files in the systems? (unlink)
+- What are the common system calls when modifying file systems?
 
 ### File Systems
 
@@ -96,3 +97,19 @@ Key questions:
 - What is the difference and the trade-offs between static and dynamic partitioning in file systems?
 - How do file systems use caching to improve response times? What are the trade-offs?
 - How do file systems use buffering to improve response times? What are the trade-offs?
+
+### Locality and the Fast File System
+
+- What steps need to happen for a file to be created from an OS perspective? (hint: inode, bitmap, data blocks)
+
+### Log-Structured File Systems
+
+- TBD
+
+### Flash-based SSDs
+
+- TBD
+
+### Data Integrity and Protection
+
+-  TBD
