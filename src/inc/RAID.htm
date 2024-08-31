@@ -1,0 +1,54 @@
+<p><em>Redundant Array of Independent Disks</em></p>
+<p><strong>Key Terms</strong></p>
+<ul>
+<li><strong>Parity</strong>: Parity is a method used in some RAID levels
+(like RAID 5 and 6) to provide fault tolerance. It's a calculated value
+that can be used to reconstruct data if a drive fails.</li>
+<li><strong>Stripe Size</strong>: Stripe size refers to the amount of
+data written to each disk in a RAID array before moving to the next
+disk.</li>
+</ul>
+<p>RAID is a storage technology that combines multiple disk drive
+components into a logical unit for data redundancy and performance
+improvement.</p>
+<p>RAID works by <strong>distributing data across multiple
+drives</strong> in one of several ways, depending on the RAID level. The
+most common methods are:</p>
+<ol type="1">
+<li><strong>Striping</strong>: Splitting data across multiple
+drives</li>
+<li><strong>Mirroring</strong>: Duplicating data on separate drives</li>
+<li><strong>Parity</strong>: Storing calculated recovery
+information</li>
+</ol>
+<p>Key RAID levels:</p>
+<ul>
+<li>RAID 0 (Striping):
+<ul>
+<li>Data is split across drives</li>
+<li>Improves performance, no redundancy</li>
+<li>Example: A 100MB file on 2 drives might use 50MB on each</li>
+</ul></li>
+<li>RAID 1 (Mirroring):
+<ul>
+<li>Data is duplicated on separate drives</li>
+<li>Provides redundancy, slightly improves read performance</li>
+<li>Example: A 100MB file is written identically to 2 drives</li>
+</ul></li>
+<li>RAID 5 (Striping with distributed parity):
+<ul>
+<li>Data and parity are distributed across all drives</li>
+<li>Good balance of performance and redundancy</li>
+<li>Example: In a 4-drive array, 3 parts data + 1 part parity per
+stripe, rotating parity location</li>
+</ul></li>
+<li>RAID 6 (Striping with double distributed parity):
+<ul>
+<li>Similar to RAID 5, but with two parity calculations</li>
+<li>Higher redundancy, can survive two drive failures</li>
+</ul></li>
+</ul>
+<p>Example: Imagine RAID 5 as a team of 4 writers working on a book.
+Three write content, while one summarizes (parity). If one writer is
+lost, their work can be reconstructed from the summary and other
+writers' work.</p>

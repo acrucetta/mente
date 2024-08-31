@@ -1,0 +1,129 @@
+<h3>Analysis of Algorithms</h3>
+<p>What's the order of growth of common algorithms?</p>
+<p><img src="image-3.png" alt="Alt text" /></p>
+<h3>Stacks and Queues</h3>
+<ul>
+<li>Why does the stack have constant push and pop time?
+<ul>
+<li>Because we just need to return the first item or last item in the
+structure without iterating over its values</li>
+</ul></li>
+<li>What are advantages of a LinkedList over a stack?
+<ul>
+<li>Arrays provide immediate access to any item; but we need to know the
+size on initialization</li>
+<li>Linked List use space proportional to size but we need a reference
+to access an item</li>
+</ul></li>
+<li>When do we use the LinkedList, when do we use the stack
+<ul>
+<li>Depending on the access patterns and memory consumption; stacks are
+easy for push/pop but to find items it takes a bit more time. We do have
+resizing issues.</li>
+</ul></li>
+<li>What's the time complexity of Stacks?</li>
+<li>What's the time complexity of LinkedLists?</li>
+<li>What's the time complexity of Queues?</li>
+<li>What is the origin of LinkedLists?
+<ul>
+<li>They were initially used by LISP in 1950s as the primary structure
+for all programs and data. It presented challenges because they're hard
+to debug.</li>
+</ul></li>
+</ul>
+<h3>Sorting</h3>
+<ul>
+<li>How does Selection Sort work? Give an example</li>
+<li>How does Shell Sort work? Give an example</li>
+<li>How does Insertion Sort work? Give an example</li>
+<li>How does Merge Sort work? Give an example</li>
+<li>When to use each of these sorts?</li>
+<li>Why are some sorts better than others in specific occasions?</li>
+<li>What is stability in sorts?
+<ul>
+<li>Stability means that some sorts presents the same order of items
+with a given key; others might shuffle the keys each sort</li>
+</ul></li>
+</ul>
+<h3>Priority Queues</h3>
+<ul>
+<li>What do priority queues allow us to do?
+<ul>
+<li>They allows us to find the largest M items in a steam of N items in
+NlogM (as compared with other data structures that have NM)</li>
+</ul></li>
+<li>How are priority queues implemented?
+<ul>
+<li>They're implemented with Min Heap or Max Heap data structures. Their
+insertion time is O(nLogn)</li>
+</ul></li>
+<li>How do Min Heap and Max Heap data structures work?</li>
+<li>How does Heapsort work? Give an example</li>
+<li>What is the time complexity of Heapsort?
+<ul>
+<li>O(N Log N); because during insertion it takes N Log N then we just
+pull each item at O(1) from the top depending if its a Min or Max
+heap</li>
+</ul></li>
+</ul>
+<h3>Symbol Tables (Hash Tables)</h3>
+<ul>
+<li>What are potential implementations of symbol tables
+(dictionaries)?</li>
+<li>How can symbol tables get implemented with Linked Lists?</li>
+<li>How can symbol tables get implemented with Hash functions?</li>
+</ul>
+<h3>Graphs</h3>
+<ul>
+<li>What are the different representations of graphs?
+<ul>
+<li>Adjacency list
+<ul>
+<li>Array [0,1,2,3] connected to a Linked List [1-&gt;2-&gt;null]</li>
+</ul></li>
+</ul></li>
+<li>What is a path in a graph?
+<ul>
+<li>Sequence of vertices connected by edges</li>
+</ul></li>
+<li>What is a cycle in a graph?
+<ul>
+<li>A path whose first and last vertices are the same</li>
+</ul></li>
+<li>How do we check if there's a path between A and B?</li>
+<li>How do we find the shortest paths in graphs?</li>
+<li>How do we detect if there's a cycle in the graph?</li>
+</ul>
+<p>DFS</p>
+<p>What is the pseudocode for DFS?</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> dfs(graph, start):</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    visited <span class="op">=</span> <span class="bu">set</span>()</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> dfs_recursive(current):</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> current <span class="kw">in</span> visited:</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        visited.add(current)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> neighbor <span class="kw">in</span> graph[current]:</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>            dfs_recursive(neighbor)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    dfs_recursive(start)</span></code></pre></div>
+<p>What is the pseudocode for BFS?</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> bfs(graph, start):</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    visited <span class="op">=</span> <span class="bu">set</span>()</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    queue <span class="op">=</span> [start]</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> queue:</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        current <span class="op">=</span> queue.pop(<span class="dv">0</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> current <span class="kw">in</span> visited:</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>        visited.add(current)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> neighbor <span class="kw">in</span> graph[current]:</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> neighbor <span class="kw">not</span> <span class="kw">in</span> visited:</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>                queue.append(neighbor)</span></code></pre></div>
+<p>How do we do a topological sort of appointments? Give an example?</p>
