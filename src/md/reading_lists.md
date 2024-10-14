@@ -1,14 +1,14 @@
 
 ## Reading lists
 
-### Great authors
+## Favorite reading lists
 
-- Ernest Hemingway
-- Jane Austen
-- Fyodor Dostoyevsky
-
-### Reading List of Reading Lists
 - [https://www.danschulz.net/books/#svalley](https://www.danschulz.net/books/#svalley)
+- [https://probcomp.csail.mit.edu/reading-list/](https://probcomp.csail.mit.edu/reading-list/)
+- [https://nabeelqu.co/reading-lists](https://nabeelqu.co/reading-lists)
+- [https://huyenchip.com/2022/12/27/books-for-every-engineer.html](https://huyenchip.com/2022/12/27/books-for-every-engineer.html)
+
+## Books from others
 
 ### On the History of Computing
 

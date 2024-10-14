@@ -35,6 +35,12 @@
 17. The Unbearable Lightness of Being (**A**) 
 18. Make Something Wonderful by Steve Jobs (TBD)
 19. The Dead of Ivan Ilych by Leo Tolstoy (**S**)
+20. The Rise and Fall of American Growth: The U.S. Standard of Living Since the Civil War (**S**)
+21. Jiu-Jitsu University, Saulo Ribeiro
+22. Mornings on Horseback: The Story of an Extraordinary Family, a Vanished Way of Life and the Unique Child Who Became Theodore Roosevelt (**A**)
+23. A Collection of Essays by George Orwell
+24. SPQR: A History of Ancient Rome by Mary Beard
+25. The Making of the Atomic Bomb: 25th Anniversary Edition by  Richard Rhodes
 
 ## 2023
 1. The Three Body Problem (Volumes 1-3) by Cixin Liu (**S**)
