@@ -5,3 +5,8 @@
 <h3>To connect with a container instance:</h3>
 <p>az container exec -g "rg-indigorx-akscluster-eastus" --name
 "adf-dbt-docker-instance-dev-eus" --exec-command "/bin/bash"</p>
+<h1>Set secrets</h1>
+<p>https://dev-api.cassiansolutions.com" $secretvalue =
+ConvertTo-SecureString "YourSecretValue" -AsPlainText -Force</p>
+<p>Set-AzKeyVaultSecret -VaultName "YourKeyVaultName" -Name
+"YourSecretName" -SecretValue $secretvalue</p>

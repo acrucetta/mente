@@ -38,6 +38,7 @@
 <ul>
 <li>Raft is a protocol for implementing distributed consensus.</li>
 </ul>
+<h3>Components</h3>
 <p>Leader Election</p>
 <ul>
 <li>All nodes start as followers, they can become candidates or leaders
@@ -64,6 +65,66 @@ message to the client</li>
 node, and the partition has a majority, then it succeeds. It will send
 the message to the other nodes after.</li>
 </ul>
+<h2>Algorithm</h2>
+<ul>
+<li>We first elect a leader; he manages the logs</li>
+<li>The leader accepts log entries from clients and replicates it on
+servers
+<ul>
+<li>It also tells them when its safe to apply log entries to their
+state</li>
+</ul></li>
+</ul>
+<p>Sub-problems:</p>
+<ul>
+<li>How to choose a leader if one fails?</li>
+<li>How to replicate the logs?</li>
+<li>How to keep the server safe? No commands overlap</li>
+</ul>
+<h3>Communication</h3>
+<ul>
+<li>RequestVote RPC</li>
+<li>AppendEntries RPC
+<ul>
+<li>Leaders send this with no log entries to maintain their
+authority</li>
+<li>If a follower doesn't receive this for a long time it assumes
+there's no leader and beings a new election</li>
+<li>Used to replicate log entries and form a heartbeat</li>
+<li>Servers can retry if they don't receive a response in a timely
+manner</li>
+</ul></li>
+</ul>
+<h3>Elections</h3>
+<ul>
+<li>Follower increments its current term and becomes a candidate (votes
+for itself)</li>
+<li>It can either win, lose, or there can be no winner for some
+time</li>
+<li>A candidate wins with majority vote</li>
+<li>Once a candidate wins, it sends heartbeats to maintain its
+state</li>
+<li>We can have split votes (ties), so we have election timeouts
+(150-300 ms) to prevent this</li>
+</ul>
+<h3>Log Replication</h3>
+<ul>
+<li>Raft guarantees that:
+<ul>
+<li>If two entries in diff logs have the same idx and term, they have
+the same command</li>
+<li>If two entries in diff logs have the same idx and term, the logs are
+identical in previos entries</li>
+</ul></li>
+</ul>
+<h3>State</h3>
+<p>Log Entries:</p>
+<ul>
+<li>Term in which it was created (#)</li>
+<li>Command for the state machine</li>
+</ul>
+<h2>Leader:</h2>
+<h2>Peers:</h2>
 <p>Sources:</p>
 <ul>
 <li>https://thesecretlivesofdata.com/raft/</li>
@@ -73,6 +134,6 @@ the message to the other nodes after.</li>
 
 </main>
 <footer id='end_footer'><hr />
-<span style='float:right'>Edited on 2024-08-31</span><b>Mente</b> © 2023 — 
+<span style='float:right'>Edited on 2024-10-14</span><b>Mente</b> © 2023 — 
 </footer>
 </body></html>
