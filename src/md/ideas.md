@@ -1,5 +1,10 @@
 
-## ongoing ideas
+## ongoing project ideas
+
+### learning
+- meta blog post on learning
+  - how do we add friction to learning based on the 101 report?
+  - what makes a great anki card? do we learn more from making them or does it matter how we make them?
 
 ### research
 - history of marxism and leninism; how it relates to socialism in south america

@@ -2,6 +2,20 @@
 
 ## Notes on Learning 
 
+## Key Questions
+
+- How do we learn best?
+- What are the challenges to learning?
+- What makes a great Anki card? 
+  - Is it better to make them? Or it doesn't matter?
+- What are the characteristics of great learners?
+- Is there a cap to how much we can learn?
+
+### Books
+- How to Read a Book
+- Make it Stick
+- The Art of Learning
+
 ### Quotes
 
 > We remember 10% of what we read, 20% of what we listen to, and 70% of what we act upon
@@ -10,11 +24,14 @@
 
 > We do not learn from experience; we learn from reflecting on experiences.
 
-> Reading a book without taking notes is like discovering a new  territory without ddrawing a map.
+> Reading a book without taking notes is like discovering a new territory without ddrawing a map.
 
-> "You don’t sharpen your skills with resources, books, or articles. You sharpen your skills with practice. If you want to get better, go do the thingA
+> "You don’t sharpen your skills with resources, books, or articles. You sharpen your skills with practice. If you want to get better, go do the thing
 
 > To teach distill what you know. Develop the theory of what you learned by instinct and practice. By teaching you will understand your craft better than you did before. By giving away your techniques you will empower peers and competitors. Force yourself to stay creative and continuously open new doors.
+
+
+### Learning Research (from Learning 101 Paper)
 
 ### Lex Fridman on Acquiring Skills
 
@@ -32,7 +49,7 @@ Anyone can become an expert on something if you spend enough time focused on it
 
 Teaching facilitates learning; learning comes from practice. Practice comes from passion and excitement. Passion and excitement come from trying out things. To know what things to try out, surround yourself by ideas and content every day.
 
-### The Talent Code (Strategies for Learning)
+### The Talent Code Book
 
 1. Have in your mind the top performers of your field at all times
 2. Steal ideas from people you admire

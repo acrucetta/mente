@@ -1,7 +1,7 @@
 
 ## Notes on Distributed Systems
 
-Key terms:
+**Key terms:**
 - Consistent hashing
 - Object versioning
 - Quorum-like techniques

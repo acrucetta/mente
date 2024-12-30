@@ -7,6 +7,11 @@
 - [https://probcomp.csail.mit.edu/reading-list/](https://probcomp.csail.mit.edu/reading-list/)
 - [https://nabeelqu.co/reading-lists](https://nabeelqu.co/reading-lists)
 - [https://huyenchip.com/2022/12/27/books-for-every-engineer.html](https://huyenchip.com/2022/12/27/books-for-every-engineer.html)
+- [https://near.blog/links/](https://near.blog/links/)
+
+## Excellent book animations
+
+- [https://adammaj.com/reading/pimp](https://adammaj.com/reading/pimp)
 
 ## Books from others
 

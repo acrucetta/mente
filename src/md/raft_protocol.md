@@ -1,5 +1,7 @@
 
-Overview
+## Building the Raft Protocol
+
+### Overview
 - Raft is a protocol for implementing distributed consensus.
 
 ### Components
@@ -50,18 +52,6 @@ Sub-problems:
 - Raft guarantees that:
   - If two entries in diff logs have the same idx and term, they have the same command
   - If two entries in diff logs have the same idx and term, the logs are identical in previos entries
-
-### State
-
-Log Entries:
-- Term in which it was created (#)
-- Command for the state machine
-
-Leader:
-- 
-
-Peers:
-- 
 
 Sources: 
 - https://thesecretlivesofdata.com/raft/
